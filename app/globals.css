@@ -4,27 +4,30 @@
 
 :root {
   color-scheme: dark;
-  --page-bg: #0b0d10;
-  --surface-bg: #14161b;
-  --text-primary: #f5f7fa;
-  --text-secondary: #d5dae2;
-  --divider: rgba(245, 247, 250, 0.12);
-  --signal: #d8ff2a;
+  --tessera-bg-page: #0b0d10;
+  --tessera-bg-surface: #14161b;
+  --tessera-text-primary: #f5f7fa;
+  --tessera-text-secondary: #d5dae2;
+  --tessera-border: rgba(245, 247, 250, 0.12);
+  --tessera-accent-signal: #d8ff2a;
+  --tessera-danger: #ff3b30;
+  --tessera-warning: #ffb020;
+  --tessera-success: #34c759;
 }
 
 html.light {
   color-scheme: light;
-  --page-bg: #f5f7fa;
-  --surface-bg: #ffffff;
-  --text-primary: #0b0d10;
-  --text-secondary: #4b5563;
-  --divider: rgba(11, 13, 16, 0.1);
+  --tessera-bg-page: #f5f7fa;
+  --tessera-bg-surface: #ffffff;
+  --tessera-text-primary: #0b0d10;
+  --tessera-text-secondary: #4b5563;
+  --tessera-border: rgba(11, 13, 16, 0.1);
 }
 
 body {
   margin: 0;
-  background: var(--page-bg);
-  color: var(--text-primary);
+  background: var(--tessera-bg-page);
+  color: var(--tessera-text-primary);
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
@@ -45,20 +48,20 @@ body {
 }
 
 .btn-primary {
-  @apply rounded-button bg-signal px-4 py-3 font-medium text-[#0B0D10] transition duration-200 hover:brightness-90;
+  @apply rounded-button bg-signal px-4 py-3 font-medium text-[#0B0D10] transition duration-150 hover:brightness-90;
 }
 
 .btn-secondary {
-  @apply rounded-button border px-4 py-3 font-medium transition duration-200;
-  border-color: var(--divider);
+  @apply rounded-button border px-4 py-3 font-medium transition duration-150;
+  border-color: var(--tessera-border);
 }
 
 .btn-secondary:hover {
-  background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+  background: color-mix(in srgb, var(--tessera-text-primary) 4%, transparent);
 }
 
 .surface-card {
-  background: var(--surface-bg);
-  border: 1px solid var(--divider);
+  background: var(--tessera-bg-surface);
+  border: 1px solid var(--tessera-border);
   @apply rounded-card;
 }

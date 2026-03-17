@@ -24,18 +24,33 @@ const config: Config = {
           light: "rgba(11,13,16,0.10)",
           dark: "rgba(245,247,250,0.12)"
         },
-        signal: "#D8FF2A"
+        signal: "#D8FF2A",
+        danger: "#FF3B30",
+        warning: "#FFB020",
+        success: "#34C759"
       },
       borderRadius: {
         card: "16px",
-        button: "15px"
+        button: "14px"
+      },
+      spacing: {
+        1: "4px",
+        2: "8px",
+        3: "12px",
+        4: "16px",
+        6: "24px",
+        8: "32px",
+        12: "48px",
+        16: "64px",
+        24: "96px"
       },
       maxWidth: {
         content: "1200px"
       },
       fontFamily: {
         display: ["var(--font-space-grotesk)", "Inter", "system-ui", "sans-serif"],
-        body: ["var(--font-inter)", "system-ui", "sans-serif"]
+        body: ["var(--font-inter)", "system-ui", "sans-serif"],
+        code: ["var(--font-jetbrains-mono)", "SF Mono", "monospace"]
       },
       keyframes: {
         "reveal-up": {

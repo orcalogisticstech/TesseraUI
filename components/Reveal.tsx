@@ -43,7 +43,7 @@ export function Reveal({ children }: RevealProps) {
   return (
     <div
       ref={ref}
-      className="transition-all duration-300 ease-out"
+      className="transition-all duration-[250ms] ease-out"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(14px)"

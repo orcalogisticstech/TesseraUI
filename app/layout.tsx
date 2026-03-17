@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -12,6 +12,11 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["500", "600", "700"]
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"]
 });
 
 export const metadata: Metadata = {
@@ -43,7 +48,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: initialThemeScript }} />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased`}>{children}</body>
     </html>
   );
 }

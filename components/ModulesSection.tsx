@@ -2,45 +2,36 @@ import { Card } from "@/components/Card";
 
 const modules = [
   {
-    title: "Optimize Release",
+    title: "OPTIMIZE RELEASE",
     description:
-      "Given open orders, ship times, active work, staffing, and congestion, recommends release now versus defer with reasoning and predicted impact.",
-    tag: "API",
+      "Controls what work enters the floor. Release now or defer to the next cycle, with predicted effect on congestion and deadlines.",
     step: "01"
   },
   {
-    title: "Optimize Batching",
+    title: "OPTIMIZE BATCHING",
     description:
-      "Builds efficient work packages from released orders using proximity, order similarity, and zone balance. Returns grouping logic and predicted travel reduction.",
-    tag: "API",
+      "Groups released work into efficient packages. Reflects item proximity, order similarity, zone balance, and equipment constraints.",
     step: "02"
   },
   {
-    title: "Prioritize Work",
+    title: "PRIORITIZE WORK",
     description:
-      "Ranks active work by deadline proximity, congestion, and efficiency. Returns scores, explanations, and impact versus default sequencing.",
-    tag: "API",
+      "Ranks active work so the team knows what deserves attention first. Reflects deadline urgency, zone congestion, and system-wide efficiency.",
     step: "03"
-  },
-  {
-    title: "Empower Operators",
-    description:
-      "Shift-level posture, on-demand alternatives, and Tess's Choice let operators set strategic intent while the optimizer handles tactical execution.",
-    tag: "Core"
   }
 ];
 
 export function ModulesSection() {
   return (
-    <section id="apis" className="section-space border-b" style={{ borderColor: "var(--divider)" }}>
+    <section id="apis" className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
       <div className="section-wrap">
-        <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">THREE APIS. ONE DECISION LOOP.</h2>
-        <p className="mt-5 max-w-2xl text-lg" style={{ color: "var(--text-secondary)" }}>
-          Each API addresses a core warehouse question. Together they run as a continuous decision layer on top of your existing WMS.
+        <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">THREE DECISIONS. EVERY CYCLE.</h2>
+        <p className="mt-5 max-w-2xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
+          Each API addresses one core question the warehouse faces every few minutes.
         </p>
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
           {modules.map((module) => (
-            <Card key={module.title} title={module.title} description={module.description} tag={module.tag} step={module.step} />
+            <Card key={module.title} title={module.title} description={module.description} step={module.step} />
           ))}
         </div>
       </div>

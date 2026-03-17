@@ -6,7 +6,6 @@ import { GuardrailsSection } from "@/components/GuardrailsSection";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
-import { LatencySection } from "@/components/LatencySection";
 import { ModulesSection } from "@/components/ModulesSection";
 import { OperatorSection } from "@/components/OperatorSection";
 import { ProofSection } from "@/components/ProofSection";
@@ -33,9 +32,6 @@ export default function HomePage() {
       </Reveal>
       <Reveal>
         <GuardrailsSection />
-      </Reveal>
-      <Reveal>
-        <LatencySection />
       </Reveal>
       <Reveal>
         <ProofSection />
