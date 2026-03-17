@@ -1,0 +1,24 @@
+{
+  "color": {
+    "bgPage": "#0B0D10",
+    "bgSurface": "#14161B",
+    "textPrimary": "#F5F7FA",
+    "textSecondary": "#D5DAE2",
+    "accentSignal": "#D8FF2A",
+    "border": "rgba(245, 247, 250, 0.12)",
+    "danger": "#FF3B30",
+    "warning": "#FFB020",
+    "success": "#34C759"
+  },
+  "radius": {
+    "cardMarketing": "16px",
+    "cardApp": "12px",
+    "button": "14px"
+  },
+  "font": {
+    "display": "Space Grotesk, Inter, system-ui",
+    "body": "Inter, system-ui",
+    "code": "JetBrains Mono, SF Mono, monospace"
+  },
+  "spacing": [4, 8, 12, 16, 24, 32, 48, 64, 96]
+}

@@ -13,6 +13,8 @@
   --tessera-danger: #ff3b30;
   --tessera-warning: #ffb020;
   --tessera-success: #34c759;
+  --tessera-radius-card: 12px;
+  --tessera-radius-button: 14px;
 }
 
 html.light {
@@ -33,6 +35,11 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+:focus-visible {
+  outline: 2px solid var(--tessera-accent-signal);
+  outline-offset: 2px;
 }
 
 .section-wrap {
@@ -64,4 +71,14 @@ body {
   background: var(--tessera-bg-surface);
   border: 1px solid var(--tessera-border);
   @apply rounded-card;
+}
+
+.app-card {
+  background: var(--tessera-bg-surface);
+  border: 1px solid var(--tessera-border);
+  border-radius: var(--tessera-radius-card);
+}
+
+.app-shell-main {
+  @apply px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-8;
 }

@@ -31,6 +31,7 @@ const config: Config = {
       },
       borderRadius: {
         card: "16px",
+        appCard: "12px",
         button: "14px"
       },
       spacing: {
@@ -65,7 +66,8 @@ const config: Config = {
         }
       },
       animation: {
-        "reveal-up": "reveal-up 220ms ease-out forwards"
+        "reveal-up": "reveal-up 220ms ease-out forwards",
+        pulse: "pulse 150ms ease-in-out infinite alternate"
       }
     }
   },
