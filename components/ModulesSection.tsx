@@ -4,38 +4,39 @@ const modules = [
   {
     title: "Optimize Release",
     description:
-      "Decides which work should become active now and which should wait for the next cycle.",
+      "Given open orders, ship times, active work, staffing, and congestion, recommends release now versus defer with reasoning and predicted impact.",
     tag: "API",
     step: "01"
   },
   {
     title: "Optimize Batching",
     description:
-      "Groups active work into efficient packages so operators do not get flooded with scattered tasks.",
+      "Builds efficient work packages from released orders using proximity, order similarity, and zone balance. Returns grouping logic and predicted travel reduction.",
     tag: "API",
     step: "02"
   },
   {
     title: "Prioritize Work",
     description:
-      "Ranks active packages by urgency, congestion risk, and operational efficiency.",
+      "Ranks active work by deadline proximity, congestion, and efficiency. Returns scores, explanations, and impact versus default sequencing.",
     tag: "API",
     step: "03"
   },
   {
-    title: "More Tiles Coming",
-    description: "Slotting, labor planning, and load optimization are next in the decision mosaic.",
-    tag: "Roadmap"
+    title: "Empower Operators",
+    description:
+      "Shift-level posture, on-demand alternatives, and Tess's Choice let operators set strategic intent while the optimizer handles tactical execution.",
+    tag: "Core"
   }
 ];
 
 export function ModulesSection() {
   return (
-    <section id="modules" className="section-space border-b" style={{ borderColor: "var(--divider)" }}>
+    <section id="apis" className="section-space border-b" style={{ borderColor: "var(--divider)" }}>
       <div className="section-wrap">
-        <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">AUTONOMY, WITH GUARDRAILS.</h2>
+        <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">THREE APIS. ONE DECISION LOOP.</h2>
         <p className="mt-5 max-w-2xl text-lg" style={{ color: "var(--text-secondary)" }}>
-          Tessera is a decision layer on top of your WMS. It recommends what to release, how to batch, and what to do first.
+          Each API addresses a core warehouse question. Together they run as a continuous decision layer on top of your existing WMS.
         </p>
         <div className="mt-10 grid gap-4 md:grid-cols-2">
           {modules.map((module) => (

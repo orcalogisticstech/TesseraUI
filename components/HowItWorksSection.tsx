@@ -1,31 +1,31 @@
 const steps = [
   {
     id: "01",
-    title: "OPTIMIZE RELEASE",
+    title: "EXPLAIN",
     description:
-      "Send a fresh snapshot of orders, deadlines, active work, and staffing. Tessera recommends what to activate now and what to hold for the next cycle."
+      "Tessera traces root cause, not just symptoms. Congestion, delay risk, and imbalance are explained from the same model that drives decisions."
   },
   {
     id: "02",
-    title: "OPTIMIZE BATCHING",
+    title: "DECIDE",
     description:
-      "Released work is grouped into efficient packages so the floor is not flooded with scattered picks and avoidable travel."
+      "One optimization pass can re-batch work, re-rank priorities, and adjust release flow while accounting for deadlines, travel, capacity, and zone balance."
   },
   {
     id: "03",
-    title: "PRIORITIZE WORK",
+    title: "PREDICT",
     description:
-      "Work packages are ranked by urgency, congestion, and operational fit so teams execute the right next move."
+      "Run what-if alternatives before acting. Compare predicted travel, congestion, and deadline compliance against the same objective function used for recommendations."
   }
 ];
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="section-space border-b" style={{ borderColor: "var(--divider)" }}>
+    <section id="capabilities" className="section-space border-b" style={{ borderColor: "var(--divider)" }}>
       <div className="section-wrap">
-        <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">A MOSAIC OF DECISIONS.</h2>
+        <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">ONE MODEL. THREE CAPABILITIES.</h2>
         <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--text-secondary)" }}>
-          One loop. Three APIs. Release the right work, package it well, and focus operators on what matters first.
+          Tessera unifies analytics, decision-making, and prediction because each is an expression of the same optimization model.
         </p>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {steps.map((step) => (

@@ -1,15 +1,15 @@
 const loopPoints = [
   {
     value: "15 MIN",
-    label: "Decision cycle"
+    label: "Baseline heartbeat"
   },
   {
     value: "3 APIS",
-    label: "One execution loop"
+    label: "Event-driven triggers"
   },
   {
-    value: "0 BLACK BOXES",
-    label: "Every output explainable"
+    value: "INCREMENTAL",
+    label: "Independent API calls"
   }
 ];
 
@@ -20,7 +20,10 @@ export function LatencySection() {
         <div className="md:col-span-5">
           <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">LATENCY IS WASTE.</h2>
           <p className="mt-5 max-w-xl text-lg" style={{ color: "var(--text-secondary)" }}>
-            Every 15 minutes, your warehouse sends a floor snapshot. Tessera returns an executable plan before conditions drift.
+            Tessera runs a dual-cadence model: a steady heartbeat for normal operations and event-driven triggers when conditions shift too fast to wait.
+          </p>
+          <p className="mt-4 max-w-xl text-base" style={{ color: "var(--text-secondary)" }}>
+            Batch completion, rush-order arrival, or congestion thresholds can trigger only the relevant API without re-solving the full pipeline.
           </p>
         </div>
         <div className="grid gap-3 md:col-span-7 sm:grid-cols-3">

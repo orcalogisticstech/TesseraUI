@@ -11,7 +11,7 @@ export function ProofSection() {
       <div className="section-wrap">
         <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">RIGOR YOU CAN MEASURE.</h2>
         <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--text-secondary)" }}>
-          Before and after metrics plus full constraint adherence on every run.
+          Every run reports before and after outcomes, constraint adherence, and counterfactual comparisons to what better decisions would have produced.
         </p>
         <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {metrics.map((metric) => (
@@ -24,7 +24,7 @@ export function ProofSection() {
           ))}
         </div>
         <p className="mt-6 text-sm" style={{ color: "var(--text-secondary)" }}>
-          Placeholder metrics shown. Live runs include explanation logs and measurable effect estimates.
+          Placeholder metrics shown. Where formal optimization is used, solution quality is quantified. Where heuristics are used, output is benchmarked against known bounds.
         </p>
       </div>
     </section>

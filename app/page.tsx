@@ -1,4 +1,5 @@
 import { EnemySection } from "@/components/EnemySection";
+import { EvolutionSection } from "@/components/EvolutionSection";
 import { Footer } from "@/components/Footer";
 import { FooterCTA } from "@/components/FooterCTA";
 import { GuardrailsSection } from "@/components/GuardrailsSection";
@@ -7,6 +8,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
 import { LatencySection } from "@/components/LatencySection";
 import { ModulesSection } from "@/components/ModulesSection";
+import { OperatorSection } from "@/components/OperatorSection";
 import { ProofSection } from "@/components/ProofSection";
 import { Reveal } from "@/components/Reveal";
 
@@ -27,6 +29,9 @@ export default function HomePage() {
         <ModulesSection />
       </Reveal>
       <Reveal>
+        <OperatorSection />
+      </Reveal>
+      <Reveal>
         <GuardrailsSection />
       </Reveal>
       <Reveal>
@@ -34,6 +39,9 @@ export default function HomePage() {
       </Reveal>
       <Reveal>
         <ProofSection />
+      </Reveal>
+      <Reveal>
+        <EvolutionSection />
       </Reveal>
       <Reveal>
         <FooterCTA />

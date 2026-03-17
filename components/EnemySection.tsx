@@ -1,19 +1,19 @@
 const enemyBullets = [
   {
-    title: "Plans that arrive too late",
-    detail: "Overnight planning cannot react to floor changes in the next 15 minutes."
+    title: "Isolated responses",
+    detail: "Deferring one batch to relieve congestion can push three other orders past cutoff."
   },
   {
-    title: "Rules that do not generalize",
-    detail: "Hard-coded logic fails when demand, labor, or congestion shifts mid-shift."
+    title: "Manual decisions under pressure",
+    detail: "Operators react with incomplete information while the coordination tax compounds each cycle."
   },
   {
-    title: "Dashboards that do not decide",
-    detail: "Visibility without execution creates coordination tax."
+    title: "Sequential rule firing",
+    detail: "Escalate priority, check side effects, then patch again. No system reasons jointly about all constraints."
   },
   {
-    title: "Local heroics masking systemic waste",
-    detail: "One great operator cannot fix a broken decision loop."
+    title: "No counterfactual reasoning",
+    detail: "Most systems cannot show what happened versus what a better decision would have produced."
   }
 ];
 
@@ -23,10 +23,10 @@ export function EnemySection() {
       <div className="section-wrap grid gap-10 md:grid-cols-12 md:gap-12">
         <div className="md:col-span-6">
           <h2 className="headline text-4xl font-semibold leading-[1.05] md:text-[44px]">
-            KILL OPTIMIZATION THEATER.
+            THE GAP IS NOT VISIBILITY.
           </h2>
           <p className="mt-5 max-w-xl text-lg" style={{ color: "var(--text-secondary)" }}>
-            If it does not execute, it is a slideshow. Tessera replaces stale plans with continuous recommendations your floor can run.
+            Your WMS can detect congestion and delay risk. The missing step is deciding the best response given everything else happening on the floor.
           </p>
         </div>
         <div className="md:col-span-6">

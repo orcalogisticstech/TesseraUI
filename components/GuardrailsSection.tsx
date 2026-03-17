@@ -1,19 +1,19 @@
 const guardrailBullets = [
   {
-    title: "Constraint-first decisions",
-    detail: "Capacity, service windows, and floor conditions are respected before optimization targets."
+    title: "Hard constraints in the model",
+    detail: "Never defer near-cutoff orders, never exceed active-work caps, and never assign blocked zones. Enforced structurally, not post-hoc."
   },
   {
-    title: "Explainable trade-offs",
-    detail: "Each recommendation returns a short reason and estimated effect on travel, flow, or risk."
+    title: "Anomaly detection and fallback",
+    detail: "If actual outcomes diverge from predictions, Tessera automatically pulls back to advisory mode and surfaces an alert."
   },
   {
-    title: "Approval gates where needed",
-    detail: "Operators can approve, defer, or override recommendations where policy requires control."
+    title: "Graduated autonomy",
+    detail: "Start with low-risk write-back decisions. Expand automation scope only after confidence is earned."
   },
   {
-    title: "Replayable decision logs",
-    detail: "Every decision loop is auditable so teams can review what happened and why."
+    title: "Full audit trail",
+    detail: "Every recommendation, override, and predicted impact is logged so each cycle is replayable and reviewable."
   }
 ];
 
@@ -26,7 +26,7 @@ export function GuardrailsSection() {
             AUTONOMY, WITH GUARDRAILS.
           </h2>
           <p className="mt-5 max-w-lg text-lg" style={{ color: "var(--text-secondary)" }}>
-            Transparent trade-offs. Configurable approvals. Full audit trail.
+            Hard constraints in the optimizer. Automatic fallback when reality diverges. Human control over autonomy boundaries.
           </p>
         </div>
         <div className="grid gap-3 md:col-span-7 sm:grid-cols-2">
