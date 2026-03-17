@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --page-bg: #0b0d10;
+  --surface-bg: #14161b;
+  --text-primary: #f5f7fa;
+  --text-secondary: #d5dae2;
+  --divider: rgba(245, 247, 250, 0.12);
+  --signal: #d8ff2a;
+}
+
+html.light {
+  color-scheme: light;
+  --page-bg: #f5f7fa;
+  --surface-bg: #ffffff;
+  --text-primary: #0b0d10;
+  --text-secondary: #4b5563;
+  --divider: rgba(11, 13, 16, 0.1);
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.section-wrap {
+  @apply mx-auto w-full max-w-content px-6 md:px-10;
+}
+
+.section-space {
+  @apply py-10 md:py-16 lg:py-24;
+}
+
+.headline {
+  @apply font-display uppercase tracking-[-0.02em];
+}
+
+.btn-primary {
+  @apply rounded-button bg-signal px-4 py-3 font-medium text-[#0B0D10] transition duration-200 hover:brightness-90;
+}
+
+.btn-secondary {
+  @apply rounded-button border px-4 py-3 font-medium transition duration-200;
+  border-color: var(--divider);
+}
+
+.btn-secondary:hover {
+  background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+}
+
+.surface-card {
+  background: var(--surface-bg);
+  border: 1px solid var(--divider);
+  @apply rounded-card;
+}
