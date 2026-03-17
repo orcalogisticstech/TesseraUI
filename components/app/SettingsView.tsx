@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BrandTile } from "@/components/BrandTile";
 
 export function SettingsView() {
   const [anomalyThreshold, setAnomalyThreshold] = useState(12);
@@ -10,7 +11,10 @@ export function SettingsView() {
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="app-card p-4 md:p-6">
-        <h1 className="font-display text-3xl font-semibold uppercase tracking-[-0.01em]">Settings</h1>
+        <div className="flex items-center gap-3">
+          <BrandTile className="h-6 w-auto" variant="collapsed" />
+          <h1 className="font-display text-3xl font-semibold uppercase tracking-[-0.01em]">Settings</h1>
+        </div>
         <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
           Configure hard constraints, anomaly thresholds, autonomy scope, and integration status.
         </p>

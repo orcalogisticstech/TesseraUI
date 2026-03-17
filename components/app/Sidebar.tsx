@@ -1,6 +1,8 @@
 "use client";
 
 import { useAppState } from "@/components/app/AppProvider";
+import { BrandTile } from "@/components/BrandTile";
+import { BrandWordmark } from "@/components/BrandWordmark";
 import { usePathname } from "next/navigation";
 
 const navItems = [
@@ -22,8 +24,16 @@ export function Sidebar() {
       <div className="flex h-full flex-col">
         <div className="flex h-16 items-center justify-center border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <a href="/" className="flex items-center gap-2" aria-label="Back to marketing site">
-            <span className="inline-block h-6 w-6 rounded-sm border" style={{ borderColor: "var(--tessera-accent-signal)", background: "color-mix(in srgb, var(--tessera-accent-signal) 24%, transparent)" }} />
-            {!sidebarCollapsed && <span className="hidden font-display text-sm uppercase tracking-[0.12em] lg:block">Tessera</span>}
+            {sidebarCollapsed ? (
+              <BrandTile className="h-7 w-auto" variant="collapsed" />
+            ) : (
+              <>
+                <div className="hidden lg:block">
+                  <BrandWordmark className="relative block h-12 w-[230px] overflow-hidden" />
+                </div>
+                <BrandTile className="h-7 w-auto lg:hidden" variant="collapsed" />
+              </>
+            )}
           </a>
         </div>
 

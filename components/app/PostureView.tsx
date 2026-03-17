@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppState } from "@/components/app/AppProvider";
+import { BrandTile } from "@/components/BrandTile";
 import { posturePresetNames } from "@/lib/product-mock";
 import type { ObjectiveWeights, PostureConfig, TimeHorizon, ZoneStatus } from "@/lib/product-types";
 
@@ -54,7 +55,10 @@ export function PostureView() {
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="app-card p-4 md:p-6">
-        <h1 className="font-display text-3xl font-semibold uppercase tracking-[-0.01em]">Strategic Posture</h1>
+        <div className="flex items-center gap-3">
+          <BrandTile className="h-6 w-auto" variant="collapsed" />
+          <h1 className="font-display text-3xl font-semibold uppercase tracking-[-0.01em]">Strategic Posture</h1>
+        </div>
         <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
           Configure shift-level priorities. Every control maps directly to optimization parameters.
         </p>

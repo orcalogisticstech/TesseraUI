@@ -5,6 +5,7 @@ import { ModeBadge } from "@/components/app/ModeBadge";
 import { StatusChip } from "@/components/app/StatusChip";
 import { TradeoffPanel } from "@/components/app/TradeoffPanel";
 import { useAppState } from "@/components/app/AppProvider";
+import { BrandTile } from "@/components/BrandTile";
 import { alternativesByCycle, decisionCycles } from "@/lib/product-mock";
 import type { ApiFilter, DecisionCycle, StatusFilter, TriggerFilter } from "@/lib/product-types";
 import { useMemo, useState } from "react";
@@ -138,7 +139,10 @@ export function DecisionFeedView() {
         </div>
       ) : filtered.length === 0 ? (
         <section className="app-card p-6 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-          No decisions yet this shift. Next heartbeat in 07:42.
+          <div className="flex items-center gap-3">
+            <BrandTile className="h-6 w-auto" variant="collapsed" />
+            <span>No decisions yet this shift. Next heartbeat in 07:42.</span>
+          </div>
         </section>
       ) : (
         <div className="space-y-3">
