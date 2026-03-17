@@ -210,6 +210,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Keep application source in lib/
+!lib/
+!lib/**/*.ts
+!lib/**/*.tsx
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
