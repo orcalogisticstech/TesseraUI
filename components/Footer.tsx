@@ -10,12 +10,12 @@ export function Footer() {
             <BrandWordmark variant="footer" className="relative block h-10 w-[220px] overflow-hidden" />
           </Link>
           <div className="grid grid-cols-2 gap-x-10 gap-y-3 text-sm md:grid-cols-3" style={{ color: "var(--tessera-text-secondary)" }}>
-            <Link href="/product" className="hover:text-[var(--tessera-text-primary)]">Product</Link>
-            <Link href="/trust" className="hover:text-[var(--tessera-text-primary)]">Trust</Link>
-            <Link href="/team" className="hover:text-[var(--tessera-text-primary)]">Team</Link>
-            <Link href="/demo" className="hover:text-[var(--tessera-text-primary)]">Demo</Link>
-            <a href="#" className="hover:text-[var(--tessera-text-primary)]">Documentation</a>
-            <a href="#" className="hover:text-[var(--tessera-text-primary)]">API Reference</a>
+            <Link href="/product" className="hover:text-[var(--tessera-accent-signal)]">Product</Link>
+            <Link href="/trust" className="hover:text-[var(--tessera-accent-signal)]">Trust</Link>
+            <Link href="/team" className="hover:text-[var(--tessera-accent-signal)]">Team</Link>
+            <Link href="/demo" className="hover:text-[var(--tessera-accent-signal)]">Demo</Link>
+            <a href="#" className="hover:text-[var(--tessera-accent-signal)]">Documentation</a>
+            <a href="#" className="hover:text-[var(--tessera-accent-signal)]">API Reference</a>
           </div>
         </div>
         <p className="pt-5 text-center text-xs uppercase tracking-[0.12em]" style={{ color: "var(--tessera-text-secondary)" }}>
