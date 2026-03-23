@@ -1,6 +1,8 @@
 import { Reveal } from "@/components/Reveal";
 import { RuledFeatureList } from "@/components/marketing/RuledFeatureList";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
+import tileBlackFillLimeOutline from "@/tessera_svg_elements_exact/tile_black_fill_lime_outline.svg";
+import Image from "next/image";
 import Link from "next/link";
 
 const problemCards = [
@@ -51,25 +53,30 @@ export default function HomePage() {
   return (
     <MarketingShell>
       <section className="relative flex min-h-screen items-center border-b" style={{ borderColor: "var(--tessera-border)" }}>
-        <div className="section-wrap py-16">
-          <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Decision Intelligence Layer
-          </p>
-          <h1 className="headline mt-6 max-w-5xl text-5xl font-bold leading-[1] md:text-[64px]">OPTIMIZE THE SHIFT, NOT JUST THE PICK.</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-relaxed" style={{ color: "var(--tessera-text-secondary)" }}>
-            Tessera sits on top of your WMS and continuously makes better decisions about what work to release, how to group it, and what to prioritize - all from a single optimization model.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/demo" className="btn-primary">
-              Request a Demo
-            </Link>
-            <a href="#explain-decide-predict" className="inline-flex items-center px-1 py-3 text-sm font-medium" style={{ color: "var(--tessera-text-secondary)" }}>
-              See How It Works
-            </a>
+        <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 opacity-[0.03] md:block" aria-hidden>
+          <Image src={tileBlackFillLimeOutline} alt="" width={1600} height={810} className="h-auto w-[1600px] max-w-none" />
+        </div>
+        <div className="section-wrap flex justify-center py-16">
+          <div className="relative z-10 mx-auto flex max-w-[800px] flex-col items-center text-center">
+            <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Decision Intelligence Layer
+            </p>
+            <h1 className="headline mt-6 text-5xl font-bold leading-[1] md:text-[64px]">OPTIMIZE THE SHIFT, NOT JUST THE PICK.</h1>
+            <p className="mt-6 text-lg leading-relaxed" style={{ color: "var(--tessera-text-secondary)" }}>
+              Tessera sits on top of your WMS and continuously makes better decisions about what work to release, how to group it, and what to prioritize - all from a single optimization model.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link href="/demo" className="btn-primary">
+                Request a Demo
+              </Link>
+              <a href="#explain-decide-predict" className="inline-flex items-center px-1 py-3 text-sm font-medium" style={{ color: "var(--tessera-text-secondary)" }}>
+                See How It Works
+              </a>
+            </div>
+            <p className="mt-10 text-2xl" style={{ color: "var(--tessera-text-secondary)" }}>
+              ↓
+            </p>
           </div>
-          <p className="mt-10 text-2xl" style={{ color: "var(--tessera-text-secondary)" }}>
-            ↓
-          </p>
         </div>
       </section>
 
