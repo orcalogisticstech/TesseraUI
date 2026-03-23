@@ -24,30 +24,13 @@ export const metadata: Metadata = {
   description: "Warehouse optimization built with scientific rigor"
 };
 
-const initialThemeScript = `
-(function() {
-  try {
-    var saved = localStorage.getItem('tessera-theme');
-    var theme = saved === 'light' ? 'light' : 'dark';
-    var root = document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(theme);
-  } catch (e) {
-    document.documentElement.classList.add('dark');
-  }
-})();
-`;
-
 export default function RootLayout({
   children
 }: Readonly<{
   children: ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: initialThemeScript }} />
-      </head>
+    <html lang="en" className="dark">
       <body className={`${inter.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased`}>{children}</body>
     </html>
   );

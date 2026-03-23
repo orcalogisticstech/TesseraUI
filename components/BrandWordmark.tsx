@@ -1,17 +1,14 @@
-"use client";
-
-import { useThemeMode } from "@/components/useThemeMode";
 import wordmarkDark from "@/tessera_svg_elements_exact/tessera_wordmark_dark_exact.svg";
-import wordmarkLight from "@/tessera_svg_elements_exact/tessera_wordmark_light_exact.svg";
+import wordmarkFooter from "@/tessera_svg_elements_exact/tessera_wordmark_footer_surface_exact.svg";
 import Image from "next/image";
 
 type BrandWordmarkProps = {
   className?: string;
+  variant?: "default" | "footer";
 };
 
-export function BrandWordmark({ className }: BrandWordmarkProps) {
-  const themeMode = useThemeMode();
-  const src = themeMode === "light" ? wordmarkLight : wordmarkDark;
+export function BrandWordmark({ className, variant = "default" }: BrandWordmarkProps) {
+  const src = variant === "footer" ? wordmarkFooter : wordmarkDark;
 
   return (
     <span className={className ?? "relative block h-12 w-[260px] overflow-hidden"}>

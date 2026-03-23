@@ -15,15 +15,8 @@
   --tessera-success: #34c759;
   --tessera-radius-card: 12px;
   --tessera-radius-button: 14px;
-}
-
-html.light {
-  color-scheme: light;
-  --tessera-bg-page: #f5f7fa;
-  --tessera-bg-surface: #ffffff;
-  --tessera-text-primary: #0b0d10;
-  --tessera-text-secondary: #4b5563;
-  --tessera-border: rgba(11, 13, 16, 0.1);
+  --tessera-radius-marketing-card: 16px;
+  --tessera-bg-input: #1a1a2e;
 }
 
 body {
@@ -73,6 +66,12 @@ body {
   @apply rounded-card;
 }
 
+.marketing-card {
+  background: var(--tessera-bg-surface);
+  border: 1px solid var(--tessera-border);
+  border-radius: var(--tessera-radius-marketing-card);
+}
+
 .app-card {
   background: var(--tessera-bg-surface);
   border: 1px solid var(--tessera-border);
@@ -81,4 +80,8 @@ body {
 
 .app-shell-main {
   @apply px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-8;
+}
+
+.page-fade {
+  animation: reveal-up 200ms ease-out;
 }

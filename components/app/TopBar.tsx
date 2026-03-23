@@ -1,7 +1,6 @@
 "use client";
 
 import { ModeBadge } from "@/components/app/ModeBadge";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAppState } from "@/components/app/AppProvider";
 import { useEffect, useState } from "react";
 
@@ -44,7 +43,6 @@ export function TopBar() {
 
         <div className="flex items-center gap-3">
           <ModeBadge mode={mode} />
-          <ThemeToggle />
         </div>
       </div>
     </header>
