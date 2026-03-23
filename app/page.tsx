@@ -52,11 +52,11 @@ const metrics = [
 export default function HomePage() {
   return (
     <MarketingShell>
-      <section className="relative flex min-h-screen items-center border-b" style={{ borderColor: "var(--tessera-border)" }}>
-        <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 opacity-[0.03] md:block" aria-hidden>
-          <Image src={tileBlackFillLimeOutline} alt="" width={1600} height={810} className="h-auto w-[1600px] max-w-none" />
+      <section className="relative flex min-h-[calc(100vh-5rem)] items-center border-b" style={{ borderColor: "var(--tessera-border)" }}>
+        <div className="pointer-events-none absolute left-1/2 top-[53%] hidden -translate-x-1/2 -translate-y-1/2 opacity-[0.02] md:block" aria-hidden>
+          <Image src={tileBlackFillLimeOutline} alt="" width={1760} height={891} className="h-auto w-[1760px] max-w-none" />
         </div>
-        <div className="section-wrap flex justify-center py-16">
+        <div className="section-wrap flex justify-center pb-16 pt-4">
           <div className="relative z-10 mx-auto flex max-w-[800px] flex-col items-center text-center">
             <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
               Decision Intelligence Layer
@@ -65,23 +65,30 @@ export default function HomePage() {
             <p className="mt-6 text-lg leading-relaxed" style={{ color: "var(--tessera-text-secondary)" }}>
               Tessera sits on top of your WMS and continuously makes better decisions about what work to release, how to group it, and what to prioritize - all from a single optimization model.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-wrap justify-center gap-7">
               <Link href="/demo" className="btn-primary">
                 Request a Demo
               </Link>
-              <a href="#explain-decide-predict" className="inline-flex items-center px-1 py-3 text-sm font-medium" style={{ color: "var(--tessera-text-secondary)" }}>
+              <a
+                href="#explain-decide-predict"
+                className="inline-flex items-center px-1 py-3 text-sm font-medium text-[var(--tessera-text-secondary)] transition-colors duration-150 hover:text-[var(--tessera-accent-signal)]"
+              >
                 See How It Works
               </a>
             </div>
-            <p className="mt-10 text-2xl" style={{ color: "var(--tessera-text-secondary)" }}>
-              ↓
-            </p>
           </div>
         </div>
+        <a
+          href="#the-problem"
+          className="absolute bottom-8 left-1/2 z-10 inline-flex -translate-x-1/2 text-2xl text-[var(--tessera-text-secondary)] transition-colors duration-150 hover:text-[var(--tessera-accent-signal)]"
+          aria-label="Scroll to the next section"
+        >
+          ↓
+        </a>
       </section>
 
       <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+        <section id="the-problem" className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
               The Problem
