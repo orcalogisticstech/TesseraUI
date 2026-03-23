@@ -36,7 +36,7 @@ export function Header() {
             {navItems.map((item) => {
               const active = isActivePath(pathname, item.href);
               return (
-                <Link key={item.href} href={item.href} className="group relative pb-1 transition-colors hover:text-[var(--tessera-text-primary)]" style={{ color: active ? "var(--tessera-text-primary)" : undefined }}>
+                <Link key={item.href} href={item.href} className="group relative pb-1 transition-colors hover:text-[var(--tessera-accent-signal)]" style={{ color: active ? "var(--tessera-text-primary)" : undefined }}>
                   {item.label}
                   <span className="absolute -bottom-0.5 left-0 h-[2px] w-full rounded-full transition-opacity group-hover:opacity-100" style={{ background: "var(--tessera-accent-signal)", opacity: active ? 1 : 0 }} />
                 </Link>

@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/Reveal";
+import { RuledFeatureList } from "@/components/marketing/RuledFeatureList";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import Link from "next/link";
 
@@ -60,14 +61,13 @@ export default function TrustPage() {
         <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">AUTONOMY, WITH GUARDRAILS.</h2>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              {guardrails.map((item) => (
-                <article key={item.title} className="marketing-card p-6">
-                  <div className="mb-3 h-6 w-6 rounded-full border" style={{ borderColor: "var(--tessera-border)" }} />
-                  <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{item.title}</h3>
-                  <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>{item.body}</p>
-                </article>
-              ))}
+            <div className="mt-10">
+              <RuledFeatureList
+                items={guardrails.map((item) => ({
+                  title: item.title,
+                  description: item.body
+                }))}
+              />
             </div>
           </div>
         </section>

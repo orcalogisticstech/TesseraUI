@@ -151,35 +151,37 @@ export default function ProductPage() {
 
       <Reveal>
         <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
-          <div className="section-wrap grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-            <article className="marketing-card p-6">
-              <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>AI Copilot</p>
-              <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.01em]">Talk to your optimizer.</h2>
-              <p className="mt-4 text-base" style={{ color: "var(--tessera-text-secondary)" }}>
-                Tess sits between operators and the optimization core. Every claim is grounded in optimizer data.
-              </p>
-              <div className="mt-6 space-y-4">
-                <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
-                  <p className="text-sm">Operator: We have a 2pm carrier cutoff and we&apos;re short-staffed in Zone B.</p>
-                  <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: Updated posture. Deadline compliance weight increased and Zone B capped at 35% active work.</p>
+          <div className="section-wrap">
+            <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>AI Copilot</p>
+            <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.01em]">Talk to your optimizer.</h2>
+            <p className="mt-4 max-w-3xl text-base" style={{ color: "var(--tessera-text-secondary)" }}>
+              Tess sits between operators and the optimization core. Every claim is grounded in optimizer data.
+            </p>
+            <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-stretch">
+              <article className="marketing-card p-6">
+                <div className="space-y-4">
+                  <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
+                    <p className="text-sm">Operator: We have a 2pm carrier cutoff and we&apos;re short-staffed in Zone B.</p>
+                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: Updated posture. Deadline compliance weight increased and Zone B capped at 35% active work.</p>
+                  </div>
+                  <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
+                    <p className="text-sm">Operator: Why did you defer these orders?</p>
+                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: Zone C is at 92% capacity. Releasing now would increase pick time by 34%.</p>
+                  </div>
+                  <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
+                    <p className="text-sm">Operator: What if we release 80 orders instead of 120?</p>
+                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: At 80, travel drops 14% with zero late-risk. At 120, Zone C hits 91% and introduces moderate late-risk.</p>
+                  </div>
                 </div>
-                <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
-                  <p className="text-sm">Operator: Why did you defer these orders?</p>
-                  <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: Zone C is at 92% capacity. Releasing now would increase pick time by 34%.</p>
-                </div>
-                <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
-                  <p className="text-sm">Operator: What if we release 80 orders instead of 120?</p>
-                  <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: At 80, travel drops 14% with zero late-risk. At 120, Zone C hits 91% and introduces moderate late-risk.</p>
-                </div>
+              </article>
+              <div className="grid h-full grid-rows-3 gap-3">
+                {copilotCapabilities.map((capability) => (
+                  <article key={capability.title} className="marketing-card h-full p-5">
+                    <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{capability.title}</h3>
+                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>{capability.body}</p>
+                  </article>
+                ))}
               </div>
-            </article>
-            <div className="space-y-4">
-              {copilotCapabilities.map((capability) => (
-                <article key={capability.title} className="marketing-card p-5">
-                  <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{capability.title}</h3>
-                  <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>{capability.body}</p>
-                </article>
-              ))}
             </div>
           </div>
         </section>

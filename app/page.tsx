@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/Reveal";
+import { RuledFeatureList } from "@/components/marketing/RuledFeatureList";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import Link from "next/link";
 
@@ -82,16 +83,8 @@ export default function HomePage() {
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
               Your WMS can see the problem. It cannot tell you what to do about it given everything else happening on the floor.
             </p>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              {problemCards.map((item) => (
-                <article key={item.title} className="marketing-card p-6">
-                  <div className="mb-3 h-6 w-6 rounded-full border" style={{ borderColor: "var(--tessera-border)" }} />
-                  <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{item.title}</h3>
-                  <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>
-                    {item.description}
-                  </p>
-                </article>
-              ))}
+            <div className="mt-10">
+              <RuledFeatureList items={problemCards} />
             </div>
           </div>
         </section>
