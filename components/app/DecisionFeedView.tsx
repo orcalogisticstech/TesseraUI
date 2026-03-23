@@ -6,8 +6,7 @@ import { StatusChip } from "@/components/app/StatusChip";
 import { TradeoffPanel } from "@/components/app/TradeoffPanel";
 import { useAppState } from "@/components/app/AppProvider";
 import { BrandTile } from "@/components/BrandTile";
-import { alternativesByCycle, decisionCycles } from "@/lib/product-mock";
-import type { ApiFilter, DecisionCycle, StatusFilter, TriggerFilter } from "@/lib/product-types";
+import type { ApiName, DecisionCycle, DecisionStatus, TriggerType } from "@/lib/app-types";
 import { useMemo, useState } from "react";
 
 type PanelState =
@@ -17,50 +16,30 @@ type PanelState =
 
 const timeRanges = ["Last 2 hours", "This shift", "24 hours"];
 
-function filterByTrigger(cycle: DecisionCycle, triggerFilter: TriggerFilter) {
-  if (triggerFilter === "All") {
-    return true;
-  }
-  if (triggerFilter === "Heartbeat") {
-    return cycle.triggerType === "Heartbeat";
-  }
-  return cycle.triggerType !== "Heartbeat";
-}
-
-function filterByStatus(cycle: DecisionCycle, statusFilter: StatusFilter) {
-  if (statusFilter === "All") {
-    return true;
-  }
-  if (statusFilter === "Pending") {
-    return cycle.status === "Pending Review";
-  }
-  return cycle.status === statusFilter;
-}
-
 export function DecisionFeedView() {
-  const { mode } = useAppState();
-  const [apiFilter, setApiFilter] = useState<ApiFilter>("All");
-  const [triggerFilter, setTriggerFilter] = useState<TriggerFilter>("All");
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
+  const { mode, posture, data, cycles, setCycles, setPosturePanelOpen } = useAppState();
+  const [apiFilter, setApiFilter] = useState<"All" | ApiName>("All");
+  const [triggerFilter, setTriggerFilter] = useState<"All" | TriggerType>("All");
+  const [statusFilter, setStatusFilter] = useState<"All" | DecisionStatus>("All");
   const [timeRange, setTimeRange] = useState(timeRanges[1]);
   const [connectionError, setConnectionError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [cycles, setCycles] = useState(decisionCycles);
   const [panel, setPanel] = useState<PanelState>({ type: "none" });
 
   const filtered = useMemo(
     () =>
       cycles.filter((cycle) => {
         const apiMatch = apiFilter === "All" || cycle.apisTouched.includes(apiFilter);
-        return apiMatch && filterByTrigger(cycle, triggerFilter) && filterByStatus(cycle, statusFilter);
+        const triggerMatch = triggerFilter === "All" || cycle.triggerType === triggerFilter;
+        const statusMatch = statusFilter === "All" || cycle.status === statusFilter;
+        return apiMatch && triggerMatch && statusMatch;
       }),
     [apiFilter, triggerFilter, statusFilter, cycles]
   );
 
-  const selectedAlternatives =
-    panel.type === "alternatives" ? alternativesByCycle[panel.cycle.id] ?? alternativesByCycle["cycle-4821"] : [];
+  const selectedAlternatives = panel.type === "alternatives" ? data.alternativesByCycle[panel.cycle.id] ?? [] : [];
 
-  const setCycleStatus = (cycleId: string, status: DecisionCycle["status"]) => {
+  const setCycleStatus = (cycleId: string, status: DecisionStatus) => {
     setCycles((current) => current.map((cycle) => (cycle.id === cycleId ? { ...cycle, status } : cycle)));
   };
 
@@ -72,29 +51,73 @@ export function DecisionFeedView() {
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="app-card p-4 md:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-code text-xs uppercase tracking-[0.12em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Shift Header
+            </p>
+            <h1 className="font-display text-3xl uppercase tracking-[-0.01em]">Day Shift - Mar 23</h1>
+            <p className="mt-1 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+              {posture.presetName}. Zone B capped at 70% active work.
+            </p>
+          </div>
+          <button type="button" className="btn-secondary" onClick={() => setPosturePanelOpen(true)}>
+            Edit Posture
+          </button>
+        </div>
+      </section>
+
+      <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <article className="app-card p-4">
+          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Active Work</p>
+          <p className="mt-2 font-display text-[28px]" style={{ color: data.kpi.activeWork.current / data.kpi.activeWork.cap > 0.95 ? "var(--tessera-danger)" : data.kpi.activeWork.current / data.kpi.activeWork.cap > 0.8 ? "var(--tessera-warning)" : "var(--tessera-success)" }}>
+            {data.kpi.activeWork.current}/{data.kpi.activeWork.cap}
+          </p>
+        </article>
+        <article className="app-card p-4">
+          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Late-Risk Orders</p>
+          <p className="mt-2 font-display text-[28px]" style={{ color: data.kpi.lateRiskOrders > 3 ? "var(--tessera-danger)" : data.kpi.lateRiskOrders > 0 ? "var(--tessera-warning)" : "var(--tessera-success)" }}>
+            {data.kpi.lateRiskOrders}
+          </p>
+        </article>
+        <article className="app-card p-4">
+          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Zone Balance</p>
+          <p className="mt-2 font-display text-[28px]" style={{ color: data.kpi.maxZoneUtilization > 85 ? "var(--tessera-danger)" : data.kpi.maxZoneUtilization > 70 ? "var(--tessera-warning)" : "var(--tessera-success)" }}>
+            {data.kpi.maxZoneUtilization}%
+          </p>
+        </article>
+        <article className="app-card p-4">
+          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Cycle Status</p>
+          <p className="mt-2 font-code text-lg">{data.kpi.cycleStatus}</p>
+        </article>
+      </section>
+
+      <section className="app-card p-4 md:p-6">
         <div className="flex flex-wrap items-end gap-3">
           <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
             API
-            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={apiFilter} onChange={(event) => setApiFilter(event.target.value as ApiFilter)}>
+            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={apiFilter} onChange={(event) => setApiFilter(event.target.value as "All" | ApiName)}>
               <option>All</option>
               <option>Release</option>
               <option>Batching</option>
-              <option>Priority</option>
+              <option>Prioritize</option>
             </select>
           </label>
 
           <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
             Trigger
-            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={triggerFilter} onChange={(event) => setTriggerFilter(event.target.value as TriggerFilter)}>
+            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={triggerFilter} onChange={(event) => setTriggerFilter(event.target.value as "All" | TriggerType)}>
               <option>All</option>
               <option>Heartbeat</option>
-              <option>Event</option>
+              <option>Batch Completed</option>
+              <option>Rush Order</option>
+              <option>Congestion Alert</option>
             </select>
           </label>
 
           <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
             Status
-            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}>
+            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as "All" | DecisionStatus)}>
               <option>All</option>
               <option>Pending</option>
               <option>Executed</option>
@@ -222,19 +245,23 @@ export function DecisionFeedView() {
         ) : panel.type === "detail" ? (
           <div className="space-y-4 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
             <p>
-              Full breakdown for cycle {panel.cycle.cycleNumber}. Includes Release, Batching, and Priority recommendations with prediction deltas.
+              Full breakdown for cycle {panel.cycle.cycleNumber}. Includes release, batching, prioritization, operator action, and predicted-vs-actual deltas.
             </p>
             <div className="app-card p-4">
               <h3 className="font-display text-lg uppercase tracking-[-0.01em]" style={{ color: "var(--tessera-text-primary)" }}>Release</h3>
-              <p className="mt-2">42 released, 36 deferred. Deferred set avoids Zone C threshold and preserves carrier cutoff windows.</p>
+              <p className="mt-2">{panel.cycle.recommendation.releaseSummary}</p>
             </div>
             <div className="app-card p-4">
               <h3 className="font-display text-lg uppercase tracking-[-0.01em]" style={{ color: "var(--tessera-text-primary)" }}>Batching</h3>
-              <p className="mt-2">8 batches formed with proximity + equipment constraints. Predicted travel reduction: 12%.</p>
+              <p className="mt-2">{panel.cycle.recommendation.batchingSummary}</p>
             </div>
             <div className="app-card p-4">
               <h3 className="font-display text-lg uppercase tracking-[-0.01em]" style={{ color: "var(--tessera-text-primary)" }}>Priority</h3>
-              <p className="mt-2">3 active batches re-ranked for 2pm cutoff under current posture weights.</p>
+              <p className="mt-2">{panel.cycle.recommendation.prioritizeSummary}</p>
+            </div>
+            <div className="app-card p-4">
+              <h3 className="font-display text-lg uppercase tracking-[-0.01em]" style={{ color: "var(--tessera-text-primary)" }}>Operator Action</h3>
+              <p className="mt-2">{panel.cycle.operatorAction}</p>
             </div>
           </div>
         ) : null}

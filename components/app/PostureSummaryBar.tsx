@@ -6,7 +6,7 @@ export function PostureSummaryBar() {
   const { posture } = useAppState();
 
   const topObjective = Object.entries(posture.weights).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "deadlineCompliance";
-  const restrictedZones = posture.zones.filter((zone) => zone.status !== "Active").map((zone) => zone.zone);
+  const restrictedZones = posture.zones.filter((zone) => zone.status !== "Active").map((zone) => zone.zoneName);
 
   return (
     <div className="border-b px-4 py-3 md:px-6 lg:px-8" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-surface) 55%, var(--tessera-bg-page))" }}>

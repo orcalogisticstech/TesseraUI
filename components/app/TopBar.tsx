@@ -13,7 +13,7 @@ function formatCountdown(totalSeconds: number) {
 }
 
 export function TopBar() {
-  const { mode, posture } = useAppState();
+  const { mode, setMode, posture, session, copilotOpen, setCopilotOpen, setPosturePanelOpen } = useAppState();
   const [remaining, setRemaining] = useState(462);
 
   useEffect(() => {
@@ -39,10 +39,37 @@ export function TopBar() {
           <span className="hidden text-sm md:inline" style={{ color: "var(--tessera-text-secondary)" }}>
             Posture: {posture.presetName}
           </span>
+          <span className="hidden rounded-full border px-3 py-1 text-xs md:inline" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+            {session.tenantName} · {session.role}
+          </span>
         </div>
 
         <div className="flex items-center gap-3">
+          <select
+            value={mode}
+            onChange={(event) => setMode(event.target.value as typeof mode)}
+            className="rounded-[10px] border bg-transparent px-2 py-1 text-xs"
+            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+          >
+            <option>Advisory</option>
+            <option>Write-Back</option>
+            <option>Closed-Loop</option>
+          </select>
           <ModeBadge mode={mode} />
+          <button type="button" className="btn-secondary hidden px-3 py-2 text-xs md:inline-flex" onClick={() => setPosturePanelOpen(true)}>
+            Edit Posture
+          </button>
+          <button
+            type="button"
+            className="rounded-button border px-3 py-2 text-xs"
+            style={{
+              borderColor: copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
+              color: copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-text-secondary)"
+            }}
+            onClick={() => setCopilotOpen(!copilotOpen)}
+          >
+            Tess
+          </button>
         </div>
       </div>
     </header>

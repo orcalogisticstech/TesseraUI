@@ -1,9 +1,9 @@
-import type { DecisionStatus } from "@/lib/product-types";
+import type { DecisionStatus } from "@/lib/app-types";
 
 export function StatusChip({ status }: { status: DecisionStatus }) {
   const colorByStatus: Record<DecisionStatus, string> = {
     Executed: "var(--tessera-success)",
-    "Pending Review": "var(--tessera-accent-signal)",
+    Pending: "var(--tessera-accent-signal)",
     Overridden: "var(--tessera-warning)",
     Anomaly: "var(--tessera-danger)"
   };

@@ -1,6 +1,6 @@
 "use client";
 
-import type { AlternativePlan, SystemMode } from "@/lib/product-types";
+import type { AlternativePlan, SystemMode } from "@/lib/app-types";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -118,7 +118,7 @@ export function TradeoffPanel({ alternatives, mode, onAdopt }: TradeoffPanelProp
       )}
 
       <div className="rounded-[10px] border p-4 text-sm" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-        Consistently preferring a different strategy? <Link href="/app/posture" className="underline">Adjust your posture to match.</Link>
+        Consistently preferring a different strategy? <Link href="/app" className="underline">Adjust your posture to match.</Link>
       </div>
     </div>
   );

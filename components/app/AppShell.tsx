@@ -1,3 +1,5 @@
+import { CopilotPanel } from "@/components/app/CopilotPanel";
+import { PosturePanel } from "@/components/app/PosturePanel";
 import { PostureSummaryBar } from "@/components/app/PostureSummaryBar";
 import { Sidebar } from "@/components/app/Sidebar";
 import { TopBar } from "@/components/app/TopBar";
@@ -12,6 +14,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         <PostureSummaryBar />
         <main className="app-shell-main">{children}</main>
       </div>
+      <PosturePanel />
+      <CopilotPanel />
     </div>
   );
 }
