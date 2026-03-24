@@ -22,18 +22,14 @@ const guardrails = [
   }
 ];
 
-const phases = [
+const operatingModes = [
   {
-    title: "Phase 1 - Advisory",
-    body: "Read-only connection. Recommendations on a dashboard. Supervisor reviews and decides."
+    title: "ADVISORY",
+    body: "Tessera recommends, the operator decides. Read-only connection, recommendations on a dashboard with full reasoning. The operator reviews and approves, modifies, or rejects each cycle."
   },
   {
-    title: "Phase 2 - Selective Write-Back",
-    body: "Low-risk decisions push to WMS while higher-stakes decisions remain in advisory mode."
-  },
-  {
-    title: "Phase 3 - Closed-Loop",
-    body: "Continuous automated execution with human override. Guardrails maintain trust as scope expands."
+    title: "CLOSED-LOOP",
+    body: "Tessera executes, the operator oversees. Decisions push directly into the WMS with hard constraints, anomaly detection, and graduated autonomy as guardrails. The operator sets the posture and intervenes by exception."
   }
 ];
 
@@ -76,24 +72,15 @@ export default function TrustPage() {
       <Reveal>
         <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
-            <h2 className="headline text-4xl font-semibold md:text-[44px]">FROM ADVISORY TO CLOSED-LOOP.</h2>
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">ADVISORY OR CLOSED LOOP.</h2>
             <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
               Same three APIs. Same optimization core. What changes is whether output goes to a dashboard or back into the WMS.
             </p>
-            <div className="mt-8 hidden grid-cols-3 gap-4 md:grid" style={{ color: "var(--tessera-accent-signal)" }}>
-              <span>●───</span>
-              <span>───●───</span>
-              <span>───●</span>
-            </div>
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              {phases.map((phase, index) => (
-                <article
-                  key={phase.title}
-                  className="marketing-card p-6"
-                  style={index === 0 ? { borderColor: "var(--tessera-accent-signal)" } : undefined}
-                >
-                  <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{phase.title}</h3>
-                  <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>{phase.body}</p>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {operatingModes.map((mode) => (
+                <article key={mode.title} className="marketing-card p-6">
+                  <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{mode.title}</h3>
+                  <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>{mode.body}</p>
                 </article>
               ))}
             </div>

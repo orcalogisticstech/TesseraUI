@@ -30,14 +30,32 @@ export default function TeamPage() {
           <div className="section-wrap">
             <article className="marketing-card p-8 md:p-10">
               <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                Founder
+                Co-Founder
               </p>
               <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.01em]">Yatharth Dubey</h2>
               <p className="mt-1 text-sm uppercase tracking-[0.1em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                Founder
+                Co-Founder
               </p>
               <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-                Yatharth holds a PhD in Operations Research from Georgia Tech and completed postdoctoral research at Carnegie Mellon University. His research in integer programming and branch-and-bound algorithms was recognized with second place at the INFORMS George Nicholson Student Paper Prize, with publications in Mathematical Programming. Before founding Tessera, he worked as an Applied Scientist at Amazon Global Logistics, where he built optimization systems for real warehouse operations at scale. Tessera applies that same rigor - mathematical optimization grounded in actual floor conditions - to every warehouse that runs it.
+                <span className="text-signal">PhD</span> in operations research and computer science from Georgia Tech. Built
+                large-scale production optimization systems at Amazon. Developed next-generation AI and supply chain technology at
+                Auger and Defcon AI. Tessera combines these — state-of-the-art optimization, AI, and production logistics systems
+                — into the decision layer warehouses don't have today.
+              </p>
+            </article>
+            <article className="marketing-card mt-4 p-8 md:p-10">
+              <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                Co-Founder
+              </p>
+              <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.01em]">Parth Patel</h2>
+              <p className="mt-1 text-sm uppercase tracking-[0.1em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                Co-Founder
+              </p>
+              <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
+                <span className="text-signal">Engineer</span> with a decade of experience building software at Box, AWS, and
+                Locus Robotics. Built production systems at scale. Developed the infrastructure and reliability foundations for
+                complex environments. Leads Tessera's platform — the integration layer, optimization infrastructure, and the systems
+                that connect to live WMS environments.
               </p>
             </article>
           </div>

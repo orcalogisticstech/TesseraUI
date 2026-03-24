@@ -153,7 +153,9 @@ export default function ProductPage() {
         <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>AI Copilot</p>
-            <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.01em]">Talk to your optimizer.</h2>
+            <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.01em]">
+              Talk to your optimizer. Talk to <span className="text-signal">TESS</span>.
+            </h2>
             <p className="mt-4 max-w-3xl text-base" style={{ color: "var(--tessera-text-secondary)" }}>
               Tess sits between operators and the optimization core. Every claim is grounded in optimizer data.
             </p>
