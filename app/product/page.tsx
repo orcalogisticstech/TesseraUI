@@ -7,7 +7,7 @@ const apiCards = [
     step: "01",
     title: "OPTIMIZE RELEASE",
     question: "What work should enter the floor right now?",
-    body: "Controls what work enters the floor and recommends which orders to release now vs. defer.",
+    body: "Decides what hits the floor and what waits — so you don't release 120 orders into a zone that can handle 80.",
     inputs: "Inputs: open orders, ship times, active work count, available staff, zone congestion.",
     output: "Output: release/defer per order, reasoning, and predicted effect on congestion and deadline compliance."
   },
@@ -15,7 +15,7 @@ const apiCards = [
     step: "02",
     title: "OPTIMIZE BATCHING",
     question: "How should released work be grouped?",
-    body: "Groups released work into efficient packages reflecting proximity, order similarity, zone balance, and urgency.",
+    body: "Groups work so the floor isn't flooded with scattered, unrelated tasks. Reflects proximity, zone balance, and deadline urgency.",
     inputs: "Inputs: released orders, storage locations, zone layout, batch constraints, deadlines.",
     output: "Output: work packages with assignments, grouping explanation, and predicted efficiency gains."
   },
@@ -23,7 +23,7 @@ const apiCards = [
     step: "03",
     title: "PRIORITIZE WORK",
     question: "What deserves attention first?",
-    body: "Ranks active work by deadline urgency, zone congestion, and system-wide efficiency.",
+    body: "Ranks work by what actually matters right now — not just deadline urgency, but whether working a different batch first would reduce waiting for everyone.",
     inputs: "Inputs: active work packages, shipping deadlines, congestion, worker availability.",
     output: "Output: ranked list with scores, explanations, and predicted impact vs. default sequencing."
   }
@@ -55,9 +55,9 @@ const operatorCards = [
 ];
 
 const copilotCapabilities = [
-  { title: "Translate", body: "Converts operational language into optimizer parameters." },
-  { title: "Explain", body: "Turns constraint flags and metric deltas into actionable language tied to plan artifacts." },
-  { title: "Guide", body: "Proactive alerts, shift briefings, and disruption summaries." }
+  { title: "Translate", body: "Operators say what matters. Tess converts it into optimizer settings." },
+  { title: "Explain", body: "Tells you why a decision was made — traced to specific orders, batches, and metrics. Not a plausible-sounding guess." },
+  { title: "Guide", body: "Surfaces what you haven't asked about yet — starting conditions, what changed since last cycle, and what to watch." }
 ];
 
 const platformRows = [
@@ -112,7 +112,7 @@ export default function ProductPage() {
           <div className="section-wrap max-w-[980px]">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">ONE MODEL. NOT THREE.</h2>
             <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              The three APIs are not separate optimizers. They are views into one model: Release decides what enters the system, Batching decides how to group it, and Prioritize decides what to work first. Because they share one constraint and objective representation, outputs stay mutually consistent.
+              The three APIs are not separate optimizers. They are views into one model: Release decides what enters the system, Batching decides how to group it, and Prioritize decides what to work first. A release decision never creates work that batching can't feasibly group, and a priority ranking never contradicts the deadlines the batcher already accounted for.
             </p>
             <p className="mt-4 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
               Hard constraints, like never deferring orders near cutoff and never exceeding active-work caps, are encoded directly in the model. Enforcement is structural, not post-hoc.
@@ -190,7 +190,7 @@ export default function ProductPage() {
       <Reveal>
         <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
-            <h2 className="headline text-4xl font-semibold md:text-[44px]">SITS ON TOP. DOESN&apos;T REPLACE.</h2>
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">SAME SYSTEMS. SAME WORKFLOWS. BETTER DECISIONS.</h2>
             <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
               Tessera connects to your existing WMS. No rip-and-replace.
             </p>

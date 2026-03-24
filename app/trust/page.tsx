@@ -10,7 +10,7 @@ const guardrails = [
   },
   {
     title: "Anomaly Detection",
-    body: "If estimates diverge from reality or overrides spike, the system automatically pulls back to advisory mode and alerts the team."
+    body: "If pick times exceed estimates for consecutive cycles, or supervisors start fighting the system, Tessera pulls itself back to advisory mode. The system knows when it's wrong."
   },
   {
     title: "Graduated Autonomy",

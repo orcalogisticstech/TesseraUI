@@ -15,7 +15,7 @@ const problemCards = [
     description: "WMS settings reflect last year's reality. Nobody re-tunes because the interdependencies are too complex."
   },
   {
-    title: "No counterfactuals",
+    title: "No way to compare",
     description: "You can see what happened, but not what a better decision would have produced."
   },
   {
@@ -28,17 +28,17 @@ const explainSteps = [
   {
     id: "01",
     title: "EXPLAIN",
-    body: "Trace the root cause. This zone is congested because the last release cycle pushed too many orders into a narrow area, and the current batch structure is concentrating picks there. Tessera surfaces optimizer-level counterfactuals between what happened and what a better decision would have produced."
+    body: "Trace why the floor looks the way it does. Not just alerts — causal reasoning. This zone is slow because the last release was too dense and batching is concentrating picks there."
   },
   {
     id: "02",
     title: "DECIDE",
-    body: "Prescribe a fix that accounts for everything. Re-batch active work to shift picks across zones, re-rank priorities, and throttle the next release in a single optimization pass. The optimizer finds non-obvious trade-offs a rule-based system would not discover."
+    body: "Prescribe a fix that respects every constraint at once — deadlines, congestion, travel, labor. One pass, not one rule at a time."
   },
   {
     id: "03",
     title: "PREDICT",
-    body: "See the impact before you commit. The same model that decides also predicts. What if you release 80 instead of 120? Zero gap between what the system predicts and what it would actually do."
+    body: "See impact before you commit. Same model that decides also predicts — zero gap between forecast and action."
   }
 ];
 
@@ -63,7 +63,7 @@ export default function HomePage() {
             </p>
             <h1 className="headline mt-6 text-5xl font-bold leading-[1] md:text-[64px]">OPTIMIZE THE SHIFT, NOT JUST THE PICK.</h1>
             <p className="mt-6 text-lg leading-relaxed" style={{ color: "var(--tessera-text-secondary)" }}>
-              Tessera sits on top of your WMS and continuously makes better decisions about what work to release, how to group it, and what to prioritize - all from a single optimization model.
+              Tessera sits on top of your WMS and decides what work to release, how to group it, and what to prioritize — accounting for every constraint on the floor simultaneously.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-7">
               <Link href="/demo" className="btn-primary">
@@ -93,7 +93,7 @@ export default function HomePage() {
             <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
               The Problem
             </p>
-            <h2 className="headline mt-3 text-4xl font-semibold md:text-[44px]">KILL OPTIMIZATION THEATER.</h2>
+            <h2 className="headline mt-3 text-4xl font-semibold md:text-[44px]">VISIBILITY ISN&apos;T THE GAP. THE RESPONSE IS.</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
               Your WMS can see the problem. It cannot tell you what to do about it given everything else happening on the floor.
             </p>
