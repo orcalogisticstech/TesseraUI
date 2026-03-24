@@ -58,10 +58,14 @@ export default function HomePage() {
         </div>
         <div className="section-wrap flex justify-center pb-16 pt-4">
           <div className="relative z-10 mx-auto flex max-w-[800px] flex-col items-center text-center">
-            <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            <p className="font-code text-[1.0rem] uppercase tracking-[0.14em] text-signal">
               Decision Intelligence Layer
             </p>
-            <h1 className="headline mt-6 text-5xl font-bold leading-[1] md:text-[64px]">OPTIMIZE THE SHIFT, NOT JUST THE PICK.</h1>
+            <h1 className="headline mt-6 text-5xl font-bold leading-[1] md:text-[64px]">
+              OPTIMIZE THE SHIFT,
+              <br />
+              NOT JUST THE PICK.
+            </h1>
             <p className="mt-6 text-lg leading-relaxed" style={{ color: "var(--tessera-text-secondary)" }}>
               Tessera sits on top of your WMS and decides what work to release, how to group it, and what to prioritize — accounting for every constraint on the floor simultaneously.
             </p>

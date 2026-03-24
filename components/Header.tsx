@@ -24,11 +24,8 @@ export function Header() {
       <div className="section-wrap flex h-20 items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link href="/" aria-label="Tessera home" onClick={() => setMenuOpen(false)}>
-            <BrandWordmark className="relative block h-14 w-[320px] overflow-hidden" />
+            <BrandWordmark className="relative block h-14 w-[320px] origin-left scale-125 overflow-hidden" />
           </Link>
-          <span className="hidden text-xs uppercase tracking-[0.14em] xl:block" style={{ color: "var(--tessera-text-secondary)" }}>
-            Decision Intelligence Layer
-          </span>
         </div>
 
         <div className="hidden items-center gap-6 md:flex">
