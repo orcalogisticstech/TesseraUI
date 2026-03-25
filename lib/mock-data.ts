@@ -176,7 +176,7 @@ export const cycleData: DecisionCycle[] = [
     timestamp: "14:12",
     triggerType: "Batch Completed",
     cycleNumber: 4826,
-    mode: "Write-Back",
+    mode: "Advisory",
     status: "Overridden",
     responseType: "local-repair",
     summary: "Tess prioritized deadline recovery, but supervisor chose travel-first sequence for Zone D staffing gap.",
@@ -323,7 +323,7 @@ export const tenantSettings: TenantSettings = {
     writeEnabled: true
   },
   autonomy: {
-    priorityChanges: "Write-Back",
+    priorityChanges: "Closed-Loop",
     releaseDecisions: "Advisory",
     batchModifications: "Advisory"
   }

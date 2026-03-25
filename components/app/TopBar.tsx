@@ -49,7 +49,6 @@ export function TopBar() {
             style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
           >
             <option>Advisory</option>
-            <option>Write-Back</option>
             <option>Closed-Loop</option>
           </select>
           <ModeBadge mode={mode} />

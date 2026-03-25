@@ -1,4 +1,4 @@
-export type SystemMode = "Advisory" | "Write-Back" | "Closed-Loop";
+export type SystemMode = "Advisory" | "Closed-Loop";
 
 export type TriggerType = "Heartbeat" | "Batch Completed" | "Rush Order" | "Congestion Alert";
 

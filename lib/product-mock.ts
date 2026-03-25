@@ -42,7 +42,7 @@ export const decisionCycles: DecisionCycle[] = [
     timestamp: "13:48",
     triggerType: "Batch Completed",
     cycleNumber: 4819,
-    mode: "Write-Back",
+    mode: "Advisory",
     status: "Overridden",
     summary:
       "Optimizer prioritized deadline compliance over travel efficiency after a rush-order spike. Supervisor overrode with travel-first alternative for Zone B.",
@@ -63,7 +63,7 @@ export const decisionCycles: DecisionCycle[] = [
     mode: "Advisory",
     status: "Anomaly",
     summary:
-      "Predicted dock release window drifted from observed loader throughput. System dropped to advisory mode and requested review before next write-back cycle.",
+      "Predicted dock release window drifted from observed loader throughput. System dropped to advisory mode and requested review before the next optimization cycle.",
     metrics: [
       { label: "Travel distance", value: "-3%" },
       { label: "Zone C utilization", value: "71% (was 73%)" },

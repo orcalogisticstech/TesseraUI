@@ -7,11 +7,6 @@ export function ModeBadge({ mode }: { mode: SystemMode }) {
       borderColor: "var(--tessera-border)",
       background: "transparent"
     },
-    "Write-Back": {
-      color: "var(--tessera-accent-signal)",
-      borderColor: "var(--tessera-accent-signal)",
-      background: "transparent"
-    },
     "Closed-Loop": {
       color: "#0B0D10",
       borderColor: "var(--tessera-accent-signal)",

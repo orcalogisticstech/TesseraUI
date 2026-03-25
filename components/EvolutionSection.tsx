@@ -5,7 +5,7 @@ const phases = [
       "Read-only connection. Recommendations on a dashboard. Immediate value: better decisions, visible reasoning."
   },
   {
-    title: "Phase 2 -- Selective Write-Back",
+    title: "Phase 2 -- Operator-Gated Execution",
     detail:
       "Low-risk decisions pushed to the WMS. Priority re-ranking, task holds, wave triggers."
   },
