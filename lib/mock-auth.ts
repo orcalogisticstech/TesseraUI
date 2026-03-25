@@ -13,7 +13,7 @@ export type MockSession = {
 
 export const defaultMockSession: MockSession = {
   tenantId: "tenant-orca-east-1",
-  tenantName: "Orca Logistics East",
+  tenantName: "Tessera East",
   role: "Supervisor",
   userName: "Avery Stone",
   userEmail: "avery@orcalogistics.example"
@@ -33,7 +33,8 @@ export function decodeMockSession(rawValue: string | undefined): MockSession | n
     if (!parsed.tenantId || !parsed.tenantName || !parsed.role || !parsed.userName || !parsed.userEmail) {
       return null;
     }
-    return parsed;
+    const tenantName = parsed.tenantName === "Orca Logistics East" ? "Tessera East" : parsed.tenantName;
+    return { ...parsed, tenantName };
   } catch {
     return null;
   }

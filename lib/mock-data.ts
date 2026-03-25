@@ -303,7 +303,7 @@ export const scenarioDefaults: ScenarioConfig = {
 };
 
 export const tenantSettings: TenantSettings = {
-  tenantName: "Orca Logistics East",
+  tenantName: "Tessera East",
   timezone: "America/New_York",
   shifts: ["Day Shift 06:00-14:00", "Swing Shift 14:00-22:00", "Night Shift 22:00-06:00"],
   cycleIntervalMinutes: 15,

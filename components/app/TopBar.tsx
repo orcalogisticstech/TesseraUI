@@ -13,7 +13,7 @@ function formatCountdown(totalSeconds: number) {
 }
 
 export function TopBar() {
-  const { mode, setMode, posture, session, copilotOpen, setCopilotOpen, setPosturePanelOpen } = useAppState();
+  const { mode, setMode, session, copilotOpen, setCopilotOpen, setPosturePanelOpen } = useAppState();
   const [remaining, setRemaining] = useState(462);
 
   useEffect(() => {
@@ -34,10 +34,7 @@ export function TopBar() {
       <div className="flex min-h-16 items-center justify-between gap-4 px-4 py-3 md:px-6 lg:px-8">
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-            Next heartbeat {formatCountdown(remaining)}
-          </span>
-          <span className="hidden text-sm md:inline" style={{ color: "var(--tessera-text-secondary)" }}>
-            Posture: {posture.presetName}
+            NEXT HEARTBEAT: <span style={{ color: "var(--tessera-accent-signal)" }}>{formatCountdown(remaining)}</span>
           </span>
           <span className="hidden rounded-full border px-3 py-1 text-xs md:inline" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
             {session.tenantName} · {session.role}
