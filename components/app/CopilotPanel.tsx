@@ -78,7 +78,7 @@ export function CopilotPanel() {
 
   return (
     <aside
-      className={`fixed right-0 top-0 z-40 h-screen w-full overflow-hidden border-l transition-transform duration-[250ms] ease-out md:w-[400px] ${copilotOpen ? "translate-x-0" : "translate-x-full"} lg:sticky lg:z-20 lg:w-[var(--tessera-copilot-width)] lg:translate-x-0`}
+      className={`fixed right-0 top-0 z-40 h-screen w-full overflow-hidden overscroll-contain border-l transition-transform duration-[250ms] ease-out md:w-[400px] ${copilotOpen ? "translate-x-0" : "translate-x-full"} lg:sticky lg:z-20 lg:w-[var(--tessera-copilot-width)] lg:translate-x-0`}
       style={panelStyle}
     >
       <button
@@ -101,7 +101,7 @@ export function CopilotPanel() {
       </div>
 
       <div className="flex h-[calc(100vh-4rem)] min-h-0 flex-col">
-        <div className="flex-1 space-y-3 overflow-y-auto p-4">
+        <div className="flex-1 space-y-3 overflow-y-auto overscroll-contain p-4">
           {copilotMessages.map((message) => (
             <div key={message.id}>
               {message.actor === "system" ? (
