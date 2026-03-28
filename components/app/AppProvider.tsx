@@ -9,7 +9,7 @@ import type {
   SystemMode
 } from "@/lib/app-types";
 import type { MockSession } from "@/lib/mock-auth";
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
@@ -28,11 +28,21 @@ type AppContextValue = {
   setPosturePanelOpen: (open: boolean) => void;
   copilotOpen: boolean;
   setCopilotOpen: (open: boolean) => void;
+  copilotWidth: number;
+  setCopilotWidth: (width: number) => void;
   sidebarCollapsed: boolean;
   setSidebarCollapsed: (collapsed: boolean) => void;
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
+const COPILOT_WIDTH_STORAGE_KEY = "tessera_copilot_width";
+const COPILOT_WIDTH_MIN = 320;
+const COPILOT_WIDTH_MAX = 560;
+const COPILOT_WIDTH_DEFAULT = 380;
+
+function clampCopilotWidth(width: number) {
+  return Math.min(COPILOT_WIDTH_MAX, Math.max(COPILOT_WIDTH_MIN, width));
+}
 
 export function AppProvider({ children, session }: { children: ReactNode; session: MockSession }) {
   const data = useMemo(() => getAppData(session), [session]);
@@ -42,7 +52,22 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [copilotMessages, setCopilotMessages] = useState<CopilotMessage[]>(data.copilotMessages);
   const [posturePanelOpen, setPosturePanelOpen] = useState(false);
   const [copilotOpen, setCopilotOpen] = useState(false);
+  const [copilotWidth, setCopilotWidthState] = useState<number>(() => {
+    if (typeof window === "undefined") {
+      return COPILOT_WIDTH_DEFAULT;
+    }
+    const savedValue = window.localStorage.getItem(COPILOT_WIDTH_STORAGE_KEY);
+    const parsedValue = Number(savedValue);
+    return Number.isFinite(parsedValue) ? clampCopilotWidth(parsedValue) : COPILOT_WIDTH_DEFAULT;
+  });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const setCopilotWidth = useCallback((width: number) => {
+    setCopilotWidthState(clampCopilotWidth(width));
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(COPILOT_WIDTH_STORAGE_KEY, String(clampCopilotWidth(copilotWidth)));
+  }, [copilotWidth]);
 
   const value = useMemo(
     () => ({
@@ -60,6 +85,8 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       setPosturePanelOpen,
       copilotOpen,
       setCopilotOpen,
+      copilotWidth,
+      setCopilotWidth,
       sidebarCollapsed,
       setSidebarCollapsed
     }),
@@ -72,6 +99,8 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       copilotMessages,
       posturePanelOpen,
       copilotOpen,
+      copilotWidth,
+      setCopilotWidth,
       sidebarCollapsed
     ]
   );

@@ -57,7 +57,7 @@ export function TopBar() {
           </button>
           <button
             type="button"
-            className="rounded-button border px-3 py-2 text-xs"
+            className="rounded-button border px-3 py-2 text-xs lg:hidden"
             style={{
               borderColor: copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
               color: copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-text-secondary)"

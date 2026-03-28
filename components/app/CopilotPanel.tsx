@@ -3,10 +3,23 @@
 import { useAppState } from "@/components/app/AppProvider";
 import Link from "next/link";
 import { useState } from "react";
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
+
+const COPILOT_WIDTH_MIN = 320;
+const COPILOT_WIDTH_MAX = 560;
+
+function clampCopilotWidth(width: number) {
+  return Math.min(COPILOT_WIDTH_MAX, Math.max(COPILOT_WIDTH_MIN, width));
+}
 
 export function CopilotPanel() {
-  const { copilotOpen, setCopilotOpen, copilotMessages, setCopilotMessages, setPosturePanelOpen } = useAppState();
+  const { copilotOpen, setCopilotOpen, copilotMessages, setCopilotMessages, setPosturePanelOpen, copilotWidth, setCopilotWidth } = useAppState();
   const [draft, setDraft] = useState("");
+  const panelStyle = {
+    borderColor: "var(--tessera-border)",
+    background: "var(--tessera-bg-page)",
+    "--tessera-copilot-width": `${copilotWidth}px`
+  } as CSSProperties;
 
   const submitMessage = () => {
     if (!draft.trim()) {
@@ -39,16 +52,42 @@ export function CopilotPanel() {
   const onAction = (actionId: "open-posture" | "open-explore" | "open-release") => {
     if (actionId === "open-posture") {
       setPosturePanelOpen(true);
+    }
+  };
+
+  const startResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (window.innerWidth < 1024) {
       return;
     }
-    setCopilotOpen(false);
+    event.preventDefault();
+    document.body.style.userSelect = "none";
+
+    const onPointerMove = (moveEvent: PointerEvent) => {
+      const nextWidth = clampCopilotWidth(window.innerWidth - moveEvent.clientX);
+      setCopilotWidth(nextWidth);
+    };
+
+    const onPointerUp = () => {
+      document.body.style.userSelect = "";
+      window.removeEventListener("pointermove", onPointerMove);
+    };
+
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp, { once: true });
   };
 
   return (
     <aside
-      className={`fixed right-0 top-0 z-40 h-screen w-full border-l transition-transform duration-[250ms] ease-out md:w-[400px] ${copilotOpen ? "translate-x-0" : "translate-x-full"}`}
-      style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}
+      className={`fixed right-0 top-0 z-40 h-screen w-full overflow-hidden border-l transition-transform duration-[250ms] ease-out md:w-[400px] ${copilotOpen ? "translate-x-0" : "translate-x-full"} lg:sticky lg:z-20 lg:w-[var(--tessera-copilot-width)] lg:translate-x-0`}
+      style={panelStyle}
     >
+      <button
+        type="button"
+        className="absolute left-0 top-0 hidden h-full w-3 cursor-col-resize lg:block"
+        onPointerDown={startResize}
+        aria-label="Resize Tess panel"
+        title="Drag to resize"
+      />
       <div className="flex h-16 items-center justify-between border-b px-4" style={{ borderColor: "var(--tessera-border)" }}>
         <div>
           <p className="font-code text-xs uppercase tracking-[0.12em]" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -56,12 +95,12 @@ export function CopilotPanel() {
           </p>
           <p className="text-sm">Talk to your optimizer</p>
         </div>
-        <button type="button" className="btn-secondary px-3 py-2 text-sm" onClick={() => setCopilotOpen(false)}>
+        <button type="button" className="btn-secondary px-3 py-2 text-sm lg:hidden" onClick={() => setCopilotOpen(false)}>
           Close
         </button>
       </div>
 
-      <div className="flex h-[calc(100vh-4rem)] flex-col">
+      <div className="flex h-[calc(100vh-4rem)] min-h-0 flex-col">
         <div className="flex-1 space-y-3 overflow-y-auto p-4">
           {copilotMessages.map((message) => (
             <div key={message.id}>
@@ -95,7 +134,7 @@ export function CopilotPanel() {
 
                   <div className="mt-3 flex flex-wrap gap-2">
                     {message.viewLink && (
-                      <Link href={message.viewLink.href} className="btn-secondary px-3 py-2 text-xs" onClick={() => setCopilotOpen(false)}>
+                      <Link href={message.viewLink.href} className="btn-secondary px-3 py-2 text-xs">
                         {message.viewLink.label}
                       </Link>
                     )}
