@@ -43,27 +43,12 @@ export function TradeoffPanel({ alternatives, mode, onAdopt }: TradeoffPanelProp
               </th>
               {alternatives.map((alt) => (
                 <th key={alt.label} className="border-b px-3 py-2 text-left" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-                  <div className="flex items-center gap-2">
-                    <span>{alt.label}</span>
-                    {alt.isTessChoice ? (
-                      <span className="rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em]" style={{ background: "var(--tessera-accent-signal)", color: "#0B0D10" }}>
-                        Tess's Choice
-                      </span>
-                    ) : null}
-                  </div>
+                  <span style={alt.isTessChoice ? { color: "var(--tessera-accent-signal)" } : undefined}>{alt.label}</span>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border-b px-3 py-2 align-top" style={{ borderColor: "var(--tessera-border)" }}>Summary</td>
-              {alternatives.map((alt) => (
-                <td key={`${alt.label}-summary`} className="border-b px-3 py-2 align-top" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-                  {alt.summary}
-                </td>
-              ))}
-            </tr>
             {allMetricLabels.map((label) => (
               <tr key={label}>
                 <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{label}</td>
@@ -84,7 +69,7 @@ export function TradeoffPanel({ alternatives, mode, onAdopt }: TradeoffPanelProp
               <td className="px-3 py-3" style={{ color: "var(--tessera-text-secondary)" }}>Action</td>
               {alternatives.map((alt) => (
                 <td key={`${alt.label}-adopt`} className="px-3 py-3">
-                  <button type="button" className="btn-secondary" onClick={() => onAdopt(alt.label)}>
+                  <button type="button" className="btn-secondary btn-adopt-glow" onClick={() => onAdopt(alt.label)}>
                     {mode === "Closed-Loop" ? "Adopt This Plan (Re-Execute)" : "Adopt This Plan"}
                   </button>
                 </td>

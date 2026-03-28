@@ -64,6 +64,17 @@ html {
   background: color-mix(in srgb, var(--tessera-text-primary) 4%, transparent);
 }
 
+.btn-adopt-glow {
+  transition: color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, text-shadow 150ms ease;
+}
+
+.btn-adopt-glow:hover {
+  color: var(--tessera-accent-signal);
+  border-color: var(--tessera-accent-signal);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tessera-accent-signal) 75%, transparent), 0 0 18px color-mix(in srgb, var(--tessera-accent-signal) 45%, transparent);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--tessera-accent-signal) 55%, transparent);
+}
+
 .surface-card {
   background: var(--tessera-bg-surface);
   border: 1px solid var(--tessera-border);
