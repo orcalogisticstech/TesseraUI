@@ -52,17 +52,18 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [copilotMessages, setCopilotMessages] = useState<CopilotMessage[]>(data.copilotMessages);
   const [posturePanelOpen, setPosturePanelOpen] = useState(false);
   const [copilotOpen, setCopilotOpen] = useState(false);
-  const [copilotWidth, setCopilotWidthState] = useState<number>(() => {
-    if (typeof window === "undefined") {
-      return COPILOT_WIDTH_DEFAULT;
-    }
-    const savedValue = window.localStorage.getItem(COPILOT_WIDTH_STORAGE_KEY);
-    const parsedValue = Number(savedValue);
-    return Number.isFinite(parsedValue) ? clampCopilotWidth(parsedValue) : COPILOT_WIDTH_DEFAULT;
-  });
+  const [copilotWidth, setCopilotWidthState] = useState<number>(COPILOT_WIDTH_DEFAULT);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const setCopilotWidth = useCallback((width: number) => {
     setCopilotWidthState(clampCopilotWidth(width));
+  }, []);
+
+  useEffect(() => {
+    const savedValue = window.localStorage.getItem(COPILOT_WIDTH_STORAGE_KEY);
+    const parsedValue = Number(savedValue);
+    if (Number.isFinite(parsedValue)) {
+      setCopilotWidthState(clampCopilotWidth(parsedValue));
+    }
   }, []);
 
   useEffect(() => {
