@@ -17,7 +17,7 @@ type PanelState =
 const timeRanges = ["Last 2 hours", "This shift", "24 hours"];
 
 export function DecisionFeedView() {
-  const { mode, posture, data, cycles, setCycles, setPosturePanelOpen } = useAppState();
+  const { mode, posture, data, cycles, setCycles, setPosturePanelOpen, setCopilotMessages, setCopilotOpen } = useAppState();
   const [apiFilter, setApiFilter] = useState<"All" | ApiName>("All");
   const [triggerFilter, setTriggerFilter] = useState<"All" | TriggerType>("All");
   const [statusFilter, setStatusFilter] = useState<"All" | DecisionStatus>("All");
@@ -46,6 +46,32 @@ export function DecisionFeedView() {
   const simulateLoading = () => {
     setLoading(true);
     window.setTimeout(() => setLoading(false), 500);
+  };
+
+  const askTessAboutCycle = (cycle: DecisionCycle) => {
+    const timestamp = Date.now();
+    const operatorMessage = {
+      id: `op-${timestamp}`,
+      actor: "operator" as const,
+      text: `Help me understand cycle ${cycle.cycleNumber}.`
+    };
+
+    const keyMetrics = cycle.metrics.slice(0, 3).map((metric) => `${metric.label}: ${metric.value}`).join(" · ");
+    const tessMessage = {
+      id: `ts-${timestamp + 1}`,
+      actor: "tess" as const,
+      text: `Cycle ${cycle.cycleNumber} was triggered by ${cycle.triggerType} in ${cycle.mode} mode. ${cycle.summary} Key indicators: ${keyMetrics}.`,
+      grounding: {
+        cycleNumber: cycle.cycleNumber,
+        constraintIds: [],
+        metrics: cycle.metrics.map((metric) => metric.label)
+      },
+      viewLink: { label: "Open Trade-Off Explorer", href: "/app/explore" },
+      action: { label: "Apply this posture change", actionId: "open-posture" as const }
+    };
+
+    setCopilotMessages((current) => [...current, operatorMessage, tessMessage]);
+    setCopilotOpen(true);
   };
 
   return (
@@ -221,6 +247,15 @@ export function DecisionFeedView() {
                     </button>
                   </>
                 ) : null}
+
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  style={{ border: "1.5px solid var(--tessera-accent-signal)", color: "var(--tessera-accent-signal)" }}
+                  onClick={() => askTessAboutCycle(cycle)}
+                >
+                  Ask TESS
+                </button>
               </div>
             </article>
           ))}
