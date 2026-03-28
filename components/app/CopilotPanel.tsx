@@ -1,7 +1,9 @@
 "use client";
 
 import { useAppState } from "@/components/app/AppProvider";
+import tessWordmark from "@/tessera_svg_elements_exact/tess.svg";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 
@@ -88,19 +90,23 @@ export function CopilotPanel() {
         aria-label="Resize Tess panel"
         title="Drag to resize"
       />
-      <div className="flex h-16 items-center justify-between border-b px-4" style={{ borderColor: "var(--tessera-border)" }}>
-        <div>
-          <p className="font-code text-xs uppercase tracking-[0.12em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Tess Copilot
-          </p>
-          <p className="text-sm">Talk to your optimizer</p>
+      <div className="flex h-20 items-center justify-between border-b px-4" style={{ borderColor: "var(--tessera-border)" }}>
+        <div className="flex flex-1 justify-center lg:justify-center">
+          <div className="flex flex-col items-center">
+            <div className="relative h-8 w-[134px] overflow-hidden">
+              <Image src={tessWordmark} alt="Tess" fill priority className="object-contain object-center" />
+            </div>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              TALK TO YOUR OPTIMIZER
+            </p>
+          </div>
         </div>
         <button type="button" className="btn-secondary px-3 py-2 text-sm lg:hidden" onClick={() => setCopilotOpen(false)}>
           Close
         </button>
       </div>
 
-      <div className="flex h-[calc(100vh-4rem)] min-h-0 flex-col">
+      <div className="flex h-[calc(100vh-5rem)] min-h-0 flex-col">
         <div className="flex-1 space-y-3 overflow-y-auto overscroll-contain p-4">
           {copilotMessages.map((message) => (
             <div key={message.id}>
