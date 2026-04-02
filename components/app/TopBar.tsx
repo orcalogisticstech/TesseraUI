@@ -1,7 +1,8 @@
 "use client";
 
-import { ModeBadge } from "@/components/app/ModeBadge";
+import { BrandWordmark } from "@/components/BrandWordmark";
 import { useAppState } from "@/components/app/AppProvider";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const HEARTBEAT_SECONDS = 15 * 60;
@@ -13,8 +14,21 @@ function formatCountdown(totalSeconds: number) {
 }
 
 export function TopBar() {
-  const { mode, setMode, session, copilotOpen, setCopilotOpen, setPosturePanelOpen } = useAppState();
+  const { mode, setMode, copilotOpen, setCopilotOpen, openTab } = useAppState();
+  const router = useRouter();
   const [remaining, setRemaining] = useState(462);
+  const modeSelectStyle =
+    mode === "Closed-Loop"
+      ? {
+          borderColor: "var(--tessera-accent-signal)",
+          background: "var(--tessera-accent-signal)",
+          color: "#0B0D10"
+        }
+      : {
+          borderColor: "var(--tessera-border)",
+          background: "transparent",
+          color: "var(--tessera-text-secondary)"
+        };
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -23,37 +37,56 @@ export function TopBar() {
     return () => window.clearInterval(timer);
   }, []);
 
+  const logout = async () => {
+    await fetch("/api/mock-auth/logout", { method: "POST" });
+    router.push("/app/login");
+    router.refresh();
+  };
+
   return (
     <header
-      className="sticky top-0 z-10 border-b backdrop-blur"
+      className="border-b backdrop-blur"
       style={{
         borderColor: "var(--tessera-border)",
-        background: "color-mix(in srgb, var(--tessera-bg-page) 92%, transparent)"
+        background: "var(--tessera-bg-page)"
       }}
     >
-      <div className="flex min-h-16 items-center justify-between gap-4 px-4 py-3 md:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-3 text-sm">
+      <div className="grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 md:px-6 lg:px-8">
+        <div className="flex items-center gap-3 text-sm">
           <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
             NEXT HEARTBEAT: <span style={{ color: "var(--tessera-accent-signal)" }}>{formatCountdown(remaining)}</span>
           </span>
-          <span className="hidden rounded-full border px-3 py-1 text-xs md:inline" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-            {session.tenantName} · {session.role}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3">
           <select
             value={mode}
             onChange={(event) => setMode(event.target.value as typeof mode)}
             className="rounded-[10px] border bg-transparent px-2 py-1 text-xs"
-            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+            style={modeSelectStyle}
           >
             <option>Advisory</option>
             <option>Closed-Loop</option>
           </select>
-          <ModeBadge mode={mode} />
-          <button type="button" className="btn-secondary hidden px-3 py-2 text-xs md:inline-flex" onClick={() => setPosturePanelOpen(true)}>
-            Edit Posture
+        </div>
+
+        <a href="/" className="justify-self-center" aria-label="Go to home page">
+          <BrandWordmark className="relative block h-9 w-[360px] overflow-hidden" imageClassName="object-contain object-center -translate-y-[2%] scale-[3.5]" />
+        </a>
+
+        <div className="flex items-center justify-self-end gap-2">
+          <button
+            type="button"
+            className="rounded-button border p-2"
+            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+            onClick={() => openTab("settings")}
+            aria-label="Open settings tab"
+            title="Open settings"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" />
+              <path d="M19 12a7.1 7.1 0 0 0-.1-1.1l2-1.6-1.9-3.3-2.4 1a7.5 7.5 0 0 0-1.9-1.1l-.3-2.5h-3.8l-.3 2.5a7.5 7.5 0 0 0-1.9 1.1l-2.4-1-1.9 3.3 2 1.6A7.1 7.1 0 0 0 5 12c0 .4 0 .7.1 1.1l-2 1.6 1.9 3.3 2.4-1a7.5 7.5 0 0 0 1.9 1.1l.3 2.5h3.8l.3-2.5a7.5 7.5 0 0 0 1.9-1.1l2.4 1 1.9-3.3-2-1.6c.1-.4.1-.7.1-1.1z" />
+            </svg>
+          </button>
+          <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={logout}>
+            Sign out
           </button>
           <button
             type="button"

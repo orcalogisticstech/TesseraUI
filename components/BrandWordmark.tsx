@@ -5,9 +5,10 @@ import Image from "next/image";
 type BrandWordmarkProps = {
   className?: string;
   variant?: "default" | "footer";
+  imageClassName?: string;
 };
 
-export function BrandWordmark({ className, variant = "default" }: BrandWordmarkProps) {
+export function BrandWordmark({ className, variant = "default", imageClassName }: BrandWordmarkProps) {
   const src = variant === "footer" ? wordmarkFooter : wordmarkDark;
 
   return (
@@ -17,7 +18,7 @@ export function BrandWordmark({ className, variant = "default" }: BrandWordmarkP
         alt="Tessera"
         fill
         priority
-        className="object-contain object-center scale-[2.5]"
+        className={imageClassName ?? "object-contain object-center scale-[2.5]"}
       />
     </span>
   );

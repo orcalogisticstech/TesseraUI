@@ -6,7 +6,8 @@ import type {
   CopilotMessage,
   DecisionCycle,
   PostureConfig,
-  SystemMode
+  SystemMode,
+  WorkspaceTabId
 } from "@/lib/app-types";
 import type { MockSession } from "@/lib/mock-auth";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -30,8 +31,11 @@ type AppContextValue = {
   setCopilotOpen: (open: boolean) => void;
   copilotWidth: number;
   setCopilotWidth: (width: number) => void;
-  sidebarCollapsed: boolean;
-  setSidebarCollapsed: (collapsed: boolean) => void;
+  openTabs: WorkspaceTabId[];
+  activeTab: WorkspaceTabId;
+  openTab: (tabId: WorkspaceTabId) => void;
+  focusTab: (tabId: WorkspaceTabId) => void;
+  closeTab: (tabId: WorkspaceTabId) => void;
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -53,9 +57,34 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [posturePanelOpen, setPosturePanelOpen] = useState(false);
   const [copilotOpen, setCopilotOpen] = useState(false);
   const [copilotWidth, setCopilotWidthState] = useState<number>(COPILOT_WIDTH_DEFAULT);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [openTabs, setOpenTabs] = useState<WorkspaceTabId[]>(["decision-feed", "history"]);
+  const [activeTab, setActiveTab] = useState<WorkspaceTabId>("decision-feed");
   const setCopilotWidth = useCallback((width: number) => {
     setCopilotWidthState(clampCopilotWidth(width));
+  }, []);
+  const focusTab = useCallback((tabId: WorkspaceTabId) => {
+    setActiveTab(tabId);
+    setOpenTabs((current) => (current.includes(tabId) ? current : [...current, tabId]));
+  }, []);
+  const openTab = useCallback(
+    (tabId: WorkspaceTabId) => {
+      focusTab(tabId);
+    },
+    [focusTab]
+  );
+  const closeTab = useCallback((tabId: WorkspaceTabId) => {
+    if (tabId === "decision-feed" || tabId === "history") {
+      return;
+    }
+
+    setOpenTabs((current) => {
+      if (!current.includes(tabId)) {
+        return current;
+      }
+      const nextTabs = current.filter((tab) => tab !== tabId);
+      setActiveTab((currentActive) => (currentActive === tabId ? nextTabs[nextTabs.length - 1] ?? "decision-feed" : currentActive));
+      return nextTabs;
+    });
   }, []);
 
   useEffect(() => {
@@ -88,8 +117,11 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       setCopilotOpen,
       copilotWidth,
       setCopilotWidth,
-      sidebarCollapsed,
-      setSidebarCollapsed
+      openTabs,
+      activeTab,
+      openTab,
+      focusTab,
+      closeTab
     }),
     [
       data,
@@ -102,7 +134,11 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       copilotOpen,
       copilotWidth,
       setCopilotWidth,
-      sidebarCollapsed
+      openTabs,
+      activeTab,
+      openTab,
+      focusTab,
+      closeTab
     ]
   );
 

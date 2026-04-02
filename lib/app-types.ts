@@ -180,6 +180,8 @@ export type CopilotMessage = {
   metricCards?: Array<{ label: string; value: string }>;
 };
 
+export type WorkspaceTabId = "decision-feed" | "history" | "settings";
+
 export type AppDataBundle = {
   session: MockSession;
   posture: PostureConfig;

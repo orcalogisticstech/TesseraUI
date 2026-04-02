@@ -1,21 +1,20 @@
 import { CopilotPanel } from "@/components/app/CopilotPanel";
 import { PosturePanel } from "@/components/app/PosturePanel";
-import { PostureSummaryBar } from "@/components/app/PostureSummaryBar";
-import { Sidebar } from "@/components/app/Sidebar";
 import { TopBar } from "@/components/app/TopBar";
-import type { ReactNode } from "react";
+import { WorkspaceTabBar, WorkspaceTabContent } from "@/components/app/WorkspaceTabs";
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell() {
   return (
     <div className="flex min-h-screen" style={{ background: "var(--tessera-bg-page)" }}>
-      <Sidebar />
       <div className="min-w-0 flex-1">
-        <TopBar />
-        <PostureSummaryBar />
-        <main className="app-shell-main">{children}</main>
+        <div className="sticky top-0 z-20">
+          <TopBar />
+          <WorkspaceTabBar />
+        </div>
+        <WorkspaceTabContent />
       </div>
-      <PosturePanel />
       <CopilotPanel />
+      <PosturePanel />
     </div>
   );
 }

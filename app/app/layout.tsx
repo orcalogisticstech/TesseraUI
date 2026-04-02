@@ -26,7 +26,7 @@ export default async function ProductLayout({ children }: { children: ReactNode 
       <div className="hidden lg:block">
         {session ? (
           <AppProvider session={session}>
-            <AppShell>{children}</AppShell>
+            <AppShell />
           </AppProvider>
         ) : (
           <>{children}</>
