@@ -60,53 +60,45 @@ export function Header() {
         </button>
       </div>
 
-      <div className={`fixed inset-0 z-[60] md:hidden ${menuOpen ? "pointer-events-auto" : "pointer-events-none"}`}>
-        <button
-          type="button"
-          className={`absolute inset-0 bg-black/50 transition-opacity ${menuOpen ? "opacity-100" : "opacity-0"}`}
-          aria-label="Close navigation overlay"
-          onClick={() => setMenuOpen(false)}
-        />
-        <aside
-          id="site-mobile-menu"
-          className={`absolute right-0 top-0 flex h-full w-[280px] flex-col border-l p-6 transition-transform duration-200 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
-          style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}
-        >
-          <div className="mb-8 flex items-center justify-between">
-            <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
-              Menu
-            </p>
-            <button type="button" className="text-2xl leading-none" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
-              ×
-            </button>
-          </div>
-          <nav className="flex flex-col gap-4 text-base">
-            <Link href="/" className="py-1" onClick={() => setMenuOpen(false)}>
-              Home
-            </Link>
-            {navItems.map((item) => {
-              const active = isActivePath(pathname, item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center justify-between py-1"
-                  style={{ color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)" }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span>{item.label}</span>
-                  {active ? <span style={{ color: "var(--tessera-accent-signal)" }}>•</span> : null}
-                </Link>
-              );
-            })}
-          </nav>
-          <div className="mt-auto">
-            <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={() => setMenuOpen(false)}>
-              Request Demo
-            </Link>
-          </div>
-        </aside>
-      </div>
+      <aside
+        id="site-mobile-menu"
+        className={`fixed inset-0 z-[60] flex flex-col p-6 transition-all duration-200 ease-out md:hidden ${menuOpen ? "pointer-events-auto translate-x-0 opacity-100" : "pointer-events-none translate-x-full opacity-0"}`}
+        style={{ background: "color-mix(in srgb, var(--tessera-bg-surface) 88%, #7f8690 12%)" }}
+      >
+        <div className="mb-10 flex items-center justify-between">
+          <Link href="/" aria-label="Tessera home" onClick={() => setMenuOpen(false)}>
+            <BrandWordmark className="relative block h-10 w-[216px] overflow-hidden" />
+          </Link>
+          <button type="button" className="text-2xl leading-none" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
+            ×
+          </button>
+        </div>
+        <nav className="flex flex-col gap-6 text-xl">
+          <Link href="/" className="py-1" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
+          {navItems.map((item) => {
+            const active = isActivePath(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center justify-between py-1"
+                style={{ color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                <span>{item.label}</span>
+                {active ? <span style={{ color: "var(--tessera-accent-signal)" }}>•</span> : null}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="mt-auto pb-2">
+          <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={() => setMenuOpen(false)}>
+            Request Demo
+          </Link>
+        </div>
+      </aside>
     </header>
   );
 }
