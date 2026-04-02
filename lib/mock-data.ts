@@ -371,7 +371,6 @@ export const copilotSeedMessages: CopilotMessage[] = [
       constraintIds: ["ZN-C-CAP-72"],
       metrics: ["travel", "zone-utilization"]
     },
-    viewLink: { label: "View release details", href: "/app/release" },
     metricCards: [
       { label: "At 80 releases", value: "0 late-risk" },
       { label: "At 120 releases", value: "3 moderate late-risk" }

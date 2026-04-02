@@ -37,13 +37,12 @@ export function CopilotPanel() {
     const tessReply = {
       id: `ts-${Date.now() + 1}`,
       actor: "tess" as const,
-      text: "I mapped that request to the active optimization model. Open Explore to compare scenarios or Edit Posture to adjust objective weights.",
+      text: "I mapped that request to the active optimization model. Edit Posture to adjust objective weights for the next cycle.",
       grounding: {
         cycleNumber: 4828,
         constraintIds: ["OBJ-DEADLINE", "OBJ-CONGESTION"],
         metrics: ["travel", "late-risk", "zone-utilization"]
       },
-      viewLink: { label: "Open Trade-Off Explorer", href: "/app/explore" },
       action: { label: "Apply this posture change", actionId: "open-posture" as const }
     };
 
@@ -51,7 +50,7 @@ export function CopilotPanel() {
     setDraft("");
   };
 
-  const onAction = (actionId: "open-posture" | "open-explore" | "open-release") => {
+  const onAction = (actionId: "open-posture") => {
     if (actionId === "open-posture") {
       setPosturePanelOpen(true);
     }

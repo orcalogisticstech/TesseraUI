@@ -176,7 +176,7 @@ export type CopilotMessage = {
     metrics: string[];
   };
   viewLink?: { label: string; href: string };
-  action?: { label: string; actionId: "open-posture" | "open-explore" | "open-release" };
+  action?: { label: string; actionId: "open-posture" };
   metricCards?: Array<{ label: string; value: string }>;
 };
 

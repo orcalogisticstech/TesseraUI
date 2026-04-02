@@ -8,10 +8,6 @@ import { useRouter } from "next/navigation";
 
 const navItems = [
   { label: "Decision Feed", href: "/app", icon: "home" },
-  { label: "Release", href: "/app/release", icon: "play" },
-  { label: "Batching", href: "/app/batching", icon: "layers" },
-  { label: "Prioritize", href: "/app/prioritize", icon: "list" },
-  { label: "Explore", href: "/app/explore", icon: "branch" },
   { label: "History", href: "/app/history", icon: "clock" },
   { label: "Settings", href: "/app/settings", icon: "gear", divider: true }
 ];

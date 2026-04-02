@@ -66,7 +66,6 @@ export function DecisionFeedView() {
         constraintIds: [],
         metrics: cycle.metrics.map((metric) => metric.label)
       },
-      viewLink: { label: "Open Trade-Off Explorer", href: "/app/explore" },
       action: { label: "Apply this posture change", actionId: "open-posture" as const }
     };
 
