@@ -21,10 +21,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b backdrop-blur-[12px]" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-page) 80%, transparent)" }}>
-      <div className="section-wrap flex h-20 items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="section-wrap grid h-20 grid-cols-[40px_minmax(0,1fr)_40px] items-center gap-3 md:flex md:justify-between">
+        <div aria-hidden className="h-10 w-10 md:hidden" />
+
+        <div className="flex items-center justify-center md:justify-start">
           <Link href="/" aria-label="Tessera home" onClick={() => setMenuOpen(false)}>
-            <BrandWordmark className="relative block h-14 w-[320px] origin-left scale-125 overflow-hidden" />
+            <BrandWordmark className="relative block h-10 w-[216px] overflow-hidden sm:h-11 sm:w-[236px] md:h-14 md:w-[320px] md:origin-left md:scale-125" />
           </Link>
         </div>
 
@@ -49,10 +51,12 @@ export function Header() {
           type="button"
           className="inline-flex h-10 w-10 items-center justify-center rounded-button border md:hidden"
           style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
-          aria-label="Open site navigation"
-          onClick={() => setMenuOpen(true)}
+          aria-label={menuOpen ? "Close site navigation" : "Open site navigation"}
+          aria-expanded={menuOpen}
+          aria-controls="site-mobile-menu"
+          onClick={() => setMenuOpen((open) => !open)}
         >
-          <span className="font-code text-lg leading-none">≡</span>
+          <span className="font-code text-lg leading-none">{menuOpen ? "×" : "≡"}</span>
         </button>
       </div>
 
@@ -64,6 +68,7 @@ export function Header() {
           onClick={() => setMenuOpen(false)}
         />
         <aside
+          id="site-mobile-menu"
           className={`absolute right-0 top-0 flex h-full w-[280px] flex-col border-l p-6 transition-transform duration-200 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
           style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}
         >
