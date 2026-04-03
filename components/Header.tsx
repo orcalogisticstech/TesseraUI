@@ -3,7 +3,7 @@
 import { BrandWordmark } from "@/components/BrandWordmark";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { href: "/product", label: "Product" },
@@ -18,6 +18,23 @@ function isActivePath(pathname: string, href: string) {
 export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [menuOpen]);
 
   return (
     <header className="sticky top-0 z-50 border-b backdrop-blur-[12px]" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-page) 80%, transparent)" }}>
@@ -62,8 +79,8 @@ export function Header() {
 
       <aside
         id="site-mobile-menu"
-        className={`fixed inset-0 z-[60] flex flex-col p-6 transition-all duration-200 ease-out md:hidden ${menuOpen ? "pointer-events-auto translate-x-0 opacity-100" : "pointer-events-none translate-x-full opacity-0"}`}
-        style={{ background: "color-mix(in srgb, var(--tessera-bg-surface) 88%, #7f8690 12%)" }}
+        className={`fixed inset-0 z-[60] flex flex-col p-6 transition-opacity duration-200 ease-out md:hidden ${menuOpen ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0"}`}
+        style={{ background: "#66707a" }}
       >
         <div className="mb-10 flex items-center justify-between">
           <Link href="/" aria-label="Tessera home" onClick={() => setMenuOpen(false)}>
