@@ -301,6 +301,63 @@ export const heartbeatPlanSets: HeartbeatPlan[][] = [
         zoneCrossings: 4,
         priorityAlignment: 0.95,
         throughputPicksPerHour: 186
+      },
+      run: {
+        runId: "run_20260402_1900_001",
+        postureName: "Day Shift - deadline protected",
+        workflow: "heartbeat",
+        mode: "Advisory",
+        status: "completed",
+        timestamp: "2026-04-02T19:00:04Z",
+        computationTime: 3.8,
+        solutionId: "sol_primary",
+        tradeoffLabel: "primary",
+        solutionMetrics: {
+          totalDistance: 7100,
+          totalDuration: 9400,
+          totalTardiness: 0,
+          nLateOrders: 1,
+          nBatches: 16,
+          nSelectedTasks: 184,
+          nUnselectedTasks: 56,
+          maxZoneLoad: 34,
+          nZoneCrossings: 4,
+          nSplitOrders: 1,
+          nGroupingViolations: 0,
+          priorityAlignment: 0.95,
+          batchDurationBalance: 0.79,
+          batchDistanceBalance: 0.83
+        },
+        batches: [
+          {
+            batchId: "batch_1",
+            priorityRank: 1,
+            priorityScore: 0.94,
+            cartTypeId: "standard_tote_cart",
+            taskIds: ["task_1001", "task_1002"],
+            orderIds: ["order_501", "order_502"],
+            waveId: "wave_20260402_1840",
+            zones: ["ZONE_A"],
+            route: { startNodeId: "STAGE_A", endNodeId: "PACK_1", distance: 410, duration: 520, nZoneCrossings: 0 },
+            batchMetrics: { distance: 410, duration: 520, nLateOrders: 0, tardiness: 0 }
+          },
+          {
+            batchId: "batch_2",
+            priorityRank: 2,
+            priorityScore: 0.9,
+            cartTypeId: "standard_tote_cart",
+            taskIds: ["task_1030", "task_1031", "task_1032"],
+            orderIds: ["order_514", "order_519"],
+            waveId: "wave_20260402_1840",
+            zones: ["ZONE_B", "ZONE_C"],
+            route: { startNodeId: "STAGE_A", endNodeId: "PACK_2", distance: 530, duration: 690, nZoneCrossings: 1 },
+            batchMetrics: { distance: 530, duration: 690, nLateOrders: 0, tardiness: 0 }
+          }
+        ],
+        unselectedTasks: [
+          { taskId: "task_1401", reasonCode: "zone_congestion" },
+          { taskId: "task_1402", reasonCode: "deadline_slack" }
+        ]
       }
     },
     {
@@ -315,6 +372,51 @@ export const heartbeatPlanSets: HeartbeatPlan[][] = [
         zoneCrossings: 2,
         priorityAlignment: 0.88,
         throughputPicksPerHour: 176
+      },
+      run: {
+        runId: "run_20260402_1900_002",
+        postureName: "Travel-first low-risk",
+        workflow: "heartbeat",
+        mode: "Advisory",
+        status: "completed",
+        timestamp: "2026-04-02T19:00:04Z",
+        computationTime: 3.4,
+        solutionId: "sol_min_travel",
+        tradeoffLabel: "minimize_travel",
+        solutionMetrics: {
+          totalDistance: 6200,
+          totalDuration: 8100,
+          totalTardiness: 45,
+          nLateOrders: 3,
+          nBatches: 14,
+          nSelectedTasks: 180,
+          nUnselectedTasks: 60,
+          maxZoneLoad: 32,
+          nZoneCrossings: 2,
+          nSplitOrders: 3,
+          nGroupingViolations: 1,
+          priorityAlignment: 0.88,
+          batchDurationBalance: 0.71,
+          batchDistanceBalance: 0.75
+        },
+        batches: [
+          {
+            batchId: "batch_4",
+            priorityRank: 1,
+            priorityScore: 0.91,
+            cartTypeId: "standard_tote_cart",
+            taskIds: ["task_1111", "task_1112"],
+            orderIds: ["order_588", "order_590"],
+            waveId: "wave_20260402_1840",
+            zones: ["ZONE_A"],
+            route: { startNodeId: "STAGE_A", endNodeId: "PACK_1", distance: 360, duration: 470, nZoneCrossings: 0 },
+            batchMetrics: { distance: 360, duration: 470, nLateOrders: 1, tardiness: 18 }
+          }
+        ],
+        unselectedTasks: [
+          { taskId: "task_1490", reasonCode: "deadline_slack" },
+          { taskId: "task_1491", reasonCode: "capacity_exceeded" }
+        ]
       }
     },
     {
@@ -329,6 +431,48 @@ export const heartbeatPlanSets: HeartbeatPlan[][] = [
         zoneCrossings: 5,
         priorityAlignment: 0.97,
         throughputPicksPerHour: 178
+      },
+      run: {
+        runId: "run_20260402_1900_003",
+        postureName: "Carrier crunch - prioritize cutoff",
+        workflow: "heartbeat",
+        mode: "Advisory",
+        status: "completed",
+        timestamp: "2026-04-02T19:00:04Z",
+        computationTime: 4.1,
+        solutionId: "sol_zero_late",
+        tradeoffLabel: "zero_late_risk",
+        solutionMetrics: {
+          totalDistance: 7600,
+          totalDuration: 9800,
+          totalTardiness: 0,
+          nLateOrders: 0,
+          nBatches: 17,
+          nSelectedTasks: 176,
+          nUnselectedTasks: 64,
+          maxZoneLoad: 39,
+          nZoneCrossings: 5,
+          nSplitOrders: 1,
+          nGroupingViolations: 0,
+          priorityAlignment: 0.97,
+          batchDurationBalance: 0.68,
+          batchDistanceBalance: 0.72
+        },
+        batches: [
+          {
+            batchId: "batch_8",
+            priorityRank: 1,
+            priorityScore: 0.98,
+            cartTypeId: "standard_tote_cart",
+            taskIds: ["task_2001", "task_2002", "task_2003"],
+            orderIds: ["order_701", "order_703"],
+            waveId: "wave_20260402_1840",
+            zones: ["ZONE_B", "ZONE_C"],
+            route: { startNodeId: "STAGE_A", endNodeId: "PACK_1", distance: 560, duration: 740, nZoneCrossings: 2 },
+            batchMetrics: { distance: 560, duration: 740, nLateOrders: 0, tardiness: 0 }
+          }
+        ],
+        unselectedTasks: [{ taskId: "task_2090", reasonCode: "zone_congestion" }]
       }
     }
   ],
@@ -345,6 +489,48 @@ export const heartbeatPlanSets: HeartbeatPlan[][] = [
         zoneCrossings: 3,
         priorityAlignment: 0.94,
         throughputPicksPerHour: 183
+      },
+      run: {
+        runId: "run_20260402_1915_001",
+        postureName: "Day Shift - deadline protected",
+        workflow: "heartbeat",
+        mode: "Advisory",
+        status: "completed",
+        timestamp: "2026-04-02T19:15:05Z",
+        computationTime: 3.6,
+        solutionId: "sol_primary",
+        tradeoffLabel: "primary",
+        solutionMetrics: {
+          totalDistance: 7020,
+          totalDuration: 9280,
+          totalTardiness: 10,
+          nLateOrders: 1,
+          nBatches: 16,
+          nSelectedTasks: 182,
+          nUnselectedTasks: 58,
+          maxZoneLoad: 35,
+          nZoneCrossings: 3,
+          nSplitOrders: 1,
+          nGroupingViolations: 0,
+          priorityAlignment: 0.94,
+          batchDurationBalance: 0.8,
+          batchDistanceBalance: 0.84
+        },
+        batches: [
+          {
+            batchId: "batch_11",
+            priorityRank: 1,
+            priorityScore: 0.93,
+            cartTypeId: "standard_tote_cart",
+            taskIds: ["task_3001", "task_3002"],
+            orderIds: ["order_801", "order_802"],
+            waveId: "wave_20260402_1900",
+            zones: ["ZONE_A", "ZONE_B"],
+            route: { startNodeId: "STAGE_A", endNodeId: "PACK_2", distance: 440, duration: 600, nZoneCrossings: 1 },
+            batchMetrics: { distance: 440, duration: 600, nLateOrders: 0, tardiness: 0 }
+          }
+        ],
+        unselectedTasks: [{ taskId: "task_3099", reasonCode: "deadline_slack" }]
       }
     },
     {
@@ -359,6 +545,48 @@ export const heartbeatPlanSets: HeartbeatPlan[][] = [
         zoneCrossings: 4,
         priorityAlignment: 0.9,
         throughputPicksPerHour: 171
+      },
+      run: {
+        runId: "run_20260402_1915_002",
+        postureName: "Cycle count - congestion first",
+        workflow: "heartbeat",
+        mode: "Advisory",
+        status: "completed",
+        timestamp: "2026-04-02T19:15:05Z",
+        computationTime: 3.9,
+        solutionId: "sol_balance_zones",
+        tradeoffLabel: "balance_zones",
+        solutionMetrics: {
+          totalDistance: 7450,
+          totalDuration: 9700,
+          totalTardiness: 20,
+          nLateOrders: 2,
+          nBatches: 15,
+          nSelectedTasks: 178,
+          nUnselectedTasks: 62,
+          maxZoneLoad: 30,
+          nZoneCrossings: 4,
+          nSplitOrders: 2,
+          nGroupingViolations: 0,
+          priorityAlignment: 0.9,
+          batchDurationBalance: 0.86,
+          batchDistanceBalance: 0.88
+        },
+        batches: [
+          {
+            batchId: "batch_12",
+            priorityRank: 2,
+            priorityScore: 0.88,
+            cartTypeId: "standard_tote_cart",
+            taskIds: ["task_3201", "task_3202"],
+            orderIds: ["order_840", "order_842"],
+            waveId: "wave_20260402_1900",
+            zones: ["ZONE_D", "ZONE_E"],
+            route: { startNodeId: "STAGE_A", endNodeId: "PACK_1", distance: 510, duration: 680, nZoneCrossings: 1 },
+            batchMetrics: { distance: 510, duration: 680, nLateOrders: 1, tardiness: 7 }
+          }
+        ],
+        unselectedTasks: [{ taskId: "task_3299", reasonCode: "zone_congestion" }]
       }
     },
     {
@@ -373,6 +601,51 @@ export const heartbeatPlanSets: HeartbeatPlan[][] = [
         zoneCrossings: 7,
         priorityAlignment: 0.86,
         throughputPicksPerHour: 194
+      },
+      run: {
+        runId: "run_20260402_1915_003",
+        postureName: "Travel-first low-risk",
+        workflow: "heartbeat",
+        mode: "Advisory",
+        status: "completed",
+        timestamp: "2026-04-02T19:15:05Z",
+        computationTime: 3.2,
+        solutionId: "sol_throughput_push",
+        tradeoffLabel: "maximize_throughput",
+        solutionMetrics: {
+          totalDistance: 6800,
+          totalDuration: 8450,
+          totalTardiness: 62,
+          nLateOrders: 4,
+          nBatches: 18,
+          nSelectedTasks: 192,
+          nUnselectedTasks: 48,
+          maxZoneLoad: 41,
+          nZoneCrossings: 7,
+          nSplitOrders: 4,
+          nGroupingViolations: 2,
+          priorityAlignment: 0.86,
+          batchDurationBalance: 0.61,
+          batchDistanceBalance: 0.66
+        },
+        batches: [
+          {
+            batchId: "batch_14",
+            priorityRank: 1,
+            priorityScore: 0.86,
+            cartTypeId: "standard_tote_cart",
+            taskIds: ["task_3401", "task_3402", "task_3403"],
+            orderIds: ["order_901", "order_902", "order_903"],
+            waveId: "wave_20260402_1900",
+            zones: ["ZONE_A", "ZONE_C", "ZONE_E"],
+            route: { startNodeId: "STAGE_A", endNodeId: "PACK_2", distance: 590, duration: 770, nZoneCrossings: 2 },
+            batchMetrics: { distance: 590, duration: 770, nLateOrders: 2, tardiness: 22 }
+          }
+        ],
+        unselectedTasks: [
+          { taskId: "task_3491", reasonCode: "capacity_exceeded" },
+          { taskId: "task_3492", reasonCode: "blocked_location" }
+        ]
       }
     }
   ]

@@ -5,6 +5,7 @@ import type {
   AppDataBundle,
   CopilotMessage,
   DecisionCycle,
+  HeartbeatRunDetails,
   PostureConfig,
   SystemMode,
   WorkspaceTabId
@@ -36,6 +37,8 @@ type AppContextValue = {
   openTab: (tabId: WorkspaceTabId) => void;
   focusTab: (tabId: WorkspaceTabId) => void;
   closeTab: (tabId: WorkspaceTabId) => void;
+  runTabDetails: Record<string, HeartbeatRunDetails>;
+  openRunTab: (run: HeartbeatRunDetails) => void;
   heartbeatRemaining: number;
   heartbeatCycleCount: number;
 };
@@ -63,6 +66,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [copilotWidth, setCopilotWidthState] = useState<number>(COPILOT_WIDTH_DEFAULT);
   const [openTabs, setOpenTabs] = useState<WorkspaceTabId[]>(["decision-feed", "history"]);
   const [activeTab, setActiveTab] = useState<WorkspaceTabId>("decision-feed");
+  const [runTabDetails, setRunTabDetails] = useState<Record<string, HeartbeatRunDetails>>({});
   const [heartbeatRemaining, setHeartbeatRemaining] = useState(HEARTBEAT_INITIAL_SECONDS);
   const [heartbeatCycleCount, setHeartbeatCycleCount] = useState(0);
   const setCopilotWidth = useCallback((width: number) => {
@@ -74,6 +78,14 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   }, []);
   const openTab = useCallback(
     (tabId: WorkspaceTabId) => {
+      focusTab(tabId);
+    },
+    [focusTab]
+  );
+  const openRunTab = useCallback(
+    (run: HeartbeatRunDetails) => {
+      const tabId: WorkspaceTabId = `run:${run.runId}`;
+      setRunTabDetails((current) => ({ ...current, [tabId]: run }));
       focusTab(tabId);
     },
     [focusTab]
@@ -91,6 +103,14 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       setActiveTab((currentActive) => (currentActive === tabId ? nextTabs[nextTabs.length - 1] ?? "decision-feed" : currentActive));
       return nextTabs;
     });
+
+    if (tabId.startsWith("run:")) {
+      setRunTabDetails((current) => {
+        const next = { ...current };
+        delete next[tabId];
+        return next;
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -141,6 +161,8 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       openTab,
       focusTab,
       closeTab,
+      runTabDetails,
+      openRunTab,
       heartbeatRemaining,
       heartbeatCycleCount
     }),
@@ -160,6 +182,8 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       openTab,
       focusTab,
       closeTab,
+      runTabDetails,
+      openRunTab,
       heartbeatRemaining,
       heartbeatCycleCount
     ]

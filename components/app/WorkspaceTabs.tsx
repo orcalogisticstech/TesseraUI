@@ -2,6 +2,7 @@
 
 import { DecisionFeedView } from "@/components/app/DecisionFeedView";
 import { HistoryView } from "@/components/app/HistoryView";
+import { RunDetailsView } from "@/components/app/RunDetailsView";
 import { SettingsView } from "@/components/app/SettingsView";
 import { useAppState } from "@/components/app/AppProvider";
 import type { WorkspaceTabId } from "@/lib/app-types";
@@ -21,11 +22,26 @@ function renderTabBody(tabId: WorkspaceTabId) {
   if (tabId === "history") {
     return <HistoryView />;
   }
-  return <SettingsView />;
+  if (tabId === "settings") {
+    return <SettingsView />;
+  }
+  return null;
+}
+
+function getTabLabel(tabId: WorkspaceTabId, runTabDetails: Record<string, { runId: string; postureName: string }>) {
+  if (tabId in tabMeta) {
+    return tabMeta[tabId as keyof typeof tabMeta].label;
+  }
+
+  const run = runTabDetails[tabId];
+  if (!run) {
+    return "Run";
+  }
+  return `${run.runId} · ${run.postureName}`;
 }
 
 export function WorkspaceTabBar() {
-  const { openTabs, activeTab, focusTab, closeTab } = useAppState();
+  const { openTabs, activeTab, focusTab, closeTab, runTabDetails } = useAppState();
 
   return (
     <section
@@ -53,18 +69,18 @@ export function WorkspaceTabBar() {
                   type="button"
                   className="text-sm"
                   style={{ color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)" }}
-                  onClick={() => focusTab(tabId)}
-                >
-                  {tabMeta[tabId].label}
-                </button>
+                    onClick={() => focusTab(tabId)}
+                  >
+                    {getTabLabel(tabId, runTabDetails)}
+                  </button>
                 {!pinned ? (
                   <button
                     type="button"
                     className="rounded-full px-1 text-xs"
                     style={{ color: "var(--tessera-text-secondary)" }}
                     onClick={() => closeTab(tabId)}
-                    aria-label={`Close ${tabMeta[tabId].label} tab`}
-                    title={`Close ${tabMeta[tabId].label}`}
+                    aria-label={`Close ${getTabLabel(tabId, runTabDetails)} tab`}
+                    title={`Close ${getTabLabel(tabId, runTabDetails)}`}
                   >
                     x
                   </button>
@@ -79,11 +95,13 @@ export function WorkspaceTabBar() {
 }
 
 export function WorkspaceTabContent() {
-  const { activeTab } = useAppState();
+  const { activeTab, runTabDetails } = useAppState();
+
+  const runTab = activeTab.startsWith("run:") ? runTabDetails[activeTab] : null;
 
   return (
     <main className="px-4 pb-4 pt-4 md:px-6 md:pb-6 lg:px-8 lg:pb-8">
-      <section key={activeTab}>{renderTabBody(activeTab)}</section>
+      <section key={activeTab}>{runTab ? <RunDetailsView run={runTab} /> : renderTabBody(activeTab)}</section>
     </main>
   );
 }

@@ -145,12 +145,74 @@ export type HeartbeatPlanMetrics = {
   throughputPicksPerHour: number;
 };
 
+export type OptimizerSolutionMetrics = {
+  totalDistance: number;
+  totalDuration: number;
+  totalTardiness: number;
+  nLateOrders: number;
+  nBatches: number;
+  nSelectedTasks: number;
+  nUnselectedTasks: number;
+  maxZoneLoad: number;
+  nZoneCrossings: number;
+  nSplitOrders: number;
+  nGroupingViolations: number;
+  priorityAlignment: number;
+  batchDurationBalance: number;
+  batchDistanceBalance: number;
+};
+
+export type OptimizerBatch = {
+  batchId: string;
+  priorityRank: number;
+  priorityScore: number;
+  cartTypeId: string;
+  taskIds: string[];
+  orderIds: string[];
+  waveId: string;
+  zones: string[];
+  route: {
+    startNodeId: string;
+    endNodeId: string;
+    distance: number;
+    duration: number;
+    nZoneCrossings: number;
+  };
+  batchMetrics: {
+    distance: number;
+    duration: number;
+    nLateOrders: number;
+    tardiness: number;
+  };
+};
+
+export type OptimizerUnselectedTask = {
+  taskId: string;
+  reasonCode: string;
+};
+
+export type HeartbeatRunDetails = {
+  runId: string;
+  postureName: string;
+  workflow: "heartbeat" | "replan";
+  mode: SystemMode;
+  status: "completed" | "failed" | "partial";
+  timestamp: string;
+  computationTime: number;
+  solutionId: string;
+  tradeoffLabel: string;
+  solutionMetrics: OptimizerSolutionMetrics;
+  batches: OptimizerBatch[];
+  unselectedTasks: OptimizerUnselectedTask[];
+};
+
 export type HeartbeatPlan = {
   id: string;
   label: string;
   isTessChoice: boolean;
   summary: string;
   metrics: HeartbeatPlanMetrics;
+  run: HeartbeatRunDetails;
 };
 
 export type IntegrationConfig = {
@@ -200,7 +262,7 @@ export type CopilotMessage = {
   metricCards?: Array<{ label: string; value: string }>;
 };
 
-export type WorkspaceTabId = "decision-feed" | "history" | "settings";
+export type WorkspaceTabId = "decision-feed" | "history" | "settings" | `run:${string}`;
 
 export type AppDataBundle = {
   session: MockSession;
