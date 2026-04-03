@@ -3,6 +3,7 @@
 import { getAppData } from "@/lib/mock-data";
 import type {
   AppDataBundle,
+  CopilotDraftAttachment,
   CopilotMessage,
   DecisionCycle,
   HeartbeatRunDetails,
@@ -26,6 +27,8 @@ type AppContextValue = {
   setCycles: Dispatch<SetStateAction<DecisionCycle[]>>;
   copilotMessages: CopilotMessage[];
   setCopilotMessages: Dispatch<SetStateAction<CopilotMessage[]>>;
+  copilotDraftAttachments: CopilotDraftAttachment[];
+  setCopilotDraftAttachments: Dispatch<SetStateAction<CopilotDraftAttachment[]>>;
   posturePanelOpen: boolean;
   setPosturePanelOpen: (open: boolean) => void;
   copilotOpen: boolean;
@@ -47,7 +50,7 @@ const AppContext = createContext<AppContextValue | null>(null);
 const COPILOT_WIDTH_STORAGE_KEY = "tessera_copilot_width";
 const COPILOT_WIDTH_MIN = 320;
 const COPILOT_WIDTH_MAX = 560;
-const COPILOT_WIDTH_DEFAULT = 380;
+const COPILOT_WIDTH_DEFAULT = 560;
 const HEARTBEAT_SECONDS = 15 * 60;
 const HEARTBEAT_INITIAL_SECONDS = 60;
 
@@ -61,6 +64,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [posture, setPosture] = useState<PostureConfig>(data.posture);
   const [cycles, setCycles] = useState<DecisionCycle[]>(data.cycles);
   const [copilotMessages, setCopilotMessages] = useState<CopilotMessage[]>(data.copilotMessages);
+  const [copilotDraftAttachments, setCopilotDraftAttachments] = useState<CopilotDraftAttachment[]>([]);
   const [posturePanelOpen, setPosturePanelOpen] = useState(false);
   const [copilotOpen, setCopilotOpen] = useState(false);
   const [copilotWidth, setCopilotWidthState] = useState<number>(COPILOT_WIDTH_DEFAULT);
@@ -150,6 +154,8 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       setCycles,
       copilotMessages,
       setCopilotMessages,
+      copilotDraftAttachments,
+      setCopilotDraftAttachments,
       posturePanelOpen,
       setPosturePanelOpen,
       copilotOpen,
@@ -173,6 +179,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       posture,
       cycles,
       copilotMessages,
+      copilotDraftAttachments,
       posturePanelOpen,
       copilotOpen,
       copilotWidth,

@@ -262,6 +262,13 @@ export type CopilotMessage = {
   metricCards?: Array<{ label: string; value: string }>;
 };
 
+export type CopilotDraftAttachment = {
+  id: string;
+  type: "heartbeat-plan";
+  title: string;
+  subtitle: string;
+};
+
 export type WorkspaceTabId = "decision-feed" | "history" | "settings" | `run:${string}`;
 
 export type AppDataBundle = {

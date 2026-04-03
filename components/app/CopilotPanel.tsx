@@ -15,7 +15,17 @@ function clampCopilotWidth(width: number) {
 }
 
 export function CopilotPanel() {
-  const { copilotOpen, setCopilotOpen, copilotMessages, setCopilotMessages, setPosturePanelOpen, copilotWidth, setCopilotWidth } = useAppState();
+  const {
+    copilotOpen,
+    setCopilotOpen,
+    copilotMessages,
+    setCopilotMessages,
+    copilotDraftAttachments,
+    setCopilotDraftAttachments,
+    setPosturePanelOpen,
+    copilotWidth,
+    setCopilotWidth
+  } = useAppState();
   const [draft, setDraft] = useState("");
   const panelStyle = {
     borderColor: "var(--tessera-border)",
@@ -47,6 +57,7 @@ export function CopilotPanel() {
     };
 
     setCopilotMessages([...copilotMessages, operatorMessage, tessReply]);
+    setCopilotDraftAttachments([]);
     setDraft("");
   };
 
@@ -156,6 +167,30 @@ export function CopilotPanel() {
         </div>
 
         <div className="border-t p-4" style={{ borderColor: "var(--tessera-border)" }}>
+          {copilotDraftAttachments.length > 0 ? (
+            <div className="mb-3 flex flex-wrap gap-2">
+              {copilotDraftAttachments.map((attachment) => (
+                <div key={attachment.id} className="inline-flex items-center gap-2 rounded-[10px] border px-3 py-2" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}>
+                  <div>
+                    <p className="text-xs font-medium">{attachment.title}</p>
+                    <p className="text-[11px]" style={{ color: "var(--tessera-text-secondary)" }}>
+                      {attachment.subtitle}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="rounded-full px-2 py-1 text-xs"
+                    style={{ color: "var(--tessera-text-secondary)" }}
+                    onClick={() => setCopilotDraftAttachments((current) => current.filter((item) => item.id !== attachment.id))}
+                    aria-label={`Remove ${attachment.title}`}
+                    title={`Remove ${attachment.title}`}
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : null}
           <div className="flex gap-2">
             <input
               type="text"

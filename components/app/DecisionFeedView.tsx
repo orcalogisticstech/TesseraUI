@@ -46,7 +46,7 @@ function createRowId(prefix: string) {
 }
 
 export function DecisionFeedView() {
-  const { mode, data, setCopilotMessages, setCopilotOpen, openRunTab, heartbeatRemaining, heartbeatCycleCount } = useAppState();
+  const { mode, data, setCopilotDraftAttachments, setCopilotOpen, openRunTab, heartbeatRemaining, heartbeatCycleCount } = useAppState();
   const [now, setNow] = useState(() => new Date());
   const [activeHeartbeatPlans, setActiveHeartbeatPlans] = useState<HeartbeatPlan[] | null>(null);
   const nextHeartbeatPlanSetIndexRef = useRef(0);
@@ -141,26 +141,21 @@ export function DecisionFeedView() {
       return;
     }
 
-    const timestamp = Date.now();
-    const operatorMessage = {
-      id: `op-hb-${timestamp}`,
-      actor: "operator" as const,
-      text: `Help me evaluate the ${plan.label} heartbeat plan.`
-    };
-
-    const tessMessage = {
-      id: `ts-hb-${timestamp + 1}`,
-      actor: "tess" as const,
-      text: `${plan.label}: ${plan.summary} Late Orders ${plan.metrics.lateOrders}, Selected Tasks ${plan.metrics.selectedTasks}, Max Zone Load ${plan.metrics.maxZoneLoad}, Zone Crossings ${plan.metrics.zoneCrossings}, Priority Alignment ${Math.round(plan.metrics.priorityAlignment * 100)}%, Throughput ${plan.metrics.throughputPicksPerHour} picks/hr.`,
-      grounding: {
-        cycleNumber: heartbeatCycleCount,
-        constraintIds: [],
-        metrics: ["late-orders", "selected-tasks", "max-zone-load", "zone-crossings", "priority-alignment", "throughput"]
-      },
-      action: { label: "Apply this posture change", actionId: "open-posture" as const }
-    };
-
-    setCopilotMessages((current) => [...current, operatorMessage, tessMessage]);
+    setCopilotDraftAttachments((current) => {
+      const existing = current.find((item) => item.id === plan.id);
+      if (existing) {
+        return current;
+      }
+      return [
+        ...current,
+        {
+          id: plan.id,
+          type: "heartbeat-plan",
+          title: `${plan.run.runId} - ${plan.label}`,
+          subtitle: "Heartbeat plan"
+        }
+      ];
+    });
     setCopilotOpen(true);
   };
 
