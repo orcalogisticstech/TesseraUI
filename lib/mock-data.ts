@@ -5,6 +5,7 @@ import type {
   Batch,
   CopilotMessage,
   DecisionCycle,
+  HeartbeatPlan,
   KpiSnapshot,
   Order,
   PostureConfig,
@@ -286,6 +287,97 @@ export const kpiSnapshot: KpiSnapshot = {
   throughputPicksPerHour: 182
 };
 
+export const heartbeatPlanSets: HeartbeatPlan[][] = [
+  [
+    {
+      id: "hb-1-tess",
+      label: "Tess's Choice",
+      isTessChoice: true,
+      summary: "Balances cutoff protection with controlled zone crossings under current posture.",
+      metrics: {
+        lateOrders: 1,
+        selectedTasks: 184,
+        maxZoneLoad: 34,
+        zoneCrossings: 4,
+        priorityAlignment: 0.95,
+        throughputPicksPerHour: 186
+      }
+    },
+    {
+      id: "hb-1-travel",
+      label: "Minimize Travel",
+      isTessChoice: false,
+      summary: "Reduces crossings and load skew but allows more deadline exposure.",
+      metrics: {
+        lateOrders: 3,
+        selectedTasks: 180,
+        maxZoneLoad: 32,
+        zoneCrossings: 2,
+        priorityAlignment: 0.88,
+        throughputPicksPerHour: 176
+      }
+    },
+    {
+      id: "hb-1-deadline",
+      label: "Deadline Guard",
+      isTessChoice: false,
+      summary: "Protects high-priority cutoffs with higher zone concentration.",
+      metrics: {
+        lateOrders: 0,
+        selectedTasks: 176,
+        maxZoneLoad: 39,
+        zoneCrossings: 5,
+        priorityAlignment: 0.97,
+        throughputPicksPerHour: 178
+      }
+    }
+  ],
+  [
+    {
+      id: "hb-2-tess",
+      label: "Tess's Choice",
+      isTessChoice: true,
+      summary: "Rebalances Zone B pressure while preserving throughput.",
+      metrics: {
+        lateOrders: 1,
+        selectedTasks: 182,
+        maxZoneLoad: 35,
+        zoneCrossings: 3,
+        priorityAlignment: 0.94,
+        throughputPicksPerHour: 183
+      }
+    },
+    {
+      id: "hb-2-balance",
+      label: "Balance Zones",
+      isTessChoice: false,
+      summary: "Minimizes max zone load with moderate throughput impact.",
+      metrics: {
+        lateOrders: 2,
+        selectedTasks: 178,
+        maxZoneLoad: 30,
+        zoneCrossings: 4,
+        priorityAlignment: 0.9,
+        throughputPicksPerHour: 171
+      }
+    },
+    {
+      id: "hb-2-output",
+      label: "Throughput Push",
+      isTessChoice: false,
+      summary: "Maximizes picks/hr with more zone crossings and late risk.",
+      metrics: {
+        lateOrders: 4,
+        selectedTasks: 192,
+        maxZoneLoad: 41,
+        zoneCrossings: 7,
+        priorityAlignment: 0.86,
+        throughputPicksPerHour: 194
+      }
+    }
+  ]
+];
+
 export const scenarioDefaults: ScenarioConfig = {
   releaseCount: 84,
   zoneCaps: {
@@ -395,6 +487,7 @@ export function getAppData(session?: MockSession): AppDataBundle {
     workPackages,
     cycles: cycleData,
     alternativesByCycle,
+    heartbeatPlanSets,
     scenarioDefaults,
     settings: tenantSettings,
     users: tenantUsers,

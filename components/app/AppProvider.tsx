@@ -36,6 +36,8 @@ type AppContextValue = {
   openTab: (tabId: WorkspaceTabId) => void;
   focusTab: (tabId: WorkspaceTabId) => void;
   closeTab: (tabId: WorkspaceTabId) => void;
+  heartbeatRemaining: number;
+  heartbeatCycleCount: number;
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -43,6 +45,8 @@ const COPILOT_WIDTH_STORAGE_KEY = "tessera_copilot_width";
 const COPILOT_WIDTH_MIN = 320;
 const COPILOT_WIDTH_MAX = 560;
 const COPILOT_WIDTH_DEFAULT = 380;
+const HEARTBEAT_SECONDS = 15 * 60;
+const HEARTBEAT_INITIAL_SECONDS = 60;
 
 function clampCopilotWidth(width: number) {
   return Math.min(COPILOT_WIDTH_MAX, Math.max(COPILOT_WIDTH_MIN, width));
@@ -59,6 +63,8 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [copilotWidth, setCopilotWidthState] = useState<number>(COPILOT_WIDTH_DEFAULT);
   const [openTabs, setOpenTabs] = useState<WorkspaceTabId[]>(["decision-feed", "history"]);
   const [activeTab, setActiveTab] = useState<WorkspaceTabId>("decision-feed");
+  const [heartbeatRemaining, setHeartbeatRemaining] = useState(HEARTBEAT_INITIAL_SECONDS);
+  const [heartbeatCycleCount, setHeartbeatCycleCount] = useState(0);
   const setCopilotWidth = useCallback((width: number) => {
     setCopilotWidthState(clampCopilotWidth(width));
   }, []);
@@ -99,6 +105,19 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
     window.localStorage.setItem(COPILOT_WIDTH_STORAGE_KEY, String(clampCopilotWidth(copilotWidth)));
   }, [copilotWidth]);
 
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setHeartbeatRemaining((current) => {
+        if (current === 0) {
+          setHeartbeatCycleCount((count) => count + 1);
+          return HEARTBEAT_SECONDS;
+        }
+        return current - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
   const value = useMemo(
     () => ({
       data,
@@ -121,7 +140,9 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       activeTab,
       openTab,
       focusTab,
-      closeTab
+      closeTab,
+      heartbeatRemaining,
+      heartbeatCycleCount
     }),
     [
       data,
@@ -138,7 +159,9 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       activeTab,
       openTab,
       focusTab,
-      closeTab
+      closeTab,
+      heartbeatRemaining,
+      heartbeatCycleCount
     ]
   );
 

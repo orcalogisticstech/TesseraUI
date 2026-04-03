@@ -3,9 +3,6 @@
 import { BrandWordmark } from "@/components/BrandWordmark";
 import { useAppState } from "@/components/app/AppProvider";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
-const HEARTBEAT_SECONDS = 15 * 60;
 
 function formatCountdown(totalSeconds: number) {
   const minutes = Math.floor(totalSeconds / 60);
@@ -14,9 +11,8 @@ function formatCountdown(totalSeconds: number) {
 }
 
 export function TopBar() {
-  const { mode, setMode, copilotOpen, setCopilotOpen, openTab } = useAppState();
+  const { mode, setMode, copilotOpen, setCopilotOpen, openTab, heartbeatRemaining } = useAppState();
   const router = useRouter();
-  const [remaining, setRemaining] = useState(462);
   const modeSelectStyle =
     mode === "Closed-Loop"
       ? {
@@ -29,13 +25,6 @@ export function TopBar() {
           background: "transparent",
           color: "var(--tessera-text-secondary)"
         };
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setRemaining((current) => (current <= 1 ? HEARTBEAT_SECONDS : current - 1));
-    }, 1000);
-    return () => window.clearInterval(timer);
-  }, []);
 
   const logout = async () => {
     await fetch("/api/mock-auth/logout", { method: "POST" });
@@ -54,7 +43,7 @@ export function TopBar() {
       <div className="grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 md:px-6 lg:px-8">
         <div className="flex items-center gap-3 text-sm">
           <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-            NEXT HEARTBEAT: <span style={{ color: "var(--tessera-accent-signal)" }}>{formatCountdown(remaining)}</span>
+            NEXT HEARTBEAT: <span style={{ color: "var(--tessera-accent-signal)" }}>{formatCountdown(heartbeatRemaining)}</span>
           </span>
           <select
             value={mode}

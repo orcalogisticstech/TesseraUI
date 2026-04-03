@@ -136,6 +136,23 @@ export type KpiSnapshot = {
   throughputPicksPerHour: number;
 };
 
+export type HeartbeatPlanMetrics = {
+  lateOrders: number;
+  selectedTasks: number;
+  maxZoneLoad: number;
+  zoneCrossings: number;
+  priorityAlignment: number;
+  throughputPicksPerHour: number;
+};
+
+export type HeartbeatPlan = {
+  id: string;
+  label: string;
+  isTessChoice: boolean;
+  summary: string;
+  metrics: HeartbeatPlanMetrics;
+};
+
 export type IntegrationConfig = {
   platform: "Oracle WMS Cloud" | "SAP EWM" | "Dynamics Business Central" | "Other";
   pollingIntervalSeconds: number;
@@ -196,6 +213,7 @@ export type AppDataBundle = {
   workPackages: WorkPackage[];
   cycles: DecisionCycle[];
   alternativesByCycle: Record<string, AlternativePlan[]>;
+  heartbeatPlanSets: HeartbeatPlan[][];
   scenarioDefaults: ScenarioConfig;
   settings: TenantSettings;
   users: Array<{ id: string; name: string; email: string; role: UserRole }>;

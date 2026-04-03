@@ -1,21 +1,20 @@
 "use client";
 
 import { DetailPanel } from "@/components/app/DetailPanel";
+import { HeartbeatProposalCard } from "@/components/app/HeartbeatProposalCard";
 import { ModeBadge } from "@/components/app/ModeBadge";
 import { StatusChip } from "@/components/app/StatusChip";
 import { TradeoffPanel } from "@/components/app/TradeoffPanel";
 import { useAppState } from "@/components/app/AppProvider";
 import { BrandTile } from "@/components/BrandTile";
-import type { DecisionCycle, DecisionStatus } from "@/lib/app-types";
-import { useEffect, useState } from "react";
+import type { DecisionCycle, DecisionStatus, HeartbeatPlan } from "@/lib/app-types";
+import { useEffect, useRef, useState } from "react";
 import type { DragEvent } from "react";
 
 type PanelState =
   | { type: "none" }
   | { type: "alternatives"; cycle: DecisionCycle }
   | { type: "detail"; cycle: DecisionCycle };
-
-const HEARTBEAT_SECONDS = 15 * 60;
 
 type ObjectiveKey = "tardiness" | "travel_time" | "balance";
 type ObjectiveTier = 1 | 2 | 3;
@@ -49,10 +48,11 @@ function formatCountdown(totalSeconds: number) {
 }
 
 export function DecisionFeedView() {
-  const { mode, data, cycles, setCycles, setCopilotMessages, setCopilotOpen } = useAppState();
+  const { mode, data, cycles, setCycles, setCopilotMessages, setCopilotOpen, heartbeatRemaining, heartbeatCycleCount } = useAppState();
   const [panel, setPanel] = useState<PanelState>({ type: "none" });
   const [now, setNow] = useState(() => new Date());
-  const [heartbeatRemaining, setHeartbeatRemaining] = useState(462);
+  const [activeHeartbeatPlans, setActiveHeartbeatPlans] = useState<HeartbeatPlan[] | null>(null);
+  const nextHeartbeatPlanSetIndexRef = useRef(0);
   const [objectiveTiers, setObjectiveTiers] = useState<Record<ObjectiveTier, ObjectiveKey[]>>({
     1: ["tardiness", "travel_time"],
     2: ["balance"],
@@ -70,10 +70,20 @@ export function DecisionFeedView() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setNow(new Date());
-      setHeartbeatRemaining((current) => (current <= 1 ? HEARTBEAT_SECONDS : current - 1));
     }, 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const totalPlanSets = data.heartbeatPlanSets.length;
+    if (heartbeatCycleCount < 1 || totalPlanSets === 0) {
+      return;
+    }
+
+    const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
+    setActiveHeartbeatPlans(data.heartbeatPlanSets[normalizedIndex]);
+    nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
+  }, [heartbeatCycleCount, data.heartbeatPlanSets]);
 
   const selectedAlternatives = panel.type === "alternatives" ? data.alternativesByCycle[panel.cycle.id] ?? [] : [];
   const lateOrdersColor = data.kpi.lateOrders > 2 ? "var(--tessera-danger)" : data.kpi.lateOrders > 0 ? "var(--tessera-warning)" : "var(--tessera-success)";
@@ -161,6 +171,8 @@ export function DecisionFeedView() {
           </p>
         </article>
       </section>
+
+      {activeHeartbeatPlans ? <HeartbeatProposalCard plans={activeHeartbeatPlans} mode={mode} onAdopt={() => setActiveHeartbeatPlans(null)} /> : null}
 
       <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
         <article className={metricCardClass}>
