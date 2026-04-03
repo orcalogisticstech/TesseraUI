@@ -82,6 +82,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [heartbeatRemaining, setHeartbeatRemaining] = useState(HEARTBEAT_INITIAL_SECONDS);
   const [heartbeatCycleCount, setHeartbeatCycleCount] = useState(0);
   const nextHeartbeatPlanSetIndexRef = useRef(0);
+  const activeHeartbeatPlansRef = useRef<HeartbeatPlan[] | null>(null);
   const setCopilotWidth = useCallback((width: number) => {
     setCopilotWidthState(clampCopilotWidth(width));
   }, []);
@@ -141,6 +142,10 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   }, []);
 
   useEffect(() => {
+    activeHeartbeatPlansRef.current = activeHeartbeatPlans;
+  }, [activeHeartbeatPlans]);
+
+  useEffect(() => {
     const savedValue = window.localStorage.getItem(COPILOT_WIDTH_STORAGE_KEY);
     const parsedValue = Number(savedValue);
     if (Number.isFinite(parsedValue)) {
@@ -156,11 +161,13 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
     const timer = window.setInterval(() => {
       setHeartbeatRemaining((current) => {
         if (current === 0) {
-          const totalPlanSets = data.heartbeatPlanSets.length;
-          if (totalPlanSets > 0) {
-            const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
-            setActiveHeartbeatPlans(data.heartbeatPlanSets[normalizedIndex]);
-            nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
+          if (activeHeartbeatPlansRef.current === null) {
+            const totalPlanSets = data.heartbeatPlanSets.length;
+            if (totalPlanSets > 0) {
+              const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
+              setActiveHeartbeatPlans(data.heartbeatPlanSets[normalizedIndex]);
+              nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
+            }
           }
           setHeartbeatCycleCount((count) => count + 1);
           return HEARTBEAT_SECONDS;

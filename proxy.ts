@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 const PUBLIC_APP_ROUTES = new Set(["/app/login"]);
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (!pathname.startsWith("/app")) {
