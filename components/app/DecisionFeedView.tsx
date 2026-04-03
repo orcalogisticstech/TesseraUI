@@ -10,6 +10,10 @@ type ObjectiveKey = "tardiness" | "travel_time" | "balance";
 type ObjectiveTier = 1 | 2 | 3;
 type PenaltyKey = "zone_cross" | "split_order" | "grouping_violation";
 type PenaltyLevel = "Relaxed" | "Normal" | "Strict";
+type BlockedLocation = { id: string; locationId: string; reason: string };
+type BlockedZone = { id: string; zoneId: string; reason: string };
+type BlockedAisle = { id: string; aisleId: string; reason: string };
+type BlockedTerminal = { id: string; nodeId: string; reason: string };
 
 const objectiveLabels: Record<ObjectiveKey, string> = {
   tardiness: "Deadline Protection",
@@ -37,6 +41,10 @@ function formatCountdown(totalSeconds: number) {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
+function createRowId(prefix: string) {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 export function DecisionFeedView() {
   const { mode, data, setCopilotMessages, setCopilotOpen, openRunTab, heartbeatRemaining, heartbeatCycleCount } = useAppState();
   const [now, setNow] = useState(() => new Date());
@@ -53,9 +61,24 @@ export function DecisionFeedView() {
     grouping_violation: "Normal"
   });
   const [isConfigEditing, setIsConfigEditing] = useState(false);
+  const [isObjectivesOpen, setIsObjectivesOpen] = useState(false);
+  const [isPenaltiesOpen, setIsPenaltiesOpen] = useState(false);
+  const [isLimitsOpen, setIsLimitsOpen] = useState(false);
   const [availableCarts, setAvailableCarts] = useState(18);
   const [maxBatches, setMaxBatches] = useState(20);
   const [maxTasksPerZone, setMaxTasksPerZone] = useState(40);
+  const [isFloorStateEditing, setIsFloorStateEditing] = useState(false);
+  const [isBlockedLocationsOpen, setIsBlockedLocationsOpen] = useState(false);
+  const [isBlockedZonesOpen, setIsBlockedZonesOpen] = useState(false);
+  const [isBlockedAislesOpen, setIsBlockedAislesOpen] = useState(false);
+  const [isBlockedTerminalsOpen, setIsBlockedTerminalsOpen] = useState(false);
+  const [blockedLocations, setBlockedLocations] = useState<BlockedLocation[]>([
+    { id: "loc-1", locationId: "A1-24-006A", reason: "cycle_count" },
+    { id: "loc-2", locationId: "B2-10-004", reason: "replenishment_pending" }
+  ]);
+  const [blockedZones, setBlockedZones] = useState<BlockedZone[]>([{ id: "zone-1", zoneId: "ZONE_D", reason: "equipment_down" }]);
+  const [blockedAisles, setBlockedAisles] = useState<BlockedAisle[]>([{ id: "aisle-1", aisleId: "A1-24", reason: "spill" }]);
+  const [blockedTerminals, setBlockedTerminals] = useState<BlockedTerminal[]>([{ id: "terminal-1", nodeId: "PACK_2", reason: "equipment_down" }]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -230,15 +253,21 @@ export function DecisionFeedView() {
               Set optimization priorities, policy strictness, and run limits.
             </p>
           </div>
-          <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setIsConfigEditing((current) => !current)}>
-            {isConfigEditing ? "Save" : "Edit"}
-          </button>
+          <div className="flex items-center gap-2">
+            <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setIsConfigEditing((current) => !current)}>
+              {isConfigEditing ? "Save" : "Edit"}
+            </button>
+          </div>
         </div>
 
         <div className="space-y-3">
-          <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Objectives
-          </h3>
+          <button type="button" className="flex w-full items-center justify-between" onClick={() => setIsObjectivesOpen((current) => !current)}>
+            <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Objectives
+            </h3>
+            <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isObjectivesOpen ? "Collapse" : "Expand"}</span>
+          </button>
+          {isObjectivesOpen ? (
           <div className="grid gap-3 lg:grid-cols-3">
             {[1, 2, 3].map((tier) => {
               const typedTier = tier as ObjectiveTier;
@@ -324,12 +353,17 @@ export function DecisionFeedView() {
               );
             })}
           </div>
+          ) : null}
         </div>
 
         <div className="space-y-3 border-t pt-4" style={{ borderColor: "var(--tessera-border)" }}>
-          <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Penalties
-          </h3>
+          <button type="button" className="flex w-full items-center justify-between" onClick={() => setIsPenaltiesOpen((current) => !current)}>
+            <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Penalties
+            </h3>
+            <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isPenaltiesOpen ? "Collapse" : "Expand"}</span>
+          </button>
+          {isPenaltiesOpen ? (
           <div className="grid gap-3 md:grid-cols-3">
             {penaltyControlMeta.map((penalty) => (
               <label key={penalty.key} className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -353,12 +387,17 @@ export function DecisionFeedView() {
               </label>
             ))}
           </div>
+          ) : null}
         </div>
 
         <div className="space-y-3 border-t pt-4" style={{ borderColor: "var(--tessera-border)" }}>
-          <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Limits
-          </h3>
+          <button type="button" className="flex w-full items-center justify-between" onClick={() => setIsLimitsOpen((current) => !current)}>
+            <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Limits
+            </h3>
+            <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isLimitsOpen ? "Collapse" : "Expand"}</span>
+          </button>
+          {isLimitsOpen ? (
           <div className="grid gap-3 md:grid-cols-3">
             <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
               Available Carts
@@ -400,6 +439,241 @@ export function DecisionFeedView() {
               />
             </label>
           </div>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="app-card space-y-6 p-4 md:p-6">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <h2 className="font-display text-xl uppercase tracking-[-0.01em]">Update Floor State</h2>
+            <p className="mt-1 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+              Update temporary physical blockers used in optimizer `state`.
+            </p>
+          </div>
+          <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setIsFloorStateEditing((current) => !current)}>
+            {isFloorStateEditing ? "Save" : "Edit"}
+          </button>
+        </div>
+
+        <div className="space-y-3">
+          <button type="button" className="flex w-full items-center justify-between" onClick={() => setIsBlockedLocationsOpen((current) => !current)}>
+            <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Blocked Locations
+            </h3>
+            <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isBlockedLocationsOpen ? "Collapse" : "Expand"}</span>
+          </button>
+          {isBlockedLocationsOpen ? (
+            <div className="space-y-2">
+              {blockedLocations.map((row, index) => (
+                <div key={row.id} className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
+                  <input
+                    type="text"
+                    value={row.locationId}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedLocations((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, locationId: event.target.value } : item)))
+                    }
+                    placeholder="location_id"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <input
+                    type="text"
+                    value={row.reason}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedLocations((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
+                    }
+                    placeholder="reason"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn-secondary px-3 py-2 text-xs"
+                    disabled={!isFloorStateEditing}
+                    onClick={() => setBlockedLocations((current) => current.filter((_, itemIndex) => itemIndex !== index))}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="btn-secondary px-3 py-2 text-xs"
+                disabled={!isFloorStateEditing}
+                onClick={() => setBlockedLocations((current) => [...current, { id: createRowId("loc"), locationId: "", reason: "" }])}
+              >
+                Add Location Block
+              </button>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="space-y-3 border-t pt-4" style={{ borderColor: "var(--tessera-border)" }}>
+          <button type="button" className="flex w-full items-center justify-between" onClick={() => setIsBlockedZonesOpen((current) => !current)}>
+            <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Blocked Zones
+            </h3>
+            <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isBlockedZonesOpen ? "Collapse" : "Expand"}</span>
+          </button>
+          {isBlockedZonesOpen ? (
+            <div className="space-y-2">
+              {blockedZones.map((row, index) => (
+                <div key={row.id} className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
+                  <input
+                    type="text"
+                    value={row.zoneId}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedZones((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, zoneId: event.target.value } : item)))
+                    }
+                    placeholder="zone_id"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <input
+                    type="text"
+                    value={row.reason}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedZones((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
+                    }
+                    placeholder="reason"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn-secondary px-3 py-2 text-xs"
+                    disabled={!isFloorStateEditing}
+                    onClick={() => setBlockedZones((current) => current.filter((_, itemIndex) => itemIndex !== index))}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="btn-secondary px-3 py-2 text-xs"
+                disabled={!isFloorStateEditing}
+                onClick={() => setBlockedZones((current) => [...current, { id: createRowId("zone"), zoneId: "", reason: "" }])}
+              >
+                Add Zone Block
+              </button>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="space-y-3 border-t pt-4" style={{ borderColor: "var(--tessera-border)" }}>
+          <button type="button" className="flex w-full items-center justify-between" onClick={() => setIsBlockedAislesOpen((current) => !current)}>
+            <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Blocked Aisles
+            </h3>
+            <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isBlockedAislesOpen ? "Collapse" : "Expand"}</span>
+          </button>
+          {isBlockedAislesOpen ? (
+            <div className="space-y-2">
+              {blockedAisles.map((row, index) => (
+                <div key={row.id} className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
+                  <input
+                    type="text"
+                    value={row.aisleId}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedAisles((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, aisleId: event.target.value } : item)))
+                    }
+                    placeholder="aisle_id"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <input
+                    type="text"
+                    value={row.reason}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedAisles((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
+                    }
+                    placeholder="reason"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn-secondary px-3 py-2 text-xs"
+                    disabled={!isFloorStateEditing}
+                    onClick={() => setBlockedAisles((current) => current.filter((_, itemIndex) => itemIndex !== index))}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="btn-secondary px-3 py-2 text-xs"
+                disabled={!isFloorStateEditing}
+                onClick={() => setBlockedAisles((current) => [...current, { id: createRowId("aisle"), aisleId: "", reason: "" }])}
+              >
+                Add Aisle Block
+              </button>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="space-y-3 border-t pt-4" style={{ borderColor: "var(--tessera-border)" }}>
+          <button type="button" className="flex w-full items-center justify-between" onClick={() => setIsBlockedTerminalsOpen((current) => !current)}>
+            <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Blocked Terminals
+            </h3>
+            <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isBlockedTerminalsOpen ? "Collapse" : "Expand"}</span>
+          </button>
+          {isBlockedTerminalsOpen ? (
+            <div className="space-y-2">
+              {blockedTerminals.map((row, index) => (
+                <div key={row.id} className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
+                  <input
+                    type="text"
+                    value={row.nodeId}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedTerminals((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, nodeId: event.target.value } : item)))
+                    }
+                    placeholder="node_id"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <input
+                    type="text"
+                    value={row.reason}
+                    disabled={!isFloorStateEditing}
+                    onChange={(event) =>
+                      setBlockedTerminals((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
+                    }
+                    placeholder="reason"
+                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn-secondary px-3 py-2 text-xs"
+                    disabled={!isFloorStateEditing}
+                    onClick={() => setBlockedTerminals((current) => current.filter((_, itemIndex) => itemIndex !== index))}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="btn-secondary px-3 py-2 text-xs"
+                disabled={!isFloorStateEditing}
+                onClick={() => setBlockedTerminals((current) => [...current, { id: createRowId("terminal"), nodeId: "", reason: "" }])}
+              >
+                Add Terminal Block
+              </button>
+            </div>
+          ) : null}
         </div>
       </section>
 

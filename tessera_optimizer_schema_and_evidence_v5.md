@@ -6,7 +6,7 @@ This document defines the target request and response schemas for Tessera's opti
 
 **One canonical request schema** serves both workflows. The schema has a fixed structure; what varies between heartbeat and replan is which fields are required vs. optional. Heartbeat stays thin (close to OptiPick's proven integration footprint). Replan adds richer state.
 
-**Configuration is split into two layers.** `site_config` captures slow-changing physical truths about the warehouse — cart types, routing policies, zone crossing rules, terminal nodes, travel metric. `job_config` captures per-shift or mid-shift adjustable settings — blocked aisles, objective weights, penalties, available carts, batch limits, grouping split rules. Both are inlined in every request; the optimizer is stateless.
+**Configuration is split into two layers.** `site_config` captures slow-changing physical truths about the warehouse — cart types, routing policies, zone crossing rules, terminal nodes, travel metric. `job_config` captures per-shift or mid-shift adjustable settings — objective weights, penalties, available carts, batch limits, grouping split rules. Both are inlined in every request; the optimizer is stateless. All temporary physical unavailability (blocked locations, zones, aisles, terminals) lives in `state`, regardless of whether it was set by the operator or detected by the adapter.
 
 **The optimizer is state-driven.** The request doesn't specify what event occurred or whether the optimizer should do a local repair, partial re-optimization, or full re-optimization. On a replan, the optimizer compares the current tasks and state against the previous plan and infers both what changed and the appropriate scope of response.
 
@@ -59,9 +59,6 @@ This document defines the target request and response schemas for Tessera's opti
   },
 
   "job_config": {
-    "blocked_aisles": [],
-    "no_go_zones": [],
-    "blocked_terminals": [],
     "weights": {
       "travel_time": 0.4,
       "tardiness": 0.5,
@@ -180,6 +177,20 @@ This document defines the target request and response schemas for Tessera's opti
         "zone_id": "ZONE_D",
         "reason": "equipment_down"
       }
+    ],
+
+    "blocked_aisles": [
+      {
+        "aisle_id": "A1-24",
+        "reason": "spill"
+      }
+    ],
+
+    "blocked_terminals": [
+      {
+        "node_id": "PACK_2",
+        "reason": "equipment_down"
+      }
     ]
   }
 }
@@ -195,8 +206,6 @@ This document defines the target request and response schemas for Tessera's opti
 
 **`job_config`.** Per-shift or mid-shift adjustable settings.
 
-`blocked_aisles` and `no_go_zones` are temporary layout overrides (a spill blocking an aisle, a cycle count closing a zone). `blocked_terminals` removes specific start/end nodes from consideration (a pack station is down this shift).
-
 `weights` is the posture — the objective weights that express strategic intent. The weights must form a convex combination (sum to 1.0). A higher `tardiness` weight means the optimizer will sacrifice travel efficiency to protect deadline compliance. The exact way these weights parameterize the objective function is an optimizer-internal concern; the contract is that increasing a weight increases the optimizer's emphasis on that objective relative to the others.
 
 `penalties` are costs the optimizer incurs for undesirable structural outcomes (crossing zones, splitting orders, violating grouping rules). The `grouping_violation` penalty applies when tasks with group_ids listed in `preferred_group_splits` end up in the same batch.
@@ -207,7 +216,7 @@ This document defines the target request and response schemas for Tessera's opti
 
 **`pick_work_release`.** Wrapper around the task list. `release_id` tracks which batch of tasks was sent together. `tasks` is the array of task objects the optimizer should plan.
 
-**`state`.** Floor context the optimizer can't derive from the tasks alone. The optimizer is state-driven: on a replan, it examines the tasks (with their current statuses and planning constraints) and the state (external floor load, current plan, blocked locations and zones) and determines the right response. There is no explicit trigger or event signal — the state *is* the trigger. `external_floor_load` provides per-zone task and batch counts for work on the floor that is *not* included in this request. `current_plan` carries the previous cycle's batch assignments so the optimizer can do incremental repair rather than replanning from scratch. `blocked_locations` and `blocked_zones` identify temporarily unavailable physical locations and zones, each with a reason (cycle count, replenishment pending, equipment down, etc.). See Section 4 for the full breakdown.
+**`state`.** All temporary physical unavailability and floor context lives here — whether set by the operator ("Zone D is closed for cycle count this shift") or detected by the adapter ("location B2-10-004 awaiting replenishment"). The orchestrator merges both sources into a single state snapshot before sending the request. The optimizer is state-driven: on a replan, it examines the tasks and the state and determines the right response. `external_floor_load` provides per-zone task and batch counts for work on the floor that is *not* included in this request. `current_plan` carries the previous cycle's batch assignments so the optimizer can do incremental repair rather than replanning from scratch. `blocked_locations`, `blocked_zones`, `blocked_aisles`, and `blocked_terminals` identify temporarily unavailable physical elements, each with a reason. See Section 4 for the full breakdown.
 
 ---
 
@@ -253,9 +262,6 @@ This document defines the target request and response schemas for Tessera's opti
       "travel_metric": "DISTANCE"
     },
     "job_config": {
-      "blocked_aisles": [],
-      "no_go_zones": [],
-      "blocked_terminals": [],
       "weights": {
         "travel_time": 0.4,
         "tardiness": 0.5,
@@ -486,7 +492,7 @@ Error codes include: `infeasible` (hard constraints cannot all be satisfied), `t
 - `workflow = "heartbeat"`, `mode`
 - `job` (full envelope)
 - `site_config` (full block)
-- `job_config` (full block — weights, penalties, available_carts, max_batches, max_tasks_per_zone; aisle/zone/terminal overrides and group split lists may be empty)
+- `job_config` (full block — weights, penalties, available_carts, max_batches, max_tasks_per_zone; group split lists may be empty)
 - `pick_work_release` with `tasks[]`, where each task has at minimum:
   - `task_id`, `task_status`, `order_id`, `location_ids`
 
@@ -502,6 +508,8 @@ Error codes include: `infeasible` (hard constraints cannot all be satisfied), `t
 - `state.current_plan`
 - `state.blocked_locations`
 - `state.blocked_zones`
+- `state.blocked_aisles`
+- `state.blocked_terminals`
 - SKU dimensions/weights
 - `tasks[].planning_constraints` (optional only if the adapter/optimizer default mapping from `task_status` is in force; otherwise explicit)
 
@@ -534,9 +542,10 @@ Everything required in heartbeat, plus:
 - `tasks[].current_list_id`
 - `state.blocked_locations`
 - `state.blocked_zones`
+- `state.blocked_aisles`
+- `state.blocked_terminals`
 
-### Semantics
-The optimizer is state-driven. On a replan, it examines the tasks (with their current statuses and planning constraints) and the state (external floor load, current plan, blocked locations and zones) and determines the right response. A task pointing at a blocked location signals a short pick. A new high-priority task not in the current plan signals a hot order. Changed deadline fields signal a cutoff shift. The optimizer infers what happened from the data and scopes its re-optimization accordingly — there is no explicit trigger or event signal.
+### Semantics On a replan, it examines the tasks (with their current statuses and planning constraints) and the state (external floor load, current plan, blocked locations and zones) and determines the right response. A task pointing at a blocked location signals a short pick. A new high-priority task not in the current plan signals a hot order. Changed deadline fields signal a cutoff shift. The optimizer infers what happened from the data and scopes its re-optimization accordingly — there is no explicit trigger or event signal.
 
 The optimizer uses the difference between the current plan and the current task/state snapshot to determine the appropriate scope of re-optimization (local repair, partial, or full).
 
@@ -548,7 +557,9 @@ Completed tasks may appear in replan requests — for example, when an order has
 
 # 4) State
 
-The `state` object captures floor context the optimizer can't derive from the tasks in the request alone. The design principle is: the adapter provides raw observable facts plus a small number of normalized or derived control fields; the optimizer owns the higher-order reasoning (congestion assessment, release throttling decisions, zone balance evaluation).
+The `state` object is the single place for all temporary physical unavailability and floor context. It captures everything the optimizer can't derive from the tasks alone — whether the source is operator configuration ("Zone D is closed for cycle count this shift"), adapter-detected conditions ("location B2-10-004 awaiting replenishment"), or infrastructure state ("pack station 2 is down"). The orchestrator merges all sources into one state snapshot before sending the request.
+
+The design principle is: the adapter and orchestrator provide raw observable facts; the optimizer owns the higher-order reasoning (congestion assessment, release throttling decisions, zone balance evaluation).
 
 Together with the task-level information in `pick_work_release` (each task's status, zone, deadlines, and planning constraints), the state gives the optimizer a complete picture of floor conditions. For a short pick replan, the optimizer sees the affected location in `blocked_locations`, finds the task pointing at it, and either reroutes to an alternate location or defers — all while knowing from `current_plan` which batch to repair and from `external_floor_load` whether the floor can absorb replacement work. For a congestion-driven replan, the optimizer counts tasks per zone from the request, adds the `external_floor_load` per-zone counts, checks `current_plan` to see how batches are distributed, and rebalances. For a blocked zone, the optimizer sees the zone in `blocked_zones`, avoids routing or releasing work into it, and redistributes across remaining zones.
 
@@ -609,6 +620,28 @@ Locations that are temporarily unavailable. Each entry carries a reason so the o
 ]
 ```
 Zones that are temporarily unavailable, with a reason. The optimizer avoids routing or releasing work into blocked zones. Optional in heartbeat, strongly recommended in replan.
+
+## `state.blocked_aisles`
+```json
+[
+  {
+    "aisle_id": "A1-24",
+    "reason": "spill"
+  }
+]
+```
+Aisles that are temporarily impassable. The optimizer avoids routing through blocked aisles. Optional in heartbeat, strongly recommended in replan.
+
+## `state.blocked_terminals`
+```json
+[
+  {
+    "node_id": "PACK_2",
+    "reason": "equipment_down"
+  }
+]
+```
+Start or end nodes that are temporarily unavailable (a pack station is down, a staging area is full). The optimizer excludes these from route start/end assignments. Optional in heartbeat, strongly recommended in replan.
 
 ---
 
@@ -706,6 +739,8 @@ These are the fields the adapter is expected to populate from the warehouse envi
 | `state.current_plan` | Adapter | **Derived from WMS-visible data** / normalized | Medium | Current grouping structures such as lists, warehouse orders, or shipment/activity groupings | OptiPick’s `list_id` is strong evidence for existing grouping, and SAP EWM publicly states that warehouse tasks are grouped into warehouse orders. Together, these support normalizing current active grouping into Tessera batches. ([docs.optioryx.com](https://docs.optioryx.com/docs/optipick/latest/optimize-cluster-optimize-cluster-post/); [help.sap.com](https://help.sap.com/docs/SAP_EXTENDED_WAREHOUSE_MANAGEMENT/9832125c23154a179bfa1784cdc9577a/40525dc2619a256ee10000000a4450e5.html)) | Optional | Required |
 | `state.blocked_locations` | WMS / adapter | **Direct from WMS** or **Derived from WMS-visible data** | Medium | Location status, replenishment dependency, inventory/location control tables, exception feeds | Oracle publicly documents replenishment-dependent picking tasks and a Replenishment to Active API; blocked or unavailable pick locations are therefore operationally visible. Other WMSs may expose location status directly or require adapter logic. ([docs.oracle.com](https://docs.oracle.com/en/cloud/saas/readiness/logistics/24d/wms24d/24D-wms-wn-f35242.htm)) | Optional | Strongly recommended |
 | `state.blocked_zones` | Adapter | **Derived from WMS-visible data** and sometimes direct | Medium to High | Zone membership, blocked locations, area/zone status feeds, operational exception feeds | Zone membership is directly available in systems like Business Central. A normalized “blocked zone” may be directly available in some WMSs, but can also be derived by the adapter from blocked locations or operational area-status signals. ([learn.microsoft.com](https://learn.microsoft.com/en-us/dynamics365/business-central/application/base-application/table/microsoft.warehouse.activity.warehouse-activity-line)) | Optional | Strongly recommended |
+| `state.blocked_aisles` | Orchestrator / adapter | **Integration-configured or derived** | Low to Medium | Operator input (spill, maintenance) or derived from blocked locations within an aisle | Aisle identity is implicit in location IDs in most WMS platforms. Operator-driven blocks are typically entered through the orchestrator. | Optional | Strongly recommended |
+| `state.blocked_terminals` | Orchestrator / adapter | **Integration-configured or derived** | Low | Operator input (pack station down, staging full) or derived from equipment status | Terminal nodes are defined in `site_config`; blocking them is an operational decision surfaced through the orchestrator or adapter. | Optional | Strongly recommended |
 
 ## 6.2 Integration-configured and Tessera-owned inputs
 
@@ -718,7 +753,7 @@ These fields still belong in the request/response contract, but they are not thi
 | `site_config.cart_types` | Integration config / customer setup | **Integration-configured** | Site setup / customer operations data | Required | Required |
 | `site_config.allowed_routing_policies`, `zone_crossing`, `order_splitting_allowed`, `travel_metric` | Tessera / integration config | **Tessera-defined or integration-configured** | Tessera policy model plus site setup | Required | Required |
 | `job_config.weights`, `penalties`, `required_group_splits`, `preferred_group_splits` | Tessera | **Tessera-defined** | Operator posture / Tess / orchestrator | Required | Required |
-| `job_config.available_carts`, `max_batches`, `max_tasks_per_zone`, temporary blockers like `blocked_aisles`, `no_go_zones`, `blocked_terminals` | Tessera / integration config | **Integration-configured** | Shift-level configuration, operator posture, or orchestrator logic | Required | Required |
+| `job_config.available_carts`, `max_batches`, `max_tasks_per_zone` | Tessera / integration config | **Integration-configured** | Shift-level configuration, operator posture, or orchestrator logic | Required | Required |
 | `group_ids` | Adapter / customer rules | **Integration-configured** | Customer-specific business rules or adapter enrichment | Recommended when split rules are configured | Recommended |
 | Response-only metrics such as `priority_alignment`, `batch_duration_balance`, `batch_distance_balance`, `max_zone_load`, and tradeoff labels | Tessera | **Tessera-defined** | Optimizer output and post-processing | Produced by optimizer | Produced by optimizer |
 
