@@ -127,10 +127,13 @@ export type DecisionCycle = {
 };
 
 export type KpiSnapshot = {
-  activeWork: { current: number; cap: number };
-  lateRiskOrders: number;
-  maxZoneUtilization: number;
-  cycleStatus: string;
+  lateOrders: number;
+  selectedTasks: number;
+  candidateTasks: number;
+  maxZoneLoad: number;
+  zoneCrossings: number;
+  priorityAlignment: number;
+  throughputPicksPerHour: number;
 };
 
 export type IntegrationConfig = {

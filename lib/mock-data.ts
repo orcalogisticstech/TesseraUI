@@ -277,10 +277,13 @@ export const alternativesByCycle: Record<string, AlternativePlan[]> = {
 };
 
 export const kpiSnapshot: KpiSnapshot = {
-  activeWork: { current: 146, cap: 200 },
-  lateRiskOrders: 1,
-  maxZoneUtilization: 74,
-  cycleStatus: "Next heartbeat in 07:42"
+  lateOrders: 1,
+  selectedTasks: 180,
+  candidateTasks: 240,
+  maxZoneLoad: 35,
+  zoneCrossings: 4,
+  priorityAlignment: 0.95,
+  throughputPicksPerHour: 182
 };
 
 export const scenarioDefaults: ScenarioConfig = {

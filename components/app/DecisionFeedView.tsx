@@ -6,46 +6,115 @@ import { StatusChip } from "@/components/app/StatusChip";
 import { TradeoffPanel } from "@/components/app/TradeoffPanel";
 import { useAppState } from "@/components/app/AppProvider";
 import { BrandTile } from "@/components/BrandTile";
-import type { ApiName, DecisionCycle, DecisionStatus, TriggerType } from "@/lib/app-types";
-import { useMemo, useState } from "react";
+import type { DecisionCycle, DecisionStatus } from "@/lib/app-types";
+import { useEffect, useState } from "react";
+import type { DragEvent } from "react";
 
 type PanelState =
   | { type: "none" }
   | { type: "alternatives"; cycle: DecisionCycle }
   | { type: "detail"; cycle: DecisionCycle };
 
-const timeRanges = ["Last 2 hours", "This shift", "24 hours"];
+const HEARTBEAT_SECONDS = 15 * 60;
+
+type ObjectiveKey = "tardiness" | "travel_time" | "balance";
+type ObjectiveTier = 1 | 2 | 3;
+type PenaltyKey = "zone_cross" | "split_order" | "grouping_violation";
+type PenaltyLevel = "Relaxed" | "Normal" | "Strict";
+
+const objectiveLabels: Record<ObjectiveKey, string> = {
+  tardiness: "Deadline Protection",
+  travel_time: "Travel Efficiency",
+  balance: "Zone Balance"
+};
+
+const tierDescriptions: Record<ObjectiveTier, string> = {
+  1: "Optimize first",
+  2: "Secondary",
+  3: "Tertiary"
+};
+
+const objectiveDragKey = "application/x-tessera-objective";
+
+const penaltyControlMeta: Array<{ key: PenaltyKey; label: string }> = [
+  { key: "zone_cross", label: "Zone Crossing" },
+  { key: "split_order", label: "Split Orders" },
+  { key: "grouping_violation", label: "Grouping Violations" }
+];
+
+function formatCountdown(totalSeconds: number) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
 
 export function DecisionFeedView() {
-  const { mode, posture, data, cycles, setCycles, setPosturePanelOpen, setCopilotMessages, setCopilotOpen } = useAppState();
-  const [apiFilter, setApiFilter] = useState<"All" | ApiName>("All");
-  const [triggerFilter, setTriggerFilter] = useState<"All" | TriggerType>("All");
-  const [statusFilter, setStatusFilter] = useState<"All" | DecisionStatus>("All");
-  const [timeRange, setTimeRange] = useState(timeRanges[1]);
-  const [connectionError, setConnectionError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { mode, data, cycles, setCycles, setCopilotMessages, setCopilotOpen } = useAppState();
   const [panel, setPanel] = useState<PanelState>({ type: "none" });
+  const [now, setNow] = useState(() => new Date());
+  const [heartbeatRemaining, setHeartbeatRemaining] = useState(462);
+  const [objectiveTiers, setObjectiveTiers] = useState<Record<ObjectiveTier, ObjectiveKey[]>>({
+    1: ["tardiness", "travel_time"],
+    2: ["balance"],
+    3: []
+  });
+  const [penaltyLevels, setPenaltyLevels] = useState<Record<PenaltyKey, PenaltyLevel>>({
+    zone_cross: "Normal",
+    split_order: "Strict",
+    grouping_violation: "Normal"
+  });
+  const [availableCarts, setAvailableCarts] = useState(18);
+  const [maxBatches, setMaxBatches] = useState(20);
+  const [maxTasksPerZone, setMaxTasksPerZone] = useState(40);
 
-  const filtered = useMemo(
-    () =>
-      cycles.filter((cycle) => {
-        const apiMatch = apiFilter === "All" || cycle.apisTouched.includes(apiFilter);
-        const triggerMatch = triggerFilter === "All" || cycle.triggerType === triggerFilter;
-        const statusMatch = statusFilter === "All" || cycle.status === statusFilter;
-        return apiMatch && triggerMatch && statusMatch;
-      }),
-    [apiFilter, triggerFilter, statusFilter, cycles]
-  );
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setNow(new Date());
+      setHeartbeatRemaining((current) => (current <= 1 ? HEARTBEAT_SECONDS : current - 1));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const selectedAlternatives = panel.type === "alternatives" ? data.alternativesByCycle[panel.cycle.id] ?? [] : [];
+  const lateOrdersColor = data.kpi.lateOrders > 2 ? "var(--tessera-danger)" : data.kpi.lateOrders > 0 ? "var(--tessera-warning)" : "var(--tessera-success)";
+  const zoneLoadColor = data.kpi.maxZoneLoad > 40 ? "var(--tessera-danger)" : data.kpi.maxZoneLoad > 32 ? "var(--tessera-warning)" : "var(--tessera-success)";
+  const zoneCrossingsColor = data.kpi.zoneCrossings > 6 ? "var(--tessera-danger)" : data.kpi.zoneCrossings > 3 ? "var(--tessera-warning)" : "var(--tessera-success)";
+  const priorityAlignmentColor = data.kpi.priorityAlignment < 0.85 ? "var(--tessera-danger)" : data.kpi.priorityAlignment < 0.92 ? "var(--tessera-warning)" : "var(--tessera-success)";
+  const throughputColor = data.kpi.throughputPicksPerHour < 150 ? "var(--tessera-danger)" : data.kpi.throughputPicksPerHour < 170 ? "var(--tessera-warning)" : "var(--tessera-success)";
+  const metricCardClass = "app-card flex h-full flex-col p-4";
+  const metricLabelClass = "min-h-[2.75rem] text-xs uppercase tracking-[0.08em]";
 
   const setCycleStatus = (cycleId: string, status: DecisionStatus) => {
     setCycles((current) => current.map((cycle) => (cycle.id === cycleId ? { ...cycle, status } : cycle)));
   };
 
-  const simulateLoading = () => {
-    setLoading(true);
-    window.setTimeout(() => setLoading(false), 500);
+  const moveObjective = (objective: ObjectiveKey, nextTier: ObjectiveTier, nextIndex?: number) => {
+    setObjectiveTiers((current) => {
+      const tierKeys: ObjectiveTier[] = [1, 2, 3];
+      const fromTier = tierKeys.find((tier) => current[tier].includes(objective));
+      if (!fromTier) {
+        return current;
+      }
+
+      const nextState: Record<ObjectiveTier, ObjectiveKey[]> = {
+        1: [...current[1]],
+        2: [...current[2]],
+        3: [...current[3]]
+      };
+      nextState[fromTier] = nextState[fromTier].filter((item) => item !== objective);
+
+      const insertIndex = nextIndex === undefined ? nextState[nextTier].length : Math.max(0, Math.min(nextIndex, nextState[nextTier].length));
+      nextState[nextTier].splice(insertIndex, 0, objective);
+      return nextState;
+    });
+  };
+
+  const getDraggedObjective = (event: DragEvent<HTMLElement>) => {
+    const objective = event.dataTransfer.getData(objectiveDragKey) as ObjectiveKey;
+    if (objective in objectiveLabels) {
+      return objective;
+    }
+    return null;
   };
 
   const askTessAboutCycle = (cycle: DecisionCycle) => {
@@ -75,117 +144,210 @@ export function DecisionFeedView() {
 
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
-      <section className="app-card p-4 md:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+      <section className="grid gap-3 md:grid-cols-2">
+        <article className="app-card p-4 md:p-6">
+          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Today</p>
+          <p className="mt-2 font-display text-[30px]" style={{ color: "var(--tessera-text-primary)" }}>
+            {now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+          </p>
+          <p className="mt-1 font-code text-base" style={{ color: "var(--tessera-text-primary)" }}>
+            {now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" })}
+          </p>
+        </article>
+        <article className="app-card p-4 md:p-6">
+          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Next Heartbeat</p>
+          <p className="mt-2 font-display text-[36px]" style={{ color: "var(--tessera-accent-signal)" }}>
+            {formatCountdown(heartbeatRemaining)}
+          </p>
+        </article>
+      </section>
+
+      <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
+        <article className={metricCardClass}>
+          <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Late Orders</p>
+          <p className="font-display text-[28px]" style={{ color: lateOrdersColor }}>
+            {data.kpi.lateOrders}
+          </p>
+        </article>
+        <article className={metricCardClass}>
+          <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Selected Tasks</p>
+          <p className="font-display text-[28px]">{data.kpi.selectedTasks}</p>
+          <p className="mt-1 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+            of {data.kpi.candidateTasks} candidates
+          </p>
+        </article>
+        <article className={metricCardClass}>
+          <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Max Zone Load</p>
+          <p className="font-display text-[28px]" style={{ color: zoneLoadColor }}>
+            {data.kpi.maxZoneLoad}
+          </p>
+        </article>
+        <article className={metricCardClass}>
+          <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Zone Crossings</p>
+          <p className="font-display text-[28px]" style={{ color: zoneCrossingsColor }}>
+            {data.kpi.zoneCrossings}
+          </p>
+        </article>
+        <article className={metricCardClass}>
+          <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Priority Alignment</p>
+          <p className="font-display text-[28px]" style={{ color: priorityAlignmentColor }}>
+            {Math.round(data.kpi.priorityAlignment * 100)}%
+          </p>
+        </article>
+        <article className={metricCardClass}>
+          <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Throughput</p>
+          <p className="font-display text-[28px]" style={{ color: throughputColor }}>
+            {data.kpi.throughputPicksPerHour}
+          </p>
+          <p className="mt-1 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+            picks/hr
+          </p>
+        </article>
+      </section>
+
+      <section className="app-card space-y-5 p-4 md:p-6">
+        <div className="flex items-end justify-between gap-3">
           <div>
-            <p className="font-code text-xs uppercase tracking-[0.12em]" style={{ color: "var(--tessera-text-secondary)" }}>
-              Shift Header
-            </p>
-            <h1 className="font-display text-3xl uppercase tracking-[-0.01em]">Day Shift - Mar 23</h1>
+            <h2 className="font-display text-xl uppercase tracking-[-0.01em]">Posture</h2>
             <p className="mt-1 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-              {posture.presetName}. Zone B capped at 70% active work.
+              Tier objectives by strategic priority, then tune penalty strictness and release limits.
             </p>
           </div>
-          <button type="button" className="btn-secondary" onClick={() => setPosturePanelOpen(true)}>
-            Edit Posture
-          </button>
         </div>
-      </section>
 
-      <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        <article className="app-card p-4">
-          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Active Work</p>
-          <p className="mt-2 font-display text-[28px]" style={{ color: data.kpi.activeWork.current / data.kpi.activeWork.cap > 0.95 ? "var(--tessera-danger)" : data.kpi.activeWork.current / data.kpi.activeWork.cap > 0.8 ? "var(--tessera-warning)" : "var(--tessera-success)" }}>
-            {data.kpi.activeWork.current}/{data.kpi.activeWork.cap}
-          </p>
-        </article>
-        <article className="app-card p-4">
-          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Late-Risk Orders</p>
-          <p className="mt-2 font-display text-[28px]" style={{ color: data.kpi.lateRiskOrders > 3 ? "var(--tessera-danger)" : data.kpi.lateRiskOrders > 0 ? "var(--tessera-warning)" : "var(--tessera-success)" }}>
-            {data.kpi.lateRiskOrders}
-          </p>
-        </article>
-        <article className="app-card p-4">
-          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Zone Balance</p>
-          <p className="mt-2 font-display text-[28px]" style={{ color: data.kpi.maxZoneUtilization > 85 ? "var(--tessera-danger)" : data.kpi.maxZoneUtilization > 70 ? "var(--tessera-warning)" : "var(--tessera-success)" }}>
-            {data.kpi.maxZoneUtilization}%
-          </p>
-        </article>
-        <article className="app-card p-4">
-          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Cycle Status</p>
-          <p className="mt-2 font-code text-lg">{data.kpi.cycleStatus}</p>
-        </article>
-      </section>
-
-      <section className="app-card p-4 md:p-6">
-        <div className="flex flex-wrap items-end gap-3">
-          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            API
-            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={apiFilter} onChange={(event) => setApiFilter(event.target.value as "All" | ApiName)}>
-              <option>All</option>
-              <option>Release</option>
-              <option>Batching</option>
-              <option>Prioritize</option>
-            </select>
-          </label>
-
-          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Trigger
-            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={triggerFilter} onChange={(event) => setTriggerFilter(event.target.value as "All" | TriggerType)}>
-              <option>All</option>
-              <option>Heartbeat</option>
-              <option>Batch Completed</option>
-              <option>Rush Order</option>
-              <option>Congestion Alert</option>
-            </select>
-          </label>
-
-          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Status
-            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as "All" | DecisionStatus)}>
-              <option>All</option>
-              <option>Pending</option>
-              <option>Executed</option>
-              <option>Overridden</option>
-              <option>Anomaly</option>
-            </select>
-          </label>
-
-          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Time range
-            <select className="mt-1 block rounded-[10px] border bg-transparent px-3 py-2 text-sm" style={{ borderColor: "var(--tessera-border)" }} value={timeRange} onChange={(event) => setTimeRange(event.target.value)}>
-              {timeRanges.map((range) => (
-                <option key={range}>{range}</option>
-              ))}
-            </select>
-          </label>
-
-          <button type="button" className="btn-secondary ml-auto" onClick={simulateLoading}>
-            Simulate Loading
-          </button>
-          <button type="button" className="btn-secondary" onClick={() => setConnectionError((current) => !current)}>
-            {connectionError ? "Clear Error" : "Simulate Error"}
-          </button>
+        <div className="grid gap-3 lg:grid-cols-3">
+          {[1, 2, 3].map((tier) => {
+            const typedTier = tier as ObjectiveTier;
+            return (
+              <article
+                key={tier}
+                className="rounded-[12px] border p-3"
+                style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-surface) 82%, var(--tessera-bg-page))" }}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  const objective = getDraggedObjective(event);
+                  if (objective) {
+                    moveObjective(objective, typedTier);
+                  }
+                }}
+              >
+                <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                  Tier {tier}
+                </p>
+                <p className="mt-1 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+                  {tierDescriptions[typedTier]}
+                </p>
+                <div className="mt-3 min-h-[70px] space-y-2">
+                  {objectiveTiers[typedTier].length === 0 ? (
+                    <div className="rounded-[10px] border border-dashed px-3 py-2 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+                      Drop objective here
+                    </div>
+                  ) : (
+                    objectiveTiers[typedTier].map((objective, index) => (
+                      <button
+                        key={objective}
+                        type="button"
+                        draggable
+                        onDragStart={(event) => {
+                          event.dataTransfer.setData(objectiveDragKey, objective);
+                          event.dataTransfer.effectAllowed = "move";
+                        }}
+                        onDragOver={(event) => event.preventDefault()}
+                        onDrop={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          const draggedObjective = getDraggedObjective(event);
+                          if (draggedObjective) {
+                            moveObjective(draggedObjective, typedTier, index);
+                          }
+                        }}
+                        className="flex w-full items-center justify-between rounded-[10px] border px-3 py-2 text-left text-sm"
+                        style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}
+                      >
+                        <span>{objectiveLabels[objective]}</span>
+                        <span className="font-code text-xs" style={{ color: "var(--tessera-text-secondary)" }}>drag</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
-      </section>
 
-      {connectionError && (
-        <section className="app-card p-4 text-sm" style={{ borderColor: "var(--tessera-danger)", color: "var(--tessera-danger)" }}>
-          Connection to WMS interrupted. Last successful sync: 14:11.
-        </section>
-      )}
-
-      {loading ? (
-        <div className="space-y-3">
-          {[0, 1, 2].map((item) => (
-            <div key={item} className="app-card animate-pulse p-6">
-              <div className="h-4 w-1/3 rounded bg-white/10" />
-              <div className="mt-3 h-4 w-full rounded bg-white/10" />
-              <div className="mt-2 h-4 w-4/5 rounded bg-white/10" />
-            </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          {penaltyControlMeta.map((penalty) => (
+            <label key={penalty.key} className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              {penalty.label}
+              <select
+                className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                value={penaltyLevels[penalty.key]}
+                onChange={(event) =>
+                  setPenaltyLevels((current) => ({
+                    ...current,
+                    [penalty.key]: event.target.value as PenaltyLevel
+                  }))
+                }
+              >
+                <option>Relaxed</option>
+                <option>Normal</option>
+                <option>Strict</option>
+              </select>
+            </label>
           ))}
         </div>
-      ) : filtered.length === 0 ? (
+      </section>
+
+      <section className="app-card space-y-4 p-4 md:p-6">
+        <div>
+          <h2 className="font-display text-xl uppercase tracking-[-0.01em]">Limits</h2>
+          <p className="mt-1 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+            Set release and floor-cap boundaries for this run.
+          </p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            Available Carts
+            <input
+              type="number"
+              min={1}
+              max={60}
+              value={availableCarts}
+              onChange={(event) => setAvailableCarts(Number(event.target.value))}
+              className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+              style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+            />
+          </label>
+          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            Max Batches
+            <input
+              type="number"
+              min={1}
+              max={80}
+              value={maxBatches}
+              onChange={(event) => setMaxBatches(Number(event.target.value))}
+              className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+              style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+            />
+          </label>
+          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            Max Tasks / Zone
+            <input
+              type="number"
+              min={1}
+              max={120}
+              value={maxTasksPerZone}
+              onChange={(event) => setMaxTasksPerZone(Number(event.target.value))}
+              className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+              style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+            />
+          </label>
+        </div>
+      </section>
+
+      {cycles.length === 0 ? (
         <section className="app-card p-6 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
           <div className="flex items-center gap-3">
             <BrandTile className="h-6 w-auto" variant="collapsed" />
@@ -194,7 +356,7 @@ export function DecisionFeedView() {
         </section>
       ) : (
         <div className="space-y-3">
-          {filtered.map((cycle) => (
+          {cycles.map((cycle) => (
             <article key={cycle.id} className="app-card p-4 md:p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>

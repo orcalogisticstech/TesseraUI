@@ -9,7 +9,7 @@ import type { WorkspaceTabId } from "@/lib/app-types";
 const pinnedTabs: WorkspaceTabId[] = ["decision-feed", "history"];
 
 const tabMeta: Record<WorkspaceTabId, { label: string }> = {
-  "decision-feed": { label: "Decision Feed" },
+  "decision-feed": { label: "Command" },
   history: { label: "History" },
   settings: { label: "Settings" }
 };
