@@ -52,6 +52,7 @@ export function DecisionFeedView() {
     split_order: "Strict",
     grouping_violation: "Normal"
   });
+  const [isConfigEditing, setIsConfigEditing] = useState(false);
   const [availableCarts, setAvailableCarts] = useState(18);
   const [maxBatches, setMaxBatches] = useState(20);
   const [maxTasksPerZone, setMaxTasksPerZone] = useState(40);
@@ -221,145 +222,184 @@ export function DecisionFeedView() {
         </article>
       </section>
 
-      <section className="app-card space-y-5 p-4 md:p-6">
+      <section className="app-card space-y-6 p-4 md:p-6">
         <div className="flex items-end justify-between gap-3">
           <div>
-            <h2 className="font-display text-xl uppercase tracking-[-0.01em]">Posture</h2>
+            <h2 className="font-display text-xl uppercase tracking-[-0.01em]">Configure Job</h2>
             <p className="mt-1 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-              Tier objectives by strategic priority, then tune penalty strictness and release limits.
+              Set optimization priorities, policy strictness, and run limits.
             </p>
+          </div>
+          <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setIsConfigEditing((current) => !current)}>
+            {isConfigEditing ? "Save" : "Edit"}
+          </button>
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            Objectives
+          </h3>
+          <div className="grid gap-3 lg:grid-cols-3">
+            {[1, 2, 3].map((tier) => {
+              const typedTier = tier as ObjectiveTier;
+              return (
+                <article
+                  key={tier}
+                  className="rounded-[12px] border p-3"
+                  style={{
+                    borderColor: "var(--tessera-border)",
+                    background: "color-mix(in srgb, var(--tessera-bg-surface) 82%, var(--tessera-bg-page))",
+                    opacity: isConfigEditing ? 1 : 0.9
+                  }}
+                  onDragOver={(event) => {
+                    if (isConfigEditing) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onDrop={(event) => {
+                    if (!isConfigEditing) {
+                      return;
+                    }
+                    event.preventDefault();
+                    const objective = getDraggedObjective(event);
+                    if (objective) {
+                      moveObjective(objective, typedTier);
+                    }
+                  }}
+                >
+                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                    Tier {tier}
+                  </p>
+                  <p className="mt-1 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+                    {tierDescriptions[typedTier]}
+                  </p>
+                  <div className="mt-3 min-h-[70px] space-y-2">
+                    {objectiveTiers[typedTier].length === 0 ? (
+                      <div className="rounded-[10px] border border-dashed px-3 py-2 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+                        Drop objective here
+                      </div>
+                    ) : (
+                      objectiveTiers[typedTier].map((objective, index) => (
+                        <button
+                          key={objective}
+                          type="button"
+                          draggable={isConfigEditing}
+                          onDragStart={(event) => {
+                            if (!isConfigEditing) {
+                              return;
+                            }
+                            event.dataTransfer.setData(objectiveDragKey, objective);
+                            event.dataTransfer.effectAllowed = "move";
+                          }}
+                          onDragOver={(event) => {
+                            if (isConfigEditing) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onDrop={(event) => {
+                            if (!isConfigEditing) {
+                              return;
+                            }
+                            event.preventDefault();
+                            event.stopPropagation();
+                            const draggedObjective = getDraggedObjective(event);
+                            if (draggedObjective) {
+                              moveObjective(draggedObjective, typedTier, index);
+                            }
+                          }}
+                          className="flex w-full items-center justify-between rounded-[10px] border px-3 py-2 text-left text-sm"
+                          style={{
+                            borderColor: "var(--tessera-border)",
+                            background: "var(--tessera-bg-page)",
+                            cursor: isConfigEditing ? "grab" : "default"
+                          }}
+                        >
+                          <span>{objectiveLabels[objective]}</span>
+                          <span className="font-code text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{isConfigEditing ? "drag" : "locked"}</span>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
 
-        <div className="grid gap-3 lg:grid-cols-3">
-          {[1, 2, 3].map((tier) => {
-            const typedTier = tier as ObjectiveTier;
-            return (
-              <article
-                key={tier}
-                className="rounded-[12px] border p-3"
-                style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-surface) 82%, var(--tessera-bg-page))" }}
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={(event) => {
-                  event.preventDefault();
-                  const objective = getDraggedObjective(event);
-                  if (objective) {
-                    moveObjective(objective, typedTier);
+        <div className="space-y-3 border-t pt-4" style={{ borderColor: "var(--tessera-border)" }}>
+          <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            Penalties
+          </h3>
+          <div className="grid gap-3 md:grid-cols-3">
+            {penaltyControlMeta.map((penalty) => (
+              <label key={penalty.key} className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                {penalty.label}
+                <select
+                  className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                  style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+                  disabled={!isConfigEditing}
+                  value={penaltyLevels[penalty.key]}
+                  onChange={(event) =>
+                    setPenaltyLevels((current) => ({
+                      ...current,
+                      [penalty.key]: event.target.value as PenaltyLevel
+                    }))
                   }
-                }}
-              >
-                <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                  Tier {tier}
-                </p>
-                <p className="mt-1 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
-                  {tierDescriptions[typedTier]}
-                </p>
-                <div className="mt-3 min-h-[70px] space-y-2">
-                  {objectiveTiers[typedTier].length === 0 ? (
-                    <div className="rounded-[10px] border border-dashed px-3 py-2 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-                      Drop objective here
-                    </div>
-                  ) : (
-                    objectiveTiers[typedTier].map((objective, index) => (
-                      <button
-                        key={objective}
-                        type="button"
-                        draggable
-                        onDragStart={(event) => {
-                          event.dataTransfer.setData(objectiveDragKey, objective);
-                          event.dataTransfer.effectAllowed = "move";
-                        }}
-                        onDragOver={(event) => event.preventDefault()}
-                        onDrop={(event) => {
-                          event.preventDefault();
-                          event.stopPropagation();
-                          const draggedObjective = getDraggedObjective(event);
-                          if (draggedObjective) {
-                            moveObjective(draggedObjective, typedTier, index);
-                          }
-                        }}
-                        className="flex w-full items-center justify-between rounded-[10px] border px-3 py-2 text-left text-sm"
-                        style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}
-                      >
-                        <span>{objectiveLabels[objective]}</span>
-                        <span className="font-code text-xs" style={{ color: "var(--tessera-text-secondary)" }}>drag</span>
-                      </button>
-                    ))
-                  )}
-                </div>
-              </article>
-            );
-          })}
+                >
+                  <option>Relaxed</option>
+                  <option>Normal</option>
+                  <option>Strict</option>
+                </select>
+              </label>
+            ))}
+          </div>
         </div>
 
-        <div className="grid gap-3 md:grid-cols-3">
-          {penaltyControlMeta.map((penalty) => (
-            <label key={penalty.key} className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-              {penalty.label}
-              <select
+        <div className="space-y-3 border-t pt-4" style={{ borderColor: "var(--tessera-border)" }}>
+          <h3 className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            Limits
+          </h3>
+          <div className="grid gap-3 md:grid-cols-3">
+            <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Available Carts
+              <input
+                type="number"
+                min={1}
+                max={60}
+                disabled={!isConfigEditing}
+                value={availableCarts}
+                onChange={(event) => setAvailableCarts(Number(event.target.value))}
                 className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
                 style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
-                value={penaltyLevels[penalty.key]}
-                onChange={(event) =>
-                  setPenaltyLevels((current) => ({
-                    ...current,
-                    [penalty.key]: event.target.value as PenaltyLevel
-                  }))
-                }
-              >
-                <option>Relaxed</option>
-                <option>Normal</option>
-                <option>Strict</option>
-              </select>
+              />
             </label>
-          ))}
-        </div>
-      </section>
-
-      <section className="app-card space-y-4 p-4 md:p-6">
-        <div>
-          <h2 className="font-display text-xl uppercase tracking-[-0.01em]">Limits</h2>
-          <p className="mt-1 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-            Set release and floor-cap boundaries for this run.
-          </p>
-        </div>
-        <div className="grid gap-3 md:grid-cols-3">
-          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Available Carts
-            <input
-              type="number"
-              min={1}
-              max={60}
-              value={availableCarts}
-              onChange={(event) => setAvailableCarts(Number(event.target.value))}
-              className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
-              style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
-            />
-          </label>
-          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Max Batches
-            <input
-              type="number"
-              min={1}
-              max={80}
-              value={maxBatches}
-              onChange={(event) => setMaxBatches(Number(event.target.value))}
-              className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
-              style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
-            />
-          </label>
-          <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-            Max Tasks / Zone
-            <input
-              type="number"
-              min={1}
-              max={120}
-              value={maxTasksPerZone}
-              onChange={(event) => setMaxTasksPerZone(Number(event.target.value))}
-              className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
-              style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
-            />
-          </label>
+            <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Max Batches
+              <input
+                type="number"
+                min={1}
+                max={80}
+                disabled={!isConfigEditing}
+                value={maxBatches}
+                onChange={(event) => setMaxBatches(Number(event.target.value))}
+                className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+              />
+            </label>
+            <label className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Max Tasks / Zone
+              <input
+                type="number"
+                min={1}
+                max={120}
+                disabled={!isConfigEditing}
+                value={maxTasksPerZone}
+                onChange={(event) => setMaxTasksPerZone(Number(event.target.value))}
+                className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+              />
+            </label>
+          </div>
         </div>
       </section>
 
