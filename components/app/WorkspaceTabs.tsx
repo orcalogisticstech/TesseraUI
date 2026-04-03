@@ -28,7 +28,22 @@ function renderTabBody(tabId: WorkspaceTabId) {
   return null;
 }
 
-function getTabLabel(tabId: WorkspaceTabId, runTabDetails: Record<string, { runId: string; postureName: string }>) {
+const strategyLabelMap: Record<string, string> = {
+  primary: "Tess's Choice",
+  minimize_travel: "Minimize Travel",
+  zero_late_risk: "Zero Late Risk",
+  balance_zones: "Balance Zones",
+  maximize_throughput: "Throughput Push"
+};
+
+function truncateLabel(label: string, maxLength: number) {
+  if (label.length <= maxLength) {
+    return label;
+  }
+  return `${label.slice(0, maxLength - 1)}…`;
+}
+
+function getTabLabel(tabId: WorkspaceTabId, runTabDetails: Record<string, { runId: string; postureName: string; tradeoffLabel: string }>) {
   if (tabId in tabMeta) {
     return tabMeta[tabId as keyof typeof tabMeta].label;
   }
@@ -37,7 +52,8 @@ function getTabLabel(tabId: WorkspaceTabId, runTabDetails: Record<string, { runI
   if (!run) {
     return "Run";
   }
-  return `${run.runId} · ${run.postureName}`;
+  const strategy = strategyLabelMap[run.tradeoffLabel] ?? run.tradeoffLabel.replace(/_/g, " ");
+  return truncateLabel(`${run.runId} - ${strategy}`, 34);
 }
 
 export function WorkspaceTabBar() {
