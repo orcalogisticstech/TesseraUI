@@ -8,14 +8,36 @@ type HeartbeatProposalCardProps = {
   onAdopt: (planId: string) => void;
 };
 
-const metricRows: Array<{ key: keyof HeartbeatPlan["metrics"]; label: string; format: (value: number) => string }> = [
-  { key: "lateOrders", label: "Late Orders", format: (value) => String(value) },
-  { key: "selectedTasks", label: "Selected Tasks", format: (value) => String(value) },
-  { key: "maxZoneLoad", label: "Max Zone Load", format: (value) => String(value) },
-  { key: "zoneCrossings", label: "Zone Crossings", format: (value) => String(value) },
-  { key: "priorityAlignment", label: "Priority Alignment", format: (value) => `${Math.round(value * 100)}%` },
-  { key: "throughputPicksPerHour", label: "Throughput", format: (value) => `${value} picks/hr` }
+const metricRows: Array<{
+  key: keyof HeartbeatPlan["metrics"];
+  label: string;
+  direction: "higher" | "lower";
+  format: (value: number) => string;
+}> = [
+  { key: "lateOrders", label: "Late Orders", direction: "lower", format: (value) => String(value) },
+  { key: "selectedTasks", label: "Selected Tasks", direction: "higher", format: (value) => String(value) },
+  { key: "maxZoneLoad", label: "Max Zone Load", direction: "lower", format: (value) => String(value) },
+  { key: "zoneCrossings", label: "Zone Crossings", direction: "lower", format: (value) => String(value) },
+  { key: "priorityAlignment", label: "Priority Alignment", direction: "higher", format: (value) => `${Math.round(value * 100)}%` },
+  { key: "throughputPicksPerHour", label: "Throughput", direction: "higher", format: (value) => `${value} picks/hr` }
 ];
+
+function getMetricColor(row: (typeof metricRows)[number], plans: HeartbeatPlan[], value: number) {
+  const values = plans.map((plan) => plan.metrics[row.key]);
+  const bestValue = row.direction === "higher" ? Math.max(...values) : Math.min(...values);
+  const worstValue = row.direction === "higher" ? Math.min(...values) : Math.max(...values);
+
+  if (bestValue === worstValue) {
+    return "var(--tessera-warning)";
+  }
+  if (value === bestValue) {
+    return "var(--tessera-success)";
+  }
+  if (value === worstValue) {
+    return "var(--tessera-danger)";
+  }
+  return "var(--tessera-warning)";
+}
 
 export function HeartbeatProposalCard({ plans, mode, onAdopt }: HeartbeatProposalCardProps) {
   return (
@@ -53,11 +75,14 @@ export function HeartbeatProposalCard({ plans, mode, onAdopt }: HeartbeatProposa
             {metricRows.map((row) => (
               <tr key={row.key}>
                 <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{row.label}</td>
-                {plans.map((plan) => (
+                {plans.map((plan) => {
+                  const value = plan.metrics[row.key];
+                  return (
                   <td key={`${plan.id}-${row.key}`} className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>
-                    {row.format(plan.metrics[row.key])}
+                    <span style={{ color: getMetricColor(row, plans, value) }}>{row.format(value)}</span>
                   </td>
-                ))}
+                  );
+                })}
               </tr>
             ))}
             <tr>
