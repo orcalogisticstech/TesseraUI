@@ -2,17 +2,19 @@
 
 import { getAppData } from "@/lib/mock-data";
 import type {
+  AdoptedPlanHistoryEntry,
   AppDataBundle,
   CopilotDraftAttachment,
   CopilotMessage,
   DecisionCycle,
+  HeartbeatPlan,
   HeartbeatRunDetails,
   PostureConfig,
   SystemMode,
   WorkspaceTabId
 } from "@/lib/app-types";
 import type { MockSession } from "@/lib/mock-auth";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
@@ -42,6 +44,10 @@ type AppContextValue = {
   closeTab: (tabId: WorkspaceTabId) => void;
   runTabDetails: Record<string, HeartbeatRunDetails>;
   openRunTab: (run: HeartbeatRunDetails) => void;
+  activeHeartbeatPlans: HeartbeatPlan[] | null;
+  clearActiveHeartbeatPlans: () => void;
+  adoptedPlansHistory: AdoptedPlanHistoryEntry[];
+  addAdoptedPlanToHistory: (plan: HeartbeatPlan) => void;
   heartbeatRemaining: number;
   heartbeatCycleCount: number;
 };
@@ -71,8 +77,11 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [openTabs, setOpenTabs] = useState<WorkspaceTabId[]>(["decision-feed", "history"]);
   const [activeTab, setActiveTab] = useState<WorkspaceTabId>("decision-feed");
   const [runTabDetails, setRunTabDetails] = useState<Record<string, HeartbeatRunDetails>>({});
+  const [activeHeartbeatPlans, setActiveHeartbeatPlans] = useState<HeartbeatPlan[] | null>(null);
+  const [adoptedPlansHistory, setAdoptedPlansHistory] = useState<AdoptedPlanHistoryEntry[]>([]);
   const [heartbeatRemaining, setHeartbeatRemaining] = useState(HEARTBEAT_INITIAL_SECONDS);
   const [heartbeatCycleCount, setHeartbeatCycleCount] = useState(0);
+  const nextHeartbeatPlanSetIndexRef = useRef(0);
   const setCopilotWidth = useCallback((width: number) => {
     setCopilotWidthState(clampCopilotWidth(width));
   }, []);
@@ -116,6 +125,20 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       });
     }
   }, []);
+  const clearActiveHeartbeatPlans = useCallback(() => {
+    setActiveHeartbeatPlans(null);
+  }, []);
+
+  const addAdoptedPlanToHistory = useCallback((plan: HeartbeatPlan) => {
+    setAdoptedPlansHistory((current) => [
+      {
+        id: `adopted-${Date.now()}`,
+        adoptedAt: new Date().toISOString(),
+        plan
+      },
+      ...current
+    ]);
+  }, []);
 
   useEffect(() => {
     const savedValue = window.localStorage.getItem(COPILOT_WIDTH_STORAGE_KEY);
@@ -133,6 +156,12 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
     const timer = window.setInterval(() => {
       setHeartbeatRemaining((current) => {
         if (current === 0) {
+          const totalPlanSets = data.heartbeatPlanSets.length;
+          if (totalPlanSets > 0) {
+            const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
+            setActiveHeartbeatPlans(data.heartbeatPlanSets[normalizedIndex]);
+            nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
+          }
           setHeartbeatCycleCount((count) => count + 1);
           return HEARTBEAT_SECONDS;
         }
@@ -140,7 +169,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       });
     }, 1000);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [data.heartbeatPlanSets]);
 
   const value = useMemo(
     () => ({
@@ -169,6 +198,10 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       closeTab,
       runTabDetails,
       openRunTab,
+      activeHeartbeatPlans,
+      clearActiveHeartbeatPlans,
+      adoptedPlansHistory,
+      addAdoptedPlanToHistory,
       heartbeatRemaining,
       heartbeatCycleCount
     }),
@@ -191,6 +224,10 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       closeTab,
       runTabDetails,
       openRunTab,
+      activeHeartbeatPlans,
+      clearActiveHeartbeatPlans,
+      adoptedPlansHistory,
+      addAdoptedPlanToHistory,
       heartbeatRemaining,
       heartbeatCycleCount
     ]

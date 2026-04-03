@@ -2,8 +2,7 @@
 
 import { HeartbeatProposalCard } from "@/components/app/HeartbeatProposalCard";
 import { useAppState } from "@/components/app/AppProvider";
-import type { HeartbeatPlan } from "@/lib/app-types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { DragEvent } from "react";
 
 type ObjectiveKey = "tardiness" | "travel_time" | "balance";
@@ -46,10 +45,18 @@ function createRowId(prefix: string) {
 }
 
 export function DecisionFeedView() {
-  const { mode, data, setCopilotDraftAttachments, setCopilotOpen, openRunTab, heartbeatRemaining, heartbeatCycleCount } = useAppState();
-  const [now, setNow] = useState(() => new Date());
-  const [activeHeartbeatPlans, setActiveHeartbeatPlans] = useState<HeartbeatPlan[] | null>(null);
-  const nextHeartbeatPlanSetIndexRef = useRef(0);
+  const {
+    mode,
+    data,
+    setCopilotDraftAttachments,
+    setCopilotOpen,
+    openRunTab,
+    activeHeartbeatPlans,
+    clearActiveHeartbeatPlans,
+    addAdoptedPlanToHistory,
+    heartbeatRemaining
+  } = useAppState();
+  const [now, setNow] = useState<Date | null>(null);
   const [objectiveTiers, setObjectiveTiers] = useState<Record<ObjectiveTier, ObjectiveKey[]>>({
     1: ["tardiness", "travel_time"],
     2: ["balance"],
@@ -81,22 +88,19 @@ export function DecisionFeedView() {
   const [blockedTerminals, setBlockedTerminals] = useState<BlockedTerminal[]>([{ id: "terminal-1", nodeId: "PACK_2", reason: "equipment_down" }]);
 
   useEffect(() => {
+    setNow(new Date());
     const timer = window.setInterval(() => {
       setNow(new Date());
     }, 1000);
     return () => window.clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    const totalPlanSets = data.heartbeatPlanSets.length;
-    if (heartbeatCycleCount < 1 || totalPlanSets === 0) {
-      return;
-    }
-
-    const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
-    setActiveHeartbeatPlans(data.heartbeatPlanSets[normalizedIndex]);
-    nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
-  }, [heartbeatCycleCount, data.heartbeatPlanSets]);
+  const todayLabel = now
+    ? now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+    : "--";
+  const timeLabel = now
+    ? now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" })
+    : "--:--:--";
 
   const lateOrdersColor = data.kpi.lateOrders > 2 ? "var(--tessera-danger)" : data.kpi.lateOrders > 0 ? "var(--tessera-warning)" : "var(--tessera-success)";
   const zoneLoadColor = data.kpi.maxZoneLoad > 40 ? "var(--tessera-danger)" : data.kpi.maxZoneLoad > 32 ? "var(--tessera-warning)" : "var(--tessera-success)";
@@ -167,16 +171,25 @@ export function DecisionFeedView() {
     openRunTab(plan.run);
   };
 
+  const adoptHeartbeatPlan = (planId: string) => {
+    const plan = activeHeartbeatPlans?.find((item) => item.id === planId);
+    if (!plan) {
+      return;
+    }
+    addAdoptedPlanToHistory(plan);
+    clearActiveHeartbeatPlans();
+  };
+
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="grid gap-3 md:grid-cols-2">
         <article className="app-card p-4 md:p-6">
           <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Today</p>
           <p className="mt-2 font-display text-[30px]" style={{ color: "var(--tessera-text-primary)" }}>
-            {now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+            {todayLabel}
           </p>
           <p className="mt-1 font-code text-base" style={{ color: "var(--tessera-text-primary)" }}>
-            {now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" })}
+            {timeLabel}
           </p>
         </article>
         <article className="app-card p-4 md:p-6">
@@ -191,7 +204,7 @@ export function DecisionFeedView() {
         <HeartbeatProposalCard
           plans={activeHeartbeatPlans}
           mode={mode}
-          onAdopt={(_planId) => setActiveHeartbeatPlans(null)}
+          onAdopt={adoptHeartbeatPlan}
           onViewDetails={openHeartbeatPlanDetails}
           onAskTess={askTessAboutHeartbeatPlan}
         />

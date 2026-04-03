@@ -2,29 +2,46 @@
 
 import { useAppState } from "@/components/app/AppProvider";
 import { BrandTile } from "@/components/BrandTile";
-import { useMemo, useState } from "react";
+
+function formatAdoptedTimestamp(iso: string) {
+  const date = new Date(iso);
+  return date.toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+}
+
+const strategyLabelMap: Record<string, string> = {
+  primary: "Tess's Choice",
+  minimize_travel: "Minimize Travel",
+  zero_late_risk: "Zero Late Risk",
+  balance_zones: "Balance Zones",
+  maximize_throughput: "Throughput Push"
+};
 
 export function HistoryView() {
-  const { cycles } = useAppState();
-  const [query, setQuery] = useState("");
-  const [responseFilter, setResponseFilter] = useState<"All" | "local-repair" | "partial-reopt" | "full-reopt">("All");
-  const [overrideOnly, setOverrideOnly] = useState(false);
-  const [anomalyOnly, setAnomalyOnly] = useState(false);
-  const [selectedCycleId, setSelectedCycleId] = useState<string | null>(null);
+  const { adoptedPlansHistory, openRunTab, setCopilotDraftAttachments, setCopilotOpen } = useAppState();
 
-  const rows = useMemo(
-    () =>
-      cycles.filter((cycle) => {
-        const matchesQuery = cycle.summary.toLowerCase().includes(query.toLowerCase()) || String(cycle.cycleNumber).includes(query);
-        const matchesResponse = responseFilter === "All" || cycle.responseType === responseFilter;
-        const matchesOverride = !overrideOnly || cycle.status === "Overridden";
-        const matchesAnomaly = !anomalyOnly || cycle.status === "Anomaly";
-        return matchesQuery && matchesResponse && matchesOverride && matchesAnomaly;
-      }),
-    [query, responseFilter, overrideOnly, anomalyOnly, cycles]
-  );
+  const askTessAboutHistoryPlan = (entryId: string) => {
+    const entry = adoptedPlansHistory.find((item) => item.id === entryId);
+    if (!entry) {
+      return;
+    }
 
-  const selectedCycle = rows.find((cycle) => cycle.id === selectedCycleId) ?? null;
+    setCopilotDraftAttachments((current) => {
+      const attachmentId = `history-${entry.id}`;
+      if (current.some((item) => item.id === attachmentId)) {
+        return current;
+      }
+      return [
+        ...current,
+        {
+          id: attachmentId,
+          type: "heartbeat-plan",
+          title: `${entry.plan.run.runId} - ${entry.plan.label}`,
+          subtitle: "Adopted history plan"
+        }
+      ];
+    });
+    setCopilotOpen(true);
+  };
 
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
@@ -34,76 +51,73 @@ export function HistoryView() {
           <h1 className="font-display text-3xl font-semibold uppercase tracking-[-0.01em]">History</h1>
         </div>
         <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-          Past cycles, replayable recommendations, and full audit context.
+          Adopted heartbeat plans, including strategy metrics and replay actions.
         </p>
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search by cycle number or summary"
-            className="w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
-            style={{ borderColor: "var(--tessera-border)" }}
-          />
-          <select
-            value={responseFilter}
-            onChange={(event) => setResponseFilter(event.target.value as typeof responseFilter)}
-            className="w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
-            style={{ borderColor: "var(--tessera-border)" }}
-          >
-            <option value="All">All Response Types</option>
-            <option value="local-repair">Local Repair</option>
-            <option value="partial-reopt">Partial Re-Opt</option>
-            <option value="full-reopt">Full Re-Opt</option>
-          </select>
-        </div>
-        <div className="mt-3 flex gap-4 text-sm">
-          <label className="inline-flex items-center gap-2">
-            <input type="checkbox" checked={overrideOnly} onChange={(event) => setOverrideOnly(event.target.checked)} />
-            Overrides only
-          </label>
-          <label className="inline-flex items-center gap-2">
-            <input type="checkbox" checked={anomalyOnly} onChange={(event) => setAnomalyOnly(event.target.checked)} />
-            Anomalies only
-          </label>
-        </div>
       </section>
 
-      <section className="space-y-3">
-        {rows.map((cycle) => (
-          <article key={cycle.id} className="app-card p-4">
-            <button type="button" className="w-full text-left" onClick={() => setSelectedCycleId(cycle.id === selectedCycleId ? null : cycle.id)}>
+      {adoptedPlansHistory.length === 0 ? (
+        <section className="app-card p-6 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+          No adopted plans yet this shift.
+        </section>
+      ) : (
+        <section className="space-y-3">
+          {adoptedPlansHistory.map((entry) => (
+            <article key={entry.id} className="app-card space-y-4 p-4 md:p-6">
               <div className="flex flex-wrap items-center gap-3">
                 <p className="font-code text-xs uppercase tracking-[0.1em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                  {cycle.timestamp} · Cycle #{cycle.cycleNumber}
+                  {formatAdoptedTimestamp(entry.adoptedAt)} · Adopted Plan
                 </p>
-                <p className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>{cycle.responseType}</p>
-                <p className="text-xs" style={{ color: cycle.status === "Anomaly" ? "var(--tessera-danger)" : cycle.status === "Overridden" ? "var(--tessera-warning)" : "var(--tessera-text-secondary)" }}>{cycle.status}</p>
+                <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+                  {entry.plan.run.runId}
+                </span>
+                <span className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+                  {strategyLabelMap[entry.plan.run.tradeoffLabel] ?? entry.plan.label}
+                </span>
               </div>
-              <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>{cycle.summary}</p>
-            </button>
 
-            {selectedCycle?.id === cycle.id && (
-              <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <div className="rounded-[10px] border p-3" style={{ borderColor: "var(--tessera-border)" }}>
-                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Operator Action</p>
-                  <p className="mt-1 text-sm">{cycle.operatorAction}</p>
+              <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+                {entry.plan.run.postureName}
+              </p>
+
+              <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-6">
+                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                  <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Late Orders</p>
+                  <p className="text-base">{entry.plan.metrics.lateOrders}</p>
                 </div>
-                <div className="rounded-[10px] border p-3" style={{ borderColor: "var(--tessera-border)" }}>
-                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Predicted vs Actual</p>
-                  <p className="mt-1 text-sm">Throughput {cycle.predictedVsActual.throughput}</p>
-                  <p className="text-sm">Travel {cycle.predictedVsActual.travel}</p>
-                  <p className="text-sm">Late Risk {cycle.predictedVsActual.lateRisk}</p>
+                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                  <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Selected Tasks</p>
+                  <p className="text-base">{entry.plan.metrics.selectedTasks}</p>
                 </div>
-                <div className="rounded-[10px] border p-3 md:col-span-2" style={{ borderColor: "var(--tessera-border)" }}>
-                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Anomaly Flags</p>
-                  <p className="mt-1 text-sm">{cycle.anomalyFlags.length ? cycle.anomalyFlags.join(", ") : "None"}</p>
+                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                  <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Max Zone Load</p>
+                  <p className="text-base">{entry.plan.metrics.maxZoneLoad}</p>
+                </div>
+                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                  <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Zone Crossings</p>
+                  <p className="text-base">{entry.plan.metrics.zoneCrossings}</p>
+                </div>
+                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                  <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Priority Alignment</p>
+                  <p className="text-base">{Math.round(entry.plan.metrics.priorityAlignment * 100)}%</p>
+                </div>
+                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                  <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Throughput</p>
+                  <p className="text-base">{entry.plan.metrics.throughputPicksPerHour} picks/hr</p>
                 </div>
               </div>
-            )}
-          </article>
-        ))}
-      </section>
+
+              <div className="flex flex-wrap gap-2">
+                <button type="button" className="btn-secondary" onClick={() => openRunTab(entry.plan.run)}>
+                  View Details
+                </button>
+                <button type="button" className="btn-secondary" onClick={() => askTessAboutHistoryPlan(entry.id)}>
+                  Ask TESS
+                </button>
+              </div>
+            </article>
+          ))}
+        </section>
+      )}
     </div>
   );
 }

@@ -215,6 +215,12 @@ export type HeartbeatPlan = {
   run: HeartbeatRunDetails;
 };
 
+export type AdoptedPlanHistoryEntry = {
+  id: string;
+  adoptedAt: string;
+  plan: HeartbeatPlan;
+};
+
 export type IntegrationConfig = {
   platform: "Oracle WMS Cloud" | "SAP EWM" | "Dynamics Business Central" | "Other";
   pollingIntervalSeconds: number;
