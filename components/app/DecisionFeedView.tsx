@@ -152,6 +152,35 @@ export function DecisionFeedView() {
     setCopilotOpen(true);
   };
 
+  const askTessAboutHeartbeatPlan = (planId: string) => {
+    const plan = activeHeartbeatPlans?.find((item) => item.id === planId);
+    if (!plan) {
+      return;
+    }
+
+    const timestamp = Date.now();
+    const operatorMessage = {
+      id: `op-hb-${timestamp}`,
+      actor: "operator" as const,
+      text: `Help me evaluate the ${plan.label} heartbeat plan.`
+    };
+
+    const tessMessage = {
+      id: `ts-hb-${timestamp + 1}`,
+      actor: "tess" as const,
+      text: `${plan.label}: ${plan.summary} Late Orders ${plan.metrics.lateOrders}, Selected Tasks ${plan.metrics.selectedTasks}, Max Zone Load ${plan.metrics.maxZoneLoad}, Zone Crossings ${plan.metrics.zoneCrossings}, Priority Alignment ${Math.round(plan.metrics.priorityAlignment * 100)}%, Throughput ${plan.metrics.throughputPicksPerHour} picks/hr.`,
+      grounding: {
+        cycleNumber: cycles[0]?.cycleNumber ?? 0,
+        constraintIds: [],
+        metrics: ["late-orders", "selected-tasks", "max-zone-load", "zone-crossings", "priority-alignment", "throughput"]
+      },
+      action: { label: "Apply this posture change", actionId: "open-posture" as const }
+    };
+
+    setCopilotMessages((current) => [...current, operatorMessage, tessMessage]);
+    setCopilotOpen(true);
+  };
+
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="grid gap-3 md:grid-cols-2">
@@ -172,7 +201,14 @@ export function DecisionFeedView() {
         </article>
       </section>
 
-      {activeHeartbeatPlans ? <HeartbeatProposalCard plans={activeHeartbeatPlans} mode={mode} onAdopt={() => setActiveHeartbeatPlans(null)} /> : null}
+      {activeHeartbeatPlans ? (
+        <HeartbeatProposalCard
+          plans={activeHeartbeatPlans}
+          mode={mode}
+          onAdopt={(_planId) => setActiveHeartbeatPlans(null)}
+          onAskTess={askTessAboutHeartbeatPlan}
+        />
+      ) : null}
 
       <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
         <article className={metricCardClass}>

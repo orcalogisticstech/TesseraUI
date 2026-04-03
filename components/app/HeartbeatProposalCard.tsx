@@ -6,6 +6,7 @@ type HeartbeatProposalCardProps = {
   plans: HeartbeatPlan[];
   mode: SystemMode;
   onAdopt: (planId: string) => void;
+  onAskTess: (planId: string) => void;
 };
 
 const metricRows: Array<{
@@ -39,7 +40,7 @@ function getMetricColor(row: (typeof metricRows)[number], plans: HeartbeatPlan[]
   return "var(--tessera-warning)";
 }
 
-export function HeartbeatProposalCard({ plans, mode, onAdopt }: HeartbeatProposalCardProps) {
+export function HeartbeatProposalCard({ plans, mode, onAdopt, onAskTess }: HeartbeatProposalCardProps) {
   return (
     <section className="app-card space-y-4 p-4 md:p-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -89,9 +90,17 @@ export function HeartbeatProposalCard({ plans, mode, onAdopt }: HeartbeatProposa
               <td className="px-3 py-3" style={{ color: "var(--tessera-text-secondary)" }}>Action</td>
               {plans.map((plan) => (
                 <td key={`${plan.id}-adopt`} className="px-3 py-3">
-                  <button type="button" className="btn-secondary btn-adopt-glow" onClick={() => onAdopt(plan.id)}>
-                    {mode === "Closed-Loop" ? "Adopt This Plan (Re-Execute)" : "Adopt This Plan"}
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button type="button" className="btn-secondary btn-adopt-glow w-full px-3 py-2 text-sm" onClick={() => onAdopt(plan.id)}>
+                      {mode === "Closed-Loop" ? "Adopt This Plan (Re-Execute)" : "Adopt This Plan"}
+                    </button>
+                    <button type="button" className="btn-secondary w-full px-3 py-2 text-sm" onClick={() => {}}>
+                      View Details
+                    </button>
+                    <button type="button" className="btn-secondary w-full px-3 py-2 text-sm" onClick={() => onAskTess(plan.id)}>
+                      Ask TESS
+                    </button>
+                  </div>
                 </td>
               ))}
             </tr>
