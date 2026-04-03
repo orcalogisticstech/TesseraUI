@@ -180,6 +180,32 @@ export function DecisionFeedView() {
     clearActiveHeartbeatPlans();
   };
 
+  const expandConfigureJobSections = () => {
+    setIsObjectivesOpen(true);
+    setIsPenaltiesOpen(true);
+    setIsLimitsOpen(true);
+  };
+
+  const collapseConfigureJobSections = () => {
+    setIsObjectivesOpen(false);
+    setIsPenaltiesOpen(false);
+    setIsLimitsOpen(false);
+  };
+
+  const expandFloorStateSections = () => {
+    setIsBlockedLocationsOpen(true);
+    setIsBlockedZonesOpen(true);
+    setIsBlockedAislesOpen(true);
+    setIsBlockedTerminalsOpen(true);
+  };
+
+  const collapseFloorStateSections = () => {
+    setIsBlockedLocationsOpen(false);
+    setIsBlockedZonesOpen(false);
+    setIsBlockedAislesOpen(false);
+    setIsBlockedTerminalsOpen(false);
+  };
+
   return (
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="grid gap-3 md:grid-cols-2">
@@ -262,6 +288,26 @@ export function DecisionFeedView() {
             </p>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="btn-secondary inline-flex h-8 w-8 items-center justify-center p-0 leading-none"
+              onClick={expandConfigureJobSections}
+              aria-label="Expand all sections"
+              title="Expand all sections"
+              style={{ color: "var(--tessera-text-primary)" }}
+            >
+              +
+            </button>
+            <button
+              type="button"
+              className="btn-secondary inline-flex h-8 w-8 items-center justify-center p-0 leading-none"
+              onClick={collapseConfigureJobSections}
+              aria-label="Collapse all sections"
+              title="Collapse all sections"
+              style={{ color: "var(--tessera-text-primary)" }}
+            >
+              -
+            </button>
             <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setIsConfigEditing((current) => !current)}>
               {isConfigEditing ? "Save" : "Edit"}
             </button>
@@ -459,9 +505,31 @@ export function DecisionFeedView() {
               Update temporary physical blockers used in optimizer `state`.
             </p>
           </div>
-          <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setIsFloorStateEditing((current) => !current)}>
-            {isFloorStateEditing ? "Save" : "Edit"}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="btn-secondary inline-flex h-8 w-8 items-center justify-center p-0 leading-none"
+              onClick={expandFloorStateSections}
+              aria-label="Expand all sections"
+              title="Expand all sections"
+              style={{ color: "var(--tessera-text-primary)" }}
+            >
+              +
+            </button>
+            <button
+              type="button"
+              className="btn-secondary inline-flex h-8 w-8 items-center justify-center p-0 leading-none"
+              onClick={collapseFloorStateSections}
+              aria-label="Collapse all sections"
+              title="Collapse all sections"
+              style={{ color: "var(--tessera-text-primary)" }}
+            >
+              -
+            </button>
+            <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setIsFloorStateEditing((current) => !current)}>
+              {isFloorStateEditing ? "Save" : "Edit"}
+            </button>
+          </div>
         </div>
 
         <div className="space-y-3">
