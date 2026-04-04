@@ -17,10 +17,10 @@ export default function TeamPage() {
             Team
           </p>
           <h1 className="mt-4 font-display text-4xl font-semibold tracking-[-0.02em] md:text-6xl">
-            Built by people who solve these problems for a living.
+            No strangers to innovative warehouse technology.
           </h1>
           <p className="mt-6 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-            Tessera comes from the intersection of mathematical optimization research and real warehouse operations.
+            Tessera's founders bring experience in building and shipping state-of-the-art warehouse and supply chain systems.
           </p>
         </div>
       </section>
@@ -38,7 +38,7 @@ export default function TeamPage() {
               </p>
               <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
                 <span className="text-signal">PhD</span> in operations research and computer science from Georgia Tech. Built
-                large-scale production optimization systems at Amazon. Developed next-generation AI and supply chain technology at
+                and delivered large-scale optimization systems at Amazon. Developed next-generation AI and supply chain technology at
                 Auger and Defcon AI. Tessera combines these — state-of-the-art optimization, AI, and production logistics systems
                 — into the decision layer warehouses don't have today.
               </p>
@@ -58,21 +58,6 @@ export default function TeamPage() {
                 that connect to live WMS environments.
               </p>
             </article>
-          </div>
-        </section>
-      </Reveal>
-
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
-          <div className="section-wrap">
-            <h2 className="headline text-4xl font-semibold md:text-[44px]">WHY THIS TEAM</h2>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {whyCards.map((item) => (
-                <article key={item} className="marketing-card p-6">
-                  <p className="text-base" style={{ color: "var(--tessera-text-secondary)" }}>{item}</p>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
       </Reveal>
