@@ -81,18 +81,10 @@ export function Header() {
 
       <aside
         id="site-mobile-menu"
-        className={`fixed inset-0 z-[70] flex flex-col p-6 transition-opacity duration-200 ease-out md:hidden ${menuOpen ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0"}`}
+        className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col p-6 transition-all duration-200 ease-out md:hidden ${menuOpen ? "pointer-events-auto visible translate-y-0 opacity-100" : "pointer-events-none invisible translate-y-1 opacity-0"}`}
         style={{ background: "#66707a" }}
       >
-        <div className="mb-10 flex items-center justify-between">
-          <Link href="/" aria-label="Tessera home" onClick={() => setMenuOpen(false)}>
-            <BrandWordmark className="relative block h-10 w-[216px] overflow-hidden" />
-          </Link>
-          <button type="button" className="text-2xl leading-none" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
-            ×
-          </button>
-        </div>
-        <nav className="flex flex-col gap-6 text-xl">
+        <nav className="flex flex-col gap-6 pt-6 text-xl">
           <Link href="/" className="py-1" onClick={() => setMenuOpen(false)}>
             Home
           </Link>
@@ -112,7 +104,7 @@ export function Header() {
             );
           })}
         </nav>
-        <div className="mt-auto pb-2">
+        <div className="mt-auto pb-[calc(8px+env(safe-area-inset-bottom))]">
           <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={() => setMenuOpen(false)}>
             Request Demo
           </Link>
