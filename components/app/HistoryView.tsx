@@ -67,7 +67,7 @@ const strategyLabelMap: Record<string, string> = {
 };
 
 export function HistoryView() {
-  const { adoptedPlansHistory, openRunTab, setCopilotDraftAttachments, setCopilotOpen } = useAppState();
+  const { adoptedPlansHistory, openRunTab, setCopilotDraftAttachments, setCopilotOpen, theme } = useAppState();
 
   const askTessAboutHistoryPlan = (entryId: string) => {
     const entry = adoptedPlansHistory.find((item) => item.id === entryId);
@@ -97,7 +97,7 @@ export function HistoryView() {
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="app-card p-4 md:p-6">
         <div className="flex items-center gap-3">
-          <BrandTile className="h-6 w-auto" variant="collapsed" />
+          <BrandTile className="h-6 w-auto" variant="collapsed" tone={theme === "light" ? "light" : "dark"} />
           <h1 className="font-display text-3xl font-semibold uppercase tracking-[-0.01em]">History</h1>
         </div>
         <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>

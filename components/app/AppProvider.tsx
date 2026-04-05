@@ -3,6 +3,7 @@
 import { getAppData } from "@/lib/mock-data";
 import type {
   AdoptedPlanHistoryEntry,
+  AppTheme,
   AppDataBundle,
   CopilotDraftAttachment,
   CopilotMessage,
@@ -50,10 +51,13 @@ type AppContextValue = {
   addAdoptedPlanToHistory: (plan: HeartbeatPlan) => void;
   heartbeatRemaining: number;
   heartbeatCycleCount: number;
+  theme: AppTheme;
+  setTheme: (theme: AppTheme) => void;
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
 const COPILOT_WIDTH_STORAGE_KEY = "tessera_copilot_width";
+const APP_THEME_STORAGE_KEY = "tessera_app_theme";
 const COPILOT_WIDTH_MIN = 320;
 const COPILOT_WIDTH_MAX = 560;
 const COPILOT_WIDTH_DEFAULT = 560;
@@ -81,6 +85,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [adoptedPlansHistory, setAdoptedPlansHistory] = useState<AdoptedPlanHistoryEntry[]>([]);
   const [heartbeatRemaining, setHeartbeatRemaining] = useState(HEARTBEAT_INITIAL_SECONDS);
   const [heartbeatCycleCount, setHeartbeatCycleCount] = useState(0);
+  const [theme, setTheme] = useState<AppTheme>("dark");
   const nextHeartbeatPlanSetIndexRef = useRef(0);
   const activeHeartbeatPlansRef = useRef<HeartbeatPlan[] | null>(null);
   const setCopilotWidth = useCallback((width: number) => {
@@ -151,11 +156,20 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
     if (Number.isFinite(parsedValue)) {
       setCopilotWidthState(clampCopilotWidth(parsedValue));
     }
+
+    const savedTheme = window.localStorage.getItem(APP_THEME_STORAGE_KEY);
+    if (savedTheme === "light" || savedTheme === "dark") {
+      setTheme(savedTheme);
+    }
   }, []);
 
   useEffect(() => {
     window.localStorage.setItem(COPILOT_WIDTH_STORAGE_KEY, String(clampCopilotWidth(copilotWidth)));
   }, [copilotWidth]);
+
+  useEffect(() => {
+    window.localStorage.setItem(APP_THEME_STORAGE_KEY, theme);
+  }, [theme]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -210,7 +224,9 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       adoptedPlansHistory,
       addAdoptedPlanToHistory,
       heartbeatRemaining,
-      heartbeatCycleCount
+      heartbeatCycleCount,
+      theme,
+      setTheme
     }),
     [
       data,
@@ -236,7 +252,9 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       adoptedPlansHistory,
       addAdoptedPlanToHistory,
       heartbeatRemaining,
-      heartbeatCycleCount
+      heartbeatCycleCount,
+      theme,
+      setTheme
     ]
   );
 

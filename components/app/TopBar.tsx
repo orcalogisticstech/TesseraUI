@@ -11,7 +11,7 @@ function formatCountdown(totalSeconds: number) {
 }
 
 export function TopBar() {
-  const { mode, setMode, copilotOpen, setCopilotOpen, openTab, heartbeatRemaining } = useAppState();
+  const { mode, setMode, copilotOpen, setCopilotOpen, openTab, heartbeatRemaining, theme } = useAppState();
   const router = useRouter();
   const modeSelectStyle =
     mode === "Closed-Loop"
@@ -57,7 +57,11 @@ export function TopBar() {
         </div>
 
         <a href="/" className="justify-self-center" aria-label="Go to home page">
-          <BrandWordmark className="relative block h-9 w-[360px] overflow-hidden" imageClassName="object-contain object-center -translate-y-[2%] scale-[3.5]" />
+          <BrandWordmark
+            tone={theme === "light" ? "light" : "dark"}
+            className="relative block h-9 w-[360px] overflow-hidden"
+            imageClassName="object-contain object-center -translate-y-[2%] scale-[3.5]"
+          />
         </a>
 
         <div className="flex items-center justify-self-end gap-2">

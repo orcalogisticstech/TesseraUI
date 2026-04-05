@@ -19,6 +19,20 @@
   --tessera-bg-input: #1a1a2e;
 }
 
+[data-theme="light"] {
+  color-scheme: light;
+  --tessera-bg-page: #f5f7fa;
+  --tessera-bg-surface: #ffffff;
+  --tessera-text-primary: #171a1f;
+  --tessera-text-secondary: #5e6673;
+  --tessera-border: rgba(23, 26, 31, 0.1);
+  --tessera-accent-signal: #98b400;
+  --tessera-danger: #c43d2f;
+  --tessera-warning: #b7791f;
+  --tessera-success: #2f8f57;
+  --tessera-bg-input: #eef2f5;
+}
+
 body {
   margin: 0;
   background: var(--tessera-bg-page);

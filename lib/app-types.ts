@@ -2,6 +2,8 @@ import type { MockSession, UserRole } from "@/lib/mock-auth";
 
 export type SystemMode = "Advisory" | "Closed-Loop";
 
+export type AppTheme = "dark" | "light";
+
 export type TriggerType = "Heartbeat" | "Batch Completed" | "Rush Order" | "Congestion Alert";
 
 export type DecisionStatus = "Executed" | "Pending" | "Overridden" | "Anomaly";
