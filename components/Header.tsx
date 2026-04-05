@@ -2,8 +2,8 @@
 
 import { BrandWordmark } from "@/components/BrandWordmark";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { type MouseEvent, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { href: "/product", label: "Product" },
@@ -17,22 +17,14 @@ function isActivePath(pathname: string, href: string) {
 
 export function Header() {
   const pathname = usePathname();
-  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const navigateFromMobileMenu = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    event.preventDefault();
+  const closeMobileMenuLink = (href: string) => {
     setMenuOpen(false);
 
     if (pathname === href) {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      return;
     }
-
-    router.push(href, { scroll: false });
-    setTimeout(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    }, 0);
   };
 
   useEffect(() => {
@@ -101,7 +93,7 @@ export function Header() {
         style={{ background: "#66707a" }}
       >
         <nav className="flex flex-col gap-6 pt-6 text-xl">
-          <Link href="/" className="py-1" onClick={(event) => navigateFromMobileMenu(event, "/")}>
+          <Link href="/" className="py-1" onClick={() => closeMobileMenuLink("/")}>
             Home
           </Link>
           {navItems.map((item) => {
@@ -112,7 +104,7 @@ export function Header() {
                 href={item.href}
                 className="flex items-center justify-between py-1"
                 style={{ color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)" }}
-                onClick={(event) => navigateFromMobileMenu(event, item.href)}
+                onClick={() => closeMobileMenuLink(item.href)}
               >
                 <span>{item.label}</span>
                 {active ? <span style={{ color: "var(--tessera-accent-signal)" }}>•</span> : null}
@@ -121,7 +113,7 @@ export function Header() {
           })}
         </nav>
         <div className="mt-auto pb-[calc(8px+env(safe-area-inset-bottom))]">
-          <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={(event) => navigateFromMobileMenu(event, "/demo")}>
+          <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={() => closeMobileMenuLink("/demo")}>
             Request Demo
           </Link>
         </div>

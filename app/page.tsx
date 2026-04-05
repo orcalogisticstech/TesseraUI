@@ -92,7 +92,7 @@ export default function HomePage() {
       </section>
 
       <Reveal>
-        <section id="the-problem" className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+        <section id="the-problem" className="section-space scroll-mt-20 border-b md:scroll-mt-24" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
               The Problem
@@ -109,7 +109,7 @@ export default function HomePage() {
       </Reveal>
 
       <Reveal>
-        <section id="explain-decide-predict" className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+        <section id="explain-decide-predict" className="section-space scroll-mt-20 border-b md:scroll-mt-24" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">EXPLAIN, DECIDE, PREDICT.</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
