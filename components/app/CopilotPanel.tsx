@@ -1,7 +1,8 @@
 "use client";
 
 import { useAppState } from "@/components/app/AppProvider";
-import tessWordmark from "@/tessera_svg_elements_exact/tess.svg";
+import tessWordmarkDark from "@/tessera_svg_elements_exact/tess.svg";
+import tessWordmarkLight from "@/tessera_svg_elements_exact/tess_light.svg";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -24,9 +25,12 @@ export function CopilotPanel() {
     setCopilotDraftAttachments,
     setPosturePanelOpen,
     copilotWidth,
-    setCopilotWidth
+    setCopilotWidth,
+    theme
   } = useAppState();
   const [draft, setDraft] = useState("");
+  const tessWordmarkSrc = theme === "light" ? tessWordmarkLight : tessWordmarkDark;
+  const tessWordmarkClass = theme === "light" ? "object-contain object-center scale-[2.45]" : "object-contain object-center";
   const panelStyle = {
     borderColor: "var(--tessera-border)",
     background: "var(--tessera-bg-page)",
@@ -104,7 +108,7 @@ export function CopilotPanel() {
         <div className="flex flex-1 justify-center lg:justify-center">
           <div className="flex flex-col items-center">
             <div className="relative h-8 w-[134px] overflow-hidden">
-              <Image src={tessWordmark} alt="Tess" fill priority className="object-contain object-center" />
+              <Image src={tessWordmarkSrc} alt="Tess" fill priority className={tessWordmarkClass} />
             </div>
             <p className="mt-1 text-[10px] uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
               TALK TO YOUR OPTIMIZER
