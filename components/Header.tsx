@@ -39,12 +39,12 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b backdrop-blur-[12px]" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-page) 80%, transparent)" }}>
-        <div className="section-wrap grid h-20 grid-cols-[40px_minmax(0,1fr)_40px] items-center gap-3 md:flex md:justify-between">
-          <div aria-hidden className="h-10 w-10 md:hidden" />
+        <div className="section-wrap grid h-16 grid-cols-[48px_minmax(0,1fr)_48px] items-center gap-2 md:h-20 md:flex md:justify-between">
+          <div aria-hidden className="h-12 w-12 md:hidden" />
 
           <div className="flex items-center justify-center md:justify-start">
             <Link href="/" aria-label="Tessera home" onClick={() => setMenuOpen(false)}>
-              <BrandWordmark className="relative block h-10 w-[216px] overflow-hidden sm:h-11 sm:w-[236px] md:h-14 md:w-[320px] md:origin-left md:scale-125" />
+              <BrandWordmark className="relative block h-12 w-[252px] overflow-hidden md:h-14 md:w-[320px] md:origin-left md:scale-125" />
             </Link>
           </div>
 
@@ -67,8 +67,8 @@ export function Header() {
 
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-button border md:hidden"
-            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+            className="relative top-[2px] inline-flex h-12 w-12 items-center justify-center rounded-button md:hidden"
+            style={{ color: "var(--tessera-text-primary)" }}
             aria-label={menuOpen ? "Close site navigation" : "Open site navigation"}
             aria-expanded={menuOpen}
             aria-controls="site-mobile-menu"

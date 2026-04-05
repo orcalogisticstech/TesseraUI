@@ -52,24 +52,24 @@ const metrics = [
 export default function HomePage() {
   return (
     <MarketingShell>
-      <section className="relative flex min-h-[calc(100vh-5rem)] items-center border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="relative flex min-h-[calc(68vh-5rem)] items-start border-b md:min-h-[calc(100vh-5rem)] md:items-center" style={{ borderColor: "var(--tessera-border)" }}>
         <div className="pointer-events-none absolute left-1/2 top-[53%] hidden -translate-x-1/2 -translate-y-1/2 opacity-[0.02] md:block" aria-hidden>
           <Image src={tileBlackFillLimeOutline} alt="" width={1760} height={891} className="h-auto w-[1760px] max-w-none" />
         </div>
-        <div className="section-wrap flex justify-center pb-16 pt-4">
+        <div className="section-wrap flex justify-center pb-12 pt-6 md:pb-16 md:pt-4">
           <div className="relative z-10 mx-auto flex max-w-[800px] flex-col items-center text-center">
             <p className="font-code text-[1.0rem] uppercase tracking-[0.14em] text-signal">
               Decision Intelligence Layer
             </p>
-            <h1 className="headline mt-6 text-5xl font-bold leading-[1] md:text-[64px]">
+            <h1 className="headline mt-4 text-5xl font-bold leading-[1] md:mt-6 md:text-[64px]">
               OPTIMIZE THE SHIFT,
               <br />
               NOT JUST THE PICK.
             </h1>
-            <p className="mt-6 text-lg leading-relaxed" style={{ color: "var(--tessera-text-secondary)" }}>
+            <p className="mt-4 text-lg leading-relaxed md:mt-6" style={{ color: "var(--tessera-text-secondary)" }}>
               Tessera sits on top of your WMS and decides what work to release, how to group it, and what to prioritize — accounting for every constraint on the floor simultaneously.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-7">
+            <div className="mt-6 flex flex-wrap justify-center gap-7 md:mt-8">
               <Link href="/demo" className="btn-primary">
                 Request a Demo
               </Link>
