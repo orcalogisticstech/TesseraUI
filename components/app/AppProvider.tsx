@@ -156,11 +156,6 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
     if (Number.isFinite(parsedValue)) {
       setCopilotWidthState(clampCopilotWidth(parsedValue));
     }
-
-    const savedTheme = window.localStorage.getItem(APP_THEME_STORAGE_KEY);
-    if (savedTheme === "light" || savedTheme === "dark") {
-      setTheme(savedTheme);
-    }
   }, []);
 
   useEffect(() => {

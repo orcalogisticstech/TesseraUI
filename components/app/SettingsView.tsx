@@ -5,7 +5,7 @@ import { useState } from "react";
 import { BrandTile } from "@/components/BrandTile";
 
 export function SettingsView() {
-  const { data, session, theme, setTheme } = useAppState();
+  const { data, session } = useAppState();
   const [cycleInterval, setCycleInterval] = useState(data.settings.cycleIntervalMinutes);
   const [locationRegex, setLocationRegex] = useState(data.settings.locationRegex);
   const [cutoffWindow, setCutoffWindow] = useState(data.settings.hardConstraints.cutoffWindowHours);
@@ -15,7 +15,7 @@ export function SettingsView() {
     <div className="mx-auto w-full max-w-[960px] space-y-4">
       <section className="app-card p-4 md:p-6">
         <div className="flex items-center gap-3">
-          <BrandTile className="h-6 w-auto" variant="collapsed" tone={theme === "light" ? "light" : "dark"} />
+          <BrandTile className="h-6 w-auto" variant="collapsed" tone="dark" />
           <h1 className="font-display text-3xl font-semibold uppercase tracking-[-0.01em]">Settings</h1>
         </div>
         <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -45,35 +45,6 @@ export function SettingsView() {
             Shifts: {data.settings.shifts.join(" · ")}
           </p>
 
-          <div className="mt-4">
-            <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-              Appearance
-            </p>
-            <div className="mt-2 inline-flex rounded-[10px] border p-1" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
-              <button
-                type="button"
-                className="rounded-[8px] px-3 py-1.5 text-sm"
-                onClick={() => setTheme("dark")}
-                style={{
-                  color: theme === "dark" ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)",
-                  background: theme === "dark" ? "color-mix(in srgb, var(--tessera-accent-signal) 20%, transparent)" : "transparent"
-                }}
-              >
-                Dark
-              </button>
-              <button
-                type="button"
-                className="rounded-[8px] px-3 py-1.5 text-sm"
-                onClick={() => setTheme("light")}
-                style={{
-                  color: theme === "light" ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)",
-                  background: theme === "light" ? "color-mix(in srgb, var(--tessera-accent-signal) 20%, transparent)" : "transparent"
-                }}
-              >
-                Light
-              </button>
-            </div>
-          </div>
         </article>
 
         <article className="app-card p-4 md:p-6">
