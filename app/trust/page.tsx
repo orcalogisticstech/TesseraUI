@@ -43,9 +43,9 @@ const proof = [
 export default function TrustPage() {
   return (
     <MarketingShell>
-      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
-        <div className="section-wrap py-8 md:py-12">
-          <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>Trust</p>
+      <section className="border-b" style={{ borderColor: "var(--tessera-border)" }}>
+        <div className="section-wrap pb-8 pt-6 md:py-12">
+          <p className="font-code text-xs uppercase tracking-[0.14em] text-signal">Trust</p>
           <h1 className="mt-4 font-display text-4xl font-semibold tracking-[-0.02em] md:text-6xl">Autonomy you can verify.</h1>
           <p className="mt-6 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
             Hard constraints. Anomaly detection. Graduated autonomy. Full audit trail. Every decision replayable.

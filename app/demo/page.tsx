@@ -12,11 +12,11 @@ const expectations = [
 export default function DemoPage() {
   return (
     <MarketingShell>
-      <section className="section-space">
+      <section className="pb-10 pt-6 md:py-16">
         <div className="section-wrap">
           <Reveal>
             <div className="mb-10 max-w-3xl">
-              <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              <p className="font-code text-xs uppercase tracking-[0.14em] text-signal">
                 Demo
               </p>
               <h1 className="mt-4 font-display text-4xl font-semibold tracking-[-0.02em] md:text-6xl">See Tessera run on your operation.</h1>

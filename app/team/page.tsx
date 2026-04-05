@@ -11,9 +11,9 @@ const whyCards = [
 export default function TeamPage() {
   return (
     <MarketingShell>
-      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
-        <div className="section-wrap py-8 md:py-12">
-          <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
+      <section className="border-b" style={{ borderColor: "var(--tessera-border)" }}>
+        <div className="section-wrap pb-8 pt-6 md:py-12">
+          <p className="font-code text-xs uppercase tracking-[0.14em] text-signal">
             Team
           </p>
           <h1 className="mt-4 font-display text-4xl font-semibold tracking-[-0.02em] md:text-6xl">
