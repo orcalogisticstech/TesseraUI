@@ -10,7 +10,7 @@ export function MarketingShell({ children }: MarketingShellProps) {
   return (
     <>
       <Header />
-      <main className="page-fade">{children}</main>
+      <main className="page-fade pt-16 md:pt-0">{children}</main>
       <Footer />
     </>
   );

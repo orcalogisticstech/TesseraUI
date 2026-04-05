@@ -2,8 +2,8 @@
 
 import { BrandWordmark } from "@/components/BrandWordmark";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { type MouseEvent, useEffect, useState } from "react";
 
 const navItems = [
   { href: "/product", label: "Product" },
@@ -17,7 +17,23 @@ function isActivePath(pathname: string, href: string) {
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const navigateFromMobileMenu = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    event.preventDefault();
+    setMenuOpen(false);
+
+    if (pathname === href) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      return;
+    }
+
+    router.push(href, { scroll: false });
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }, 0);
+  };
 
   useEffect(() => {
     if (!menuOpen) {
@@ -38,7 +54,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b backdrop-blur-[12px]" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-page) 80%, transparent)" }}>
+      <header className="fixed inset-x-0 top-0 z-50 border-b backdrop-blur-[12px] md:sticky" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-page) 80%, transparent)" }}>
         <div className="section-wrap grid h-16 grid-cols-[48px_minmax(0,1fr)_48px] items-center gap-2 md:h-20 md:flex md:justify-between">
           <div aria-hidden className="h-12 w-12 md:hidden" />
 
@@ -85,7 +101,7 @@ export function Header() {
         style={{ background: "#66707a" }}
       >
         <nav className="flex flex-col gap-6 pt-6 text-xl">
-          <Link href="/" className="py-1" onClick={() => setMenuOpen(false)}>
+          <Link href="/" className="py-1" onClick={(event) => navigateFromMobileMenu(event, "/")}>
             Home
           </Link>
           {navItems.map((item) => {
@@ -96,7 +112,7 @@ export function Header() {
                 href={item.href}
                 className="flex items-center justify-between py-1"
                 style={{ color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)" }}
-                onClick={() => setMenuOpen(false)}
+                onClick={(event) => navigateFromMobileMenu(event, item.href)}
               >
                 <span>{item.label}</span>
                 {active ? <span style={{ color: "var(--tessera-accent-signal)" }}>•</span> : null}
@@ -105,7 +121,7 @@ export function Header() {
           })}
         </nav>
         <div className="mt-auto pb-[calc(8px+env(safe-area-inset-bottom))]">
-          <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={() => setMenuOpen(false)}>
+          <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={(event) => navigateFromMobileMenu(event, "/demo")}>
             Request Demo
           </Link>
         </div>
