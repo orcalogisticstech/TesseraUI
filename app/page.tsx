@@ -84,7 +84,7 @@ export default function HomePage() {
         </div>
         <a
           href="#the-problem"
-          className="absolute bottom-8 left-1/2 z-10 inline-flex -translate-x-1/2 text-2xl text-[var(--tessera-text-secondary)] transition-colors duration-150 hover:text-[var(--tessera-accent-signal)]"
+          className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 text-2xl text-[var(--tessera-text-secondary)] transition-colors duration-150 hover:text-[var(--tessera-accent-signal)] md:inline-flex"
           aria-label="Scroll to the next section"
         >
           ↓
