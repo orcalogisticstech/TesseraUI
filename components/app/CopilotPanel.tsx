@@ -9,7 +9,7 @@ import { useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 
 const COPILOT_WIDTH_MIN = 320;
-const COPILOT_WIDTH_MAX = 560;
+const COPILOT_WIDTH_MAX = 744;
 
 function clampCopilotWidth(width: number) {
   return Math.min(COPILOT_WIDTH_MAX, Math.max(COPILOT_WIDTH_MIN, width));
@@ -94,7 +94,7 @@ export function CopilotPanel() {
 
   return (
     <aside
-      className={`fixed right-0 top-0 z-40 h-screen w-full overflow-hidden overscroll-contain border-l transition-transform duration-[250ms] ease-out md:w-[400px] ${copilotOpen ? "translate-x-0" : "translate-x-full"} lg:sticky lg:z-20 lg:w-[var(--tessera-copilot-width)] lg:translate-x-0`}
+      className={`fixed right-0 top-0 z-40 h-screen w-full overflow-hidden overscroll-contain transition-[transform,width] duration-[250ms] ease-out md:w-[400px] ${copilotOpen ? "translate-x-0 border-l" : "translate-x-full border-l"} lg:sticky lg:z-20 lg:translate-x-0 ${copilotOpen ? "lg:w-[var(--tessera-copilot-width)] lg:border-l" : "lg:w-0 lg:border-l-0"}`}
       style={panelStyle}
     >
       <button
