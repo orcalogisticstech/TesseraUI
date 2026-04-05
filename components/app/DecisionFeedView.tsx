@@ -54,8 +54,10 @@ export function DecisionFeedView() {
     activeHeartbeatPlans,
     clearActiveHeartbeatPlans,
     addAdoptedPlanToHistory,
-    heartbeatRemaining
+    heartbeatRemaining,
+    theme
   } = useAppState();
+  const isLightTheme = theme === "light";
   const [now, setNow] = useState<Date | null>(null);
   const [objectiveTiers, setObjectiveTiers] = useState<Record<ObjectiveTier, ObjectiveKey[]>>({
     1: ["tardiness", "travel_time"],
@@ -218,8 +220,18 @@ export function DecisionFeedView() {
             {timeLabel}
           </p>
         </article>
-        <article className="app-card p-4 md:p-6">
-          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Next Heartbeat</p>
+        <article
+          className="app-card p-4 md:p-6"
+          style={
+            isLightTheme
+              ? {
+                  background: "color-mix(in srgb, var(--tessera-neutral-support) 80%, transparent)",
+                  borderColor: "var(--tessera-neutral-support)"
+                }
+              : undefined
+          }
+        >
+          <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-primary)" }}>Next Heartbeat</p>
           <p className="mt-2 font-display text-[36px]" style={{ color: "var(--tessera-accent-signal)" }}>
             {formatCountdown(heartbeatRemaining)}
           </p>

@@ -68,6 +68,7 @@ const strategyLabelMap: Record<string, string> = {
 
 export function HistoryView() {
   const { adoptedPlansHistory, openRunTab, setCopilotDraftAttachments, setCopilotOpen, theme } = useAppState();
+  const isLightTheme = theme === "light";
 
   const askTessAboutHistoryPlan = (entryId: string) => {
     const entry = adoptedPlansHistory.find((item) => item.id === entryId);
@@ -114,14 +115,38 @@ export function HistoryView() {
           {adoptedPlansHistory.map((entry) => (
             <article key={entry.id} className="app-card space-y-4 p-4 md:p-6">
               <div className="flex flex-wrap items-center gap-2">
-                <p className="font-code text-xs uppercase tracking-[0.1em]" style={{ color: "var(--tessera-text-secondary)", background: "color-mix(in srgb, var(--tessera-accent-signal) 12%, transparent)", border: "1px solid var(--tessera-border)", borderRadius: "999px", padding: "0.35rem 0.6rem" }}>
+                <p
+                  className="font-code text-xs uppercase tracking-[0.1em]"
+                  style={{
+                    color: "var(--tessera-text-secondary)",
+                    background: isLightTheme ? "color-mix(in srgb, var(--tessera-neutral-support) 14%, transparent)" : "color-mix(in srgb, var(--tessera-accent-signal) 12%, transparent)",
+                    border: isLightTheme
+                      ? "1px solid color-mix(in srgb, var(--tessera-neutral-support) 55%, var(--tessera-border))"
+                      : "1px solid var(--tessera-border)",
+                    borderRadius: "999px",
+                    padding: "0.35rem 0.6rem"
+                  }}
+                >
                   {formatAdoptedTimestamp(entry.adoptedAt)} · Adopted Plan
                 </p>
                 <span className="font-code text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
                   {entry.plan.run.runId}
                 </span>
                 {entry.plan.isTessChoice ? (
-                  <span className="text-xs" style={{ color: "var(--tessera-text-primary)", background: "color-mix(in srgb, var(--tessera-accent-signal) 22%, transparent)", border: "1px solid color-mix(in srgb, var(--tessera-accent-signal) 50%, var(--tessera-border))", borderRadius: "999px", padding: "0.28rem 0.55rem" }}>
+                  <span
+                    className="text-xs"
+                    style={{
+                      color: "var(--tessera-text-primary)",
+                      background: isLightTheme
+                        ? "color-mix(in srgb, var(--tessera-neutral-support) 20%, transparent)"
+                        : "color-mix(in srgb, var(--tessera-accent-signal) 22%, transparent)",
+                      border: isLightTheme
+                        ? "1px solid color-mix(in srgb, var(--tessera-neutral-support) 65%, var(--tessera-border))"
+                        : "1px solid color-mix(in srgb, var(--tessera-accent-signal) 50%, var(--tessera-border))",
+                      borderRadius: "999px",
+                      padding: "0.28rem 0.55rem"
+                    }}
+                  >
                     Tess's Choice
                   </span>
                 ) : (

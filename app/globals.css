@@ -10,6 +10,7 @@
   --tessera-text-secondary: #d5dae2;
   --tessera-border: rgba(245, 247, 250, 0.12);
   --tessera-accent-signal: #d8ff2a;
+  --tessera-neutral-support: #8b93a1;
   --tessera-danger: #ff3b30;
   --tessera-warning: #ffb020;
   --tessera-success: #34c759;
@@ -27,6 +28,7 @@
   --tessera-text-secondary: #5e6673;
   --tessera-border: rgba(23, 26, 31, 0.1);
   --tessera-accent-signal: #d8ff2a;
+  --tessera-neutral-support: #8b93a1;
   --tessera-danger: #c43d2f;
   --tessera-warning: #b7791f;
   --tessera-success: #2f8f57;

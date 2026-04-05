@@ -13,6 +13,7 @@ function formatCountdown(totalSeconds: number) {
 export function TopBar() {
   const { mode, setMode, copilotOpen, setCopilotOpen, openTab, heartbeatRemaining, theme } = useAppState();
   const router = useRouter();
+  const isLightTheme = theme === "light";
   const topControlClass = "inline-flex h-9 items-center rounded-button border px-3 text-xs font-medium";
   const iconControlClass = "inline-flex h-9 w-9 items-center justify-center rounded-button border";
   const modeSelectStyle =
@@ -44,8 +45,16 @@ export function TopBar() {
     >
       <div className="grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 md:px-6 lg:px-8">
         <div className="flex items-center gap-3 text-sm">
-          <span className={topControlClass} style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-            NEXT HEARTBEAT: <span style={{ color: "var(--tessera-accent-signal)" }}>{formatCountdown(heartbeatRemaining)}</span>
+          <span
+            className={topControlClass}
+            style={{
+              borderColor: isLightTheme ? "var(--tessera-neutral-support)" : "var(--tessera-border)",
+              background: isLightTheme ? "color-mix(in srgb, var(--tessera-neutral-support) 80%, transparent)" : "transparent",
+              color: isLightTheme ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)"
+            }}
+          >
+            <span style={{ color: "var(--tessera-text-primary)" }}>NEXT HEARTBEAT:</span>{" "}
+            <span style={{ color: "var(--tessera-accent-signal)" }}>{formatCountdown(heartbeatRemaining)}</span>
           </span>
           <div className="relative">
             <select
@@ -103,8 +112,9 @@ export function TopBar() {
             type="button"
             className={topControlClass}
             style={{
-              borderColor: copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
-              color: copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-text-secondary)"
+              borderColor: isLightTheme ? "var(--tessera-neutral-support)" : copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
+              background: isLightTheme ? "color-mix(in srgb, var(--tessera-neutral-support) 80%, transparent)" : "transparent",
+              color: isLightTheme ? "var(--tessera-accent-signal)" : copilotOpen ? "var(--tessera-accent-signal)" : "var(--tessera-text-secondary)"
             }}
             onClick={() => setCopilotOpen(!copilotOpen)}
           >
