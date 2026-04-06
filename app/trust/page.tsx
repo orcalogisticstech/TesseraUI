@@ -10,7 +10,7 @@ const guardrails = [
   },
   {
     title: "Anomaly Detection",
-    body: "If pick times exceed estimates for consecutive cycles, or supervisors start fighting the system, Tessera pulls itself back to advisory mode. The system knows when it's wrong."
+    body: "If reality diverges from predictions — pick times exceeding estimates for consecutive cycles, supervisor overrides exceeding a threshold, unexpected spike in late-risk orders — Tessera pulls itself back to advisory mode automatically. The system knows when it's wrong."
   },
   {
     title: "Graduated Autonomy",
@@ -74,7 +74,7 @@ export default function TrustPage() {
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">ADVISORY OR CLOSED LOOP.</h2>
             <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              Same three APIs. Same optimization core. What changes is whether output goes to a dashboard or back into the WMS.
+              Same optimization core. Same explanations. What changes is whether the plan goes to a dashboard or gets pushed back into the WMS.
             </p>
             <div className="mt-8 grid gap-4 md:grid-cols-2">
               {operatingModes.map((mode) => (
@@ -83,6 +83,31 @@ export default function TrustPage() {
                   <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>{mode.body}</p>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+          <div className="section-wrap">
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">AI THAT SHOWS ITS WORK.</h2>
+            <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
+              Tess is an AI copilot. That means earning trust, not assuming it.
+            </p>
+            <div className="mt-8 space-y-4">
+              <article className="marketing-card p-6">
+                <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">GROUNDED IN OPTIMIZER DATA. NOT GENERATED NARRATIVES.</h3>
+                <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>
+                  Tess is not a language model guessing at warehouse operations. It has direct access to the optimization engine — when you ask a question, Tess modifies inputs and runs the optimizer to find the answer. When Tess says "this batch was deferred because Zone C is congested," that points to a specific binding constraint in the model. When it says "zero late-risk requires raising the Zone A cap to 48," that&apos;s the result of an actual optimizer run with modified parameters. If Tess can&apos;t ground a statement in optimizer output, it doesn&apos;t make the statement.
+                </p>
+              </article>
+              <article className="marketing-card p-6">
+                <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">THE OPERATOR VERIFIES. ALWAYS.</h3>
+                <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>
+                  In advisory mode, Tess helps operators review recommendations efficiently — "Summarize the top three changes," "Which ones are reversible?," "Which one reduces deadline risk the most?," "Apply only the priority updates." In closed-loop mode, Tess becomes the transparency surface — "Why did the system fall back to advisory?," "Pause automatic release changes next cycle," "Require approval for large deferrals." The operator always has the tools to check the system&apos;s work.
+                </p>
+              </article>
             </div>
           </div>
         </section>

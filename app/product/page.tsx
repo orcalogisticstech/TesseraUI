@@ -2,30 +2,30 @@ import { Reveal } from "@/components/Reveal";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import Link from "next/link";
 
-const apiCards = [
+const decisionCards = [
   {
     step: "01",
-    title: "OPTIMIZE RELEASE",
+    title: "RELEASE",
     question: "What work should enter the floor right now?",
-    body: "Decides what hits the floor and what waits — so you don't release 120 orders into a zone that can handle 80.",
-    inputs: "Inputs: open orders, ship times, active work count, available staff, zone congestion.",
-    output: "Output: release/defer per order, reasoning, and predicted effect on congestion and deadline compliance."
+    body: "Given the current backlog and floor conditions, which orders should be activated and which should wait? Release too much and you overwhelm the floor. Release too little and you starve it."
   },
   {
     step: "02",
-    title: "OPTIMIZE BATCHING",
+    title: "BATCHING",
     question: "How should released work be grouped?",
-    body: "Groups work so the floor isn't flooded with scattered, unrelated tasks. Reflects proximity, zone balance, and deadline urgency.",
-    inputs: "Inputs: released orders, storage locations, zone layout, batch constraints, deadlines.",
-    output: "Output: work packages with assignments, grouping explanation, and predicted efficiency gains."
+    body: "Form efficient work packages that reflect item proximity, zone balance, deadline urgency, and equipment constraints — so the floor isn't flooded with scattered, unrelated tasks."
   },
   {
     step: "03",
-    title: "PRIORITIZE WORK",
-    question: "What deserves attention first?",
-    body: "Ranks work by what actually matters right now — not just deadline urgency, but whether working a different batch first would reduce waiting for everyone.",
-    inputs: "Inputs: active work packages, shipping deadlines, congestion, worker availability.",
-    output: "Output: ranked list with scores, explanations, and predicted impact vs. default sequencing."
+    title: "ROUTING",
+    question: "What sequence should each batch follow?",
+    body: "Sequence the stops within each work package to minimize travel, respecting aisle constraints, one-way rules, and zone-crossing penalties."
+  },
+  {
+    step: "04",
+    title: "PRIORITIZATION",
+    question: "What should be worked first?",
+    body: "Rank batches by what actually matters right now — not just deadline urgency, but whether working a different batch first would reduce congestion and total travel for everyone."
   }
 ];
 
@@ -49,22 +49,87 @@ const operatorCards = [
   {
     title: "Tess's Choice",
     horizon: "Every Cycle",
-    body: "The default recommendation generated from posture. In advisory mode it is recommended, in closed-loop mode it executes.",
+    body: "The default plan, generated from posture. In advisory mode it appears as a recommendation. In closed-loop mode it executes automatically.",
     points: ["Not a compromise", "Best fit to declared priorities", "Recomputed every cycle"]
   }
 ];
 
-const copilotCapabilities = [
-  { title: "Translate", body: "Operators say what matters. Tess converts it into optimizer settings." },
-  { title: "Explain", body: "Tells you why a decision was made — traced to specific orders, batches, and metrics. Not a plausible-sounding guess." },
-  { title: "Guide", body: "Surfaces what you haven't asked about yet — starting conditions, what changed since last cycle, and what to watch." }
+const tessCapabilities = [
+  {
+    title: "TRANSLATE INTENT INTO ACTION",
+    description:
+      "Operators don't think in objective weights and constraint parameters. They think in operational language — or in desired outcomes. Tess converts both into optimizer runs. Say what you want to achieve, and Tess figures out what inputs produce that result.",
+    conversations: [
+      {
+        operator: "Prioritize deadline compliance until 2pm — we have a tight carrier cutoff.",
+        tess: "Deadline compliance weight set to 0.7, travel weight reduced to 0.2, zone balance at 0.1. This posture will hold until 2pm or until you change it."
+      },
+      {
+        operator: "What if we cap Zone B at 30% instead of 40%?",
+        tess: "At 30%: 6 tasks rerouted to Zones A and D, travel increases 8%, zero change in late-risk. At 40%: current plan holds. The tighter cap buys you headroom in Zone B but adds 12 minutes of total travel."
+      },
+      {
+        operator: "I need zone balance above 0.85 without adding any late-risk orders. Is that possible?",
+        tess: "I tested three posture configurations. At zone balance weight 0.4: balance reaches 0.88, but 2 orders in Zone A move to moderate late-risk. At zone balance weight 0.3 with Zone C task cap raised from 40 to 45: balance hits 0.86, zero late-risk. That's your best path — it requires allowing 5 more concurrent tasks in Zone C."
+      }
+    ]
+  },
+  {
+    title: "EXPLAIN EVERY DECISION",
+    description:
+      "Every recommendation traces to specific constraints, metrics, and plan artifacts. Tess doesn't generate plausible-sounding narratives — it reads the optimization model's actual reasoning. And because Tess can re-run the optimizer on past state, it can answer counterfactuals: what would have happened if you'd made a different choice?",
+    conversations: [
+      {
+        operator: "Why did you defer order 4210?",
+        tess: "Zone C is at 92% of its task cap (37 of 40). Releasing order 4210 would add 4 tasks to Zone C. The model deferred it to the next cycle, when 2 active batches in Zone C will have completed. Deadline risk: none — cutoff is 5:30pm, projected completion at next-cycle release is 4:50pm."
+      },
+      {
+        operator: "Why is Batch 17 ranked ahead of Batch 12?",
+        tess: "Batch 17 contains 3 orders with carrier cutoffs before 3pm (earliest: 2:40pm). Batch 12's earliest cutoff is 4:15pm. Under the current posture (deadline weight 0.7), the 90-minute gap drives the ranking. At equal deadline weight, Batch 12 would rank first — it has 18% less travel."
+      },
+      {
+        operator: "Last shift we had 8 late shipments. How many would we have had if we'd followed the recommendations?",
+        tess: "I re-ran the optimizer on last shift's starting state with recommendations applied. Projected late shipments: 1 (order 6812, which arrived 12 minutes before cutoff with picks in a blocked zone — no plan avoids that). The other 7 were caused by manual priority overrides that delayed Batches 4, 9, and 11 past their deadline windows."
+      }
+    ]
+  },
+  {
+    title: "GUIDE THROUGH DISRUPTIONS",
+    description:
+      "Short picks, delayed replenishment, hot orders, blocked zones, pack station outages — Tess explains what happened, recommends a response, and tells you whether it's a local repair or a broader re-optimization.",
+    conversations: [
+      {
+        operator: "(Automated alert) Short pick at location A1-24-006A — SKU 3847 quantity zero.",
+        tess: "Affected task: task 1001, currently in Batch 4. Alternate location A1-26-002B has 14 units of SKU 3847. I've rerouted the pick — Batch 4 travel increases by 22 meters, no impact on deadline compliance. Local repair only, rest of the plan is unchanged."
+      },
+      {
+        operator: "Pack station 2 just went down.",
+        tess: "12 active batches are routed to Pack 2. I've rerouted 8 of them to Pack 1 and deferred 4 to the next cycle to avoid overloading Pack 1. Travel increases 6% across affected batches. 1 order moves from zero late-risk to moderate late-risk (order 5523, cutoff 3:15pm, new projected completion 3:08pm). Recommend monitoring that one."
+      }
+    ]
+  },
+  {
+    title: "BRIEF EVERY SHIFT",
+    description:
+      "Before a shift, Tess reads the starting conditions and suggests a posture. After a shift, it summarizes what happened. Think of it as a weather forecast for the warehouse.",
+    conversations: [
+      {
+        label: "Shift start briefing",
+        tess: "Starting backlog: 340 orders, 1,812 tasks. Zone A is clear, Zone C has 18 active tasks carrying over from the previous shift. Earliest carrier cutoff: 1:30pm (22 orders). Suggested posture: deadline compliance at 0.6, travel at 0.3, zone balance at 0.1. Zone B is fully staffed today — no cap needed."
+      },
+      {
+        label: "Shift end summary",
+        tess: "Shift complete. 298 of 340 orders fulfilled, 42 deferred to next shift (all with cutoffs after 8pm). Tessera recommendations followed: 89%. Overrides: 12, mostly priority re-rankings in the first hour. Measured impact vs. WMS baseline: travel down 11%, late shipments down from 8 to 1. Pattern: early-shift overrides correlated with Zone B congestion — consider a tighter Zone B cap for tomorrow's start."
+      }
+    ]
+  }
 ];
 
 const platformRows = [
-  ["Oracle WMS Cloud", "REST API entities", "Tasks, waves, replenishment", "Strong"],
-  ["SAP EWM", "Warehouse Task/Order tables", "Task creation, confirmation", "Viable"],
-  ["Dynamics Business Central", "Sales Orders, Activity Lines", "Pick creation/re-sequencing", "Viable"],
-  ["Others", "Varies", "Often limited", "Advisory mode"]
+  ["Oracle WMS Cloud", "Tasks, waves, replenishment, inventory", "Tasks (hold, release, priority), waves", "Strong"],
+  ["SAP EWM", "Warehouse Tasks, Orders, bin content", "Task creation, confirmation", "Viable"],
+  ["Business Central", "Activity Lines, Shipment Lines", "Pick creation/re-sequencing", "Viable"],
+  ["Others", "Varies", "Often limited or undocumented", "Advisory mode"]
 ];
 
 export default function ProductPage() {
@@ -77,20 +142,20 @@ export default function ProductPage() {
           </p>
           <h1 className="mt-4 font-display text-4xl font-semibold tracking-[-0.02em] md:text-6xl">The decision layer your WMS is missing.</h1>
           <p className="mt-6 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-            Three APIs that control what work enters the floor, how it&apos;s grouped, and what gets worked first. One optimization model that reasons about all constraints simultaneously.
+            Give Tessera your open work and floor state. It returns a complete execution plan — which tasks to work, how to group them, what sequence to pick in, and what order to work them — optimized jointly against all your constraints.
           </p>
         </div>
       </section>
 
       <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+        <section id="tess" className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
-            <h2 className="headline text-4xl font-semibold md:text-[44px]">THREE DECISIONS. EVERY CYCLE.</h2>
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">FOUR DECISIONS. ONE PASS.</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              Each API addresses one core question the warehouse faces every few minutes.
+              Every few minutes, the warehouse faces four interrelated questions. Tessera answers them jointly — because the answer to each one depends on all the others.
             </p>
-            <div className="mt-10 grid gap-4 lg:grid-cols-3">
-              {apiCards.map((card) => (
+            <div className="mt-10 grid gap-4 lg:grid-cols-2">
+              {decisionCards.map((card) => (
                 <article key={card.title} className="marketing-card border-l-2 p-6" style={{ borderLeftColor: "var(--tessera-accent-signal)" }}>
                   <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
                     {card.step}
@@ -98,8 +163,6 @@ export default function ProductPage() {
                   <h3 className="mt-3 font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{card.title}</h3>
                   <p className="mt-3 text-base font-medium">{card.question}</p>
                   <p className="mt-3 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>{card.body}</p>
-                  <p className="mt-3 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>{card.inputs}</p>
-                  <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>{card.output}</p>
                 </article>
               ))}
             </div>
@@ -110,15 +173,15 @@ export default function ProductPage() {
       <Reveal>
         <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap max-w-[980px]">
-            <h2 className="headline text-4xl font-semibold md:text-[44px]">ONE MODEL. NOT THREE.</h2>
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">ONE MODEL. ONE PLAN.</h2>
             <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              The three APIs are not separate optimizers. They are views into one model: Release decides what enters the system, Batching decides how to group it, and Prioritize decides what to work first. A release decision never creates work that batching can't feasibly group, and a priority ranking never contradicts the deadlines the batcher already accounted for.
+              These four decisions are not independent — they interact. What you release affects how you can batch. How you batch affects what priorities make sense. How you route affects travel and zone congestion. Tessera solves them from a single model. A release decision never creates work that batching can&apos;t feasibly group, and a priority ranking never contradicts the deadlines the batcher already accounted for.
             </p>
             <p className="mt-4 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              Hard constraints, like never deferring orders near cutoff and never exceeding active-work caps, are encoded directly in the model. Enforcement is structural, not post-hoc.
+              The result is a complete plan: tasks selected or deferred with reasons, batches formed with pick sequences, priority rankings across batches, and predicted metrics for the whole solution. Hard constraints — never defer an order near its cutoff, never exceed the floor&apos;s active-work cap — are enforced inside the model, not as post-hoc checks.
             </p>
             <p className="mt-4 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              When operating conditions break, the system scales its response to the disruption, from local repair to complete re-optimization.
+              The API surface that delivers this plan adapts to each customer&apos;s integration. That might be one endpoint returning the full solution, separate calls per decision type, or a different decomposition entirely. The model doesn&apos;t change; the delivery shape does.
             </p>
           </div>
         </section>
@@ -157,33 +220,33 @@ export default function ProductPage() {
               Talk to your optimizer. Talk to <span className="text-signal">TESS</span>.
             </h2>
             <p className="mt-4 max-w-3xl text-base" style={{ color: "var(--tessera-text-secondary)" }}>
-              Tess sits between operators and the optimization core. Every claim is grounded in optimizer data.
+              Tess is not a chatbot on top of a dashboard. It has direct access to the optimization engine — it can modify inputs, re-run the optimizer, compare scenarios, and answer counterfactuals. Every response traces to an actual optimizer run, not a generated narrative. Ask what would happen, what should change, or what went wrong — Tess runs the model and shows you.
             </p>
-            <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-stretch">
-              <article className="marketing-card p-6">
-                <div className="space-y-4">
-                  <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
-                    <p className="text-sm">Operator: We have a 2pm carrier cutoff and we&apos;re short-staffed in Zone B.</p>
-                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: Updated posture. Deadline compliance weight increased and Zone B capped at 35% active work.</p>
+            <div className="mt-8 space-y-4">
+              {tessCapabilities.map((capability) => (
+                <article key={capability.title} className="marketing-card p-6">
+                  <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{capability.title}</h3>
+                  <p className="mt-3 text-base" style={{ color: "var(--tessera-text-secondary)" }}>
+                    {capability.description}
+                  </p>
+                  <div className="mt-5 space-y-3">
+                    {capability.conversations.map((conversation) => (
+                      <div key={conversation.tess} className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
+                        {"label" in conversation ? (
+                          <p className="font-code text-xs uppercase tracking-[0.12em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                            {conversation.label}
+                          </p>
+                        ) : (
+                          <p className="text-sm">Operator: {conversation.operator}</p>
+                        )}
+                        <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+                          Tess: {conversation.tess}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
-                    <p className="text-sm">Operator: Why did you defer these orders?</p>
-                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: Zone C is at 92% capacity. Releasing now would increase pick time by 34%.</p>
-                  </div>
-                  <div className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
-                    <p className="text-sm">Operator: What if we release 80 orders instead of 120?</p>
-                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Tess: At 80, travel drops 14% with zero late-risk. At 120, Zone C hits 91% and introduces moderate late-risk.</p>
-                  </div>
-                </div>
-              </article>
-              <div className="grid h-full grid-rows-3 gap-3">
-                {copilotCapabilities.map((capability) => (
-                  <article key={capability.title} className="marketing-card h-full p-5">
-                    <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">{capability.title}</h3>
-                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>{capability.body}</p>
-                  </article>
-                ))}
-              </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -192,23 +255,23 @@ export default function ProductPage() {
       <Reveal>
         <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
-            <h2 className="headline text-4xl font-semibold md:text-[44px]">SAME SYSTEMS. SAME WORKFLOWS. BETTER DECISIONS.</h2>
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">INTEGRATION SCALES TO YOUR NEEDS.</h2>
             <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              Tessera connects to your existing WMS. No rip-and-replace.
+              Tessera connects to your existing WMS. No rip-and-replace. Start simple — go deeper when you&apos;re ready.
             </p>
             <div className="mt-8 grid gap-4 lg:grid-cols-2">
               <article className="marketing-card p-6">
-                <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">Minimal Integration</h3>
-                <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Batching and Sequencing Only</p>
+                <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">START SIMPLE</h3>
+                <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Stateless API — send picks, get a plan</p>
                 <p className="mt-3 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-                  Single request with pick IDs, location IDs, order IDs, and layout reference. Returns optimized batches with sequences and predicted metrics.
+                  A single request with pick IDs, storage locations, order IDs, and a layout reference. Tessera returns optimized batches with pick sequences and predicted metrics. No persistent connection, no floor state, no write-back required. If you can call a REST endpoint, you can call Tessera.
                 </p>
               </article>
               <article className="marketing-card p-6">
-                <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">Full Integration</h3>
-                <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Release, Re-Optimization, Closed-Loop</p>
+                <h3 className="font-display text-2xl font-semibold uppercase tracking-[-0.01em]">GO DEEPER</h3>
+                <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>Floor state, re-optimization, closed-loop</p>
                 <p className="mt-3 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-                  Adds backlog and deadlines, active work state, zone/capacity signals, and replenishment/location status.
+                  Add the order backlog and shipping deadlines, active work state, zone congestion signals, and blocked locations. Tessera gains release control, real-time re-optimization, and the ability to push decisions back into the WMS. The optimizer sees the full picture and scales its response — from local repair on a single batch to full re-optimization of all remaining work.
                 </p>
               </article>
             </div>
@@ -217,9 +280,9 @@ export default function ProductPage() {
                 <thead style={{ color: "var(--tessera-text-secondary)" }}>
                   <tr>
                     <th className="pb-3 pr-4">Platform</th>
-                    <th className="pb-3 pr-4">Read</th>
-                    <th className="pb-3 pr-4">Write</th>
-                    <th className="pb-3">Closed-Loop</th>
+                    <th className="pb-3 pr-4">Read Surface</th>
+                    <th className="pb-3 pr-4">Write Surface</th>
+                    <th className="pb-3">Closed-Loop Viability</th>
                   </tr>
                 </thead>
                 <tbody>

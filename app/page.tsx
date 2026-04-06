@@ -24,21 +24,41 @@ const problemCards = [
   }
 ];
 
-const explainSteps = [
+const coreCapabilities = [
   {
     id: "01",
     title: "EXPLAIN",
-    body: "Trace why the floor looks the way it does. Not just alerts — causal reasoning. This zone is slow because the last release was too dense and batching is concentrating picks there."
+    body: "Trace why the floor looks the way it does. Not alerts — causal reasoning. This zone is congested because the last release pushed too many orders into a narrow area, and batching is concentrating picks there."
   },
   {
     id: "02",
     title: "DECIDE",
-    body: "Prescribe a fix that respects every constraint at once — deadlines, congestion, travel, labor. One pass, not one rule at a time."
+    body: "Prescribe a fix that accounts for every constraint at once — deadlines, congestion, travel, labor, zone capacity. One optimization pass, not one rule at a time."
   },
   {
     id: "03",
     title: "PREDICT",
-    body: "See impact before you commit. Same model that decides also predicts — zero gap between forecast and action."
+    body: "See impact before you commit. The same model that decides also predicts — what happens at 80 orders instead of 120? Zero gap between forecast and action."
+  },
+  {
+    id: "04",
+    title: "EMPOWER",
+    body: "Surface the trade-off space so operators set strategic intent rather than react to individual alerts. Shift-level posture, on-demand alternatives, and Tess's Choice — your intuition guides the system, the optimizer handles the rest."
+  }
+];
+
+const tessHomepageConversations = [
+  {
+    operator: "We have a 2pm carrier cutoff and we're short-staffed in Zone B.",
+    tess: "Updated posture. Deadline compliance weight increased to 0.6 and Zone B capped at 35% active work. Next optimization cycle will reflect both changes."
+  },
+  {
+    operator: "Why is Zone C slowing down?",
+    tess: "The last release pushed 38 tasks into Zone C against a capacity of 40. Batching is concentrating picks in aisles C3–C5. I've throttled the next release to 12 tasks for that zone and redistributed 8 tasks to Zone D."
+  },
+  {
+    operator: "How do I get to zero late-risk orders this cycle?",
+    tess: "I ran the optimizer with deadline compliance at maximum weight. Zero late-risk is achievable — it requires raising the Zone A task cap from 35 to 48 and accepting 22% more total travel. Three batches currently routed through Zone D would need to reroute through Zone A to meet their cutoffs. Alternative: add 2 carts and I can get to zero late-risk with only 9% more travel and no cap change."
   }
 ];
 
@@ -111,12 +131,12 @@ export default function HomePage() {
       <Reveal>
         <section id="explain-decide-predict" className="section-space scroll-mt-20 border-b md:scroll-mt-24" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
-            <h2 className="headline text-4xl font-semibold md:text-[44px]">EXPLAIN, DECIDE, PREDICT.</h2>
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">EXPLAIN, DECIDE, PREDICT, EMPOWER.</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
-              One model. Three capabilities. Every decision grounded in the same optimization that reasons about all constraints simultaneously.
+              One model. Four capabilities. Every decision grounded in the same optimization that reasons about all constraints simultaneously.
             </p>
             <div className="mt-10 space-y-4">
-              {explainSteps.map((step) => (
+              {coreCapabilities.map((step) => (
                 <article key={step.id} className="marketing-card grid gap-4 p-6 md:grid-cols-[140px_minmax(0,1fr)] md:items-start">
                   <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
                     Step {step.id}
@@ -130,6 +150,35 @@ export default function HomePage() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+          <div className="section-wrap">
+            <h2 className="headline text-4xl font-semibold md:text-[44px]">TALK TO YOUR OPTIMIZER. TALK TO TESS.</h2>
+            <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
+              Tess doesn&apos;t query a dashboard. It invokes the optimizer — modifying inputs, running scenarios, and tracing every answer to a specific constraint or metric in the model.
+            </p>
+
+            <article className="marketing-card mt-8 p-6 md:p-8">
+              <div className="space-y-4">
+                {tessHomepageConversations.map((conversation) => (
+                  <div key={conversation.operator} className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
+                    <p className="text-sm">Operator: {conversation.operator}</p>
+                    <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+                      Tess: {conversation.tess}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-6 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+                <Link href="/product#tess" className="font-medium hover:text-[var(--tessera-accent-signal)]">
+                  See everything Tess can do →
+                </Link>
+              </p>
+            </article>
           </div>
         </section>
       </Reveal>
