@@ -33,6 +33,10 @@ const NODE_TYPE_COLORS: Record<string, string> = {
 const DEFAULT_NODE_COLOR = "#8d99ae";
 const BASE_EDGE_COLOR = "#c7d3dd";
 const PADDING = 2;
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 3;
+const ZOOM_STEP = 0.25;
+const DEFAULT_ZOOM = 1;
 
 function formatInt(value: number) {
   return new Intl.NumberFormat("en-US").format(value);
@@ -41,6 +45,8 @@ function formatInt(value: number) {
 export function LayoutView() {
   const [data, setData] = useState<LayoutGraphData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(DEFAULT_ZOOM);
+  const [enabledNodeTypes, setEnabledNodeTypes] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     let cancelled = false;
@@ -88,6 +94,69 @@ export function LayoutView() {
     };
   }, [data]);
 
+  const nodeTypes = useMemo(() => {
+    if (!data) {
+      return [] as string[];
+    }
+    return Object.keys(data.nodeTypeCounts).sort((left, right) => left.localeCompare(right));
+  }, [data]);
+
+  useEffect(() => {
+    if (!nodeTypes.length) {
+      return;
+    }
+    setEnabledNodeTypes(new Set(nodeTypes));
+    setZoom(DEFAULT_ZOOM);
+  }, [nodeTypes]);
+
+  const visibleNodes = useMemo(() => {
+    if (!data) {
+      return [] as LayoutGraphData["nodes"];
+    }
+    if (enabledNodeTypes.size === 0) {
+      return [] as LayoutGraphData["nodes"];
+    }
+    return data.nodes.filter((node) => enabledNodeTypes.has(node.type));
+  }, [data, enabledNodeTypes]);
+
+  const zoomPercent = Math.round(zoom * 100);
+
+  const resetView = () => {
+    if (!nodeTypes.length) {
+      return;
+    }
+    setZoom(DEFAULT_ZOOM);
+    setEnabledNodeTypes(new Set(nodeTypes));
+  };
+
+  const enableAllTypes = () => {
+    setEnabledNodeTypes(new Set(nodeTypes));
+  };
+
+  const disableAllTypes = () => {
+    setEnabledNodeTypes(new Set());
+  };
+
+  const toggleNodeType = (nodeType: string) => {
+    setEnabledNodeTypes((current) => {
+      const next = new Set(current);
+      if (next.has(nodeType)) {
+        next.delete(nodeType);
+      } else {
+        next.add(nodeType);
+      }
+      return next;
+    });
+  };
+
+  const zoomOut = () => {
+    setZoom((current) => Math.max(MIN_ZOOM, Number((current - ZOOM_STEP).toFixed(2))));
+  };
+
+  const zoomIn = () => {
+    setZoom((current) => Math.min(MAX_ZOOM, Number((current + ZOOM_STEP).toFixed(2))));
+  };
+
   if (error) {
     return (
       <div className="mx-auto w-full max-w-[1180px]">
@@ -124,32 +193,108 @@ export function LayoutView() {
           </p>
         </div>
         <div className="mt-3 grid gap-3 text-sm md:grid-cols-3">
-          <p style={{ color: "var(--tessera-text-secondary)" }}>Nodes: <span style={{ color: "var(--tessera-text-primary)" }}>{formatInt(data.nodes.length)}</span></p>
+          <p style={{ color: "var(--tessera-text-secondary)" }}>
+            Nodes: <span style={{ color: "var(--tessera-text-primary)" }}>{formatInt(visibleNodes.length)}</span>
+            <span style={{ color: "var(--tessera-text-secondary)" }}> / {formatInt(data.nodes.length)}</span>
+          </p>
           <p style={{ color: "var(--tessera-text-secondary)" }}>Edges: <span style={{ color: "var(--tessera-text-primary)" }}>{formatInt(data.edges.length)}</span></p>
           <p style={{ color: "var(--tessera-text-secondary)" }}>Pick Nodes: <span style={{ color: "var(--tessera-text-primary)" }}>{formatInt(data.metadata.pick_node_count)}</span></p>
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-[10px] border text-sm"
+            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+            onClick={zoomOut}
+            disabled={zoom <= MIN_ZOOM}
+            aria-label="Zoom out"
+            title="Zoom out"
+          >
+            -
+          </button>
+          <p className="w-14 text-center text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            {zoomPercent}%
+          </p>
+          <button
+            type="button"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-[10px] border text-sm"
+            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
+            onClick={zoomIn}
+            disabled={zoom >= MAX_ZOOM}
+            aria-label="Zoom in"
+            title="Zoom in"
+          >
+            +
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-8 items-center rounded-[10px] border px-3 text-xs uppercase tracking-[0.08em]"
+            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+            onClick={resetView}
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-8 items-center rounded-[10px] border px-3 text-xs uppercase tracking-[0.08em]"
+            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+            onClick={enableAllTypes}
+          >
+            All
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-8 items-center rounded-[10px] border px-3 text-xs uppercase tracking-[0.08em]"
+            style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+            onClick={disableAllTypes}
+          >
+            None
+          </button>
         </div>
 
         <div className="mt-5 flex flex-wrap gap-3 text-xs">
           {Object.entries(data.nodeTypeCounts)
             .sort(([left], [right]) => left.localeCompare(right))
-            .map(([nodeType, count]) => (
-              <span key={nodeType} className="inline-flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+            .map(([nodeType, count]) => {
+              const active = enabledNodeTypes.has(nodeType);
+              return (
+                <button
+                  key={nodeType}
+                  type="button"
+                  onClick={() => toggleNodeType(nodeType)}
+                  className="inline-flex items-center gap-2 rounded-full border px-3 py-1"
+                  style={{
+                    borderColor: active ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
+                    color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)",
+                    opacity: active ? 1 : 0.58,
+                    background: active ? "color-mix(in srgb, var(--tessera-accent-signal) 10%, transparent)" : "transparent"
+                  }}
+                  aria-pressed={active}
+                  title={`Toggle ${nodeType}`}
+                >
                 <span className="h-2.5 w-2.5 rounded-full" style={{ background: NODE_TYPE_COLORS[nodeType] ?? DEFAULT_NODE_COLOR }} aria-hidden="true" />
                 {nodeType} ({formatInt(count)})
-              </span>
-            ))}
+                </button>
+              );
+            })}
         </div>
       </section>
 
       <section className="app-card p-2 md:p-3">
-        <div className="max-h-[70vh] overflow-auto rounded-[10px] border" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
-          <svg
-            role="img"
-            aria-label="Warehouse layout graph"
-            className="h-auto min-w-full"
-            viewBox={`0 0 ${geometry.width} ${geometry.height}`}
-            preserveAspectRatio="xMidYMid meet"
+        <div className="h-[70vh] overflow-auto rounded-[10px] border" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
+          <div
+            style={{
+              width: `${zoom * 100}%`
+            }}
           >
+            <svg
+              role="img"
+              aria-label="Warehouse layout graph"
+              className="block h-auto w-full"
+              viewBox={`0 0 ${geometry.width} ${geometry.height}`}
+              preserveAspectRatio="xMidYMid meet"
+            >
             <g data-layer="base-edges">
               {data.edges.map((edge, index) => {
                 const sourceNode = geometry.nodeLookup.get(edge.source);
@@ -173,7 +318,7 @@ export function LayoutView() {
             </g>
 
             <g data-layer="base-nodes">
-              {data.nodes.map((node) => (
+              {visibleNodes.map((node) => (
                 <circle
                   key={node.id}
                   cx={geometry.toSvgX(node.x)}
@@ -187,7 +332,8 @@ export function LayoutView() {
 
             <g data-layer="overlay-routes" />
             <g data-layer="overlay-markers" />
-          </svg>
+            </svg>
+          </div>
         </div>
       </section>
     </div>
