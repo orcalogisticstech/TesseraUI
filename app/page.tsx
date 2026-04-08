@@ -2,7 +2,6 @@ import { Reveal } from "@/components/Reveal";
 import { RuledFeatureList } from "@/components/marketing/RuledFeatureList";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import tileBlackFillLimeOutline from "@/tessera_svg_elements_exact/tile_black_fill_lime_outline.svg";
-import Image from "next/image";
 import Link from "next/link";
 
 const problemCards = [
@@ -74,7 +73,7 @@ export default function HomePage() {
     <MarketingShell>
       <section className="relative flex min-h-[calc(68vh-5rem)] items-start border-b md:min-h-[calc(100vh-5rem)] md:items-center" style={{ borderColor: "var(--tessera-border)" }}>
         <div className="pointer-events-none absolute left-1/2 top-[53%] hidden -translate-x-1/2 -translate-y-1/2 opacity-[0.02] md:block" aria-hidden>
-          <Image src={tileBlackFillLimeOutline} alt="" width={1760} height={891} className="h-auto w-[1760px] max-w-none" />
+          <img src={tileBlackFillLimeOutline.src} alt="" width={1760} height={891} className="max-w-none" style={{ width: "1760px", height: "auto" }} />
         </div>
         <div className="section-wrap flex justify-center pb-12 pt-6 md:pb-16 md:pt-4">
           <div className="relative z-10 mx-auto flex max-w-[800px] flex-col items-center text-center">
