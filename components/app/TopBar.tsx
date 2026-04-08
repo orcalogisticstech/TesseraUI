@@ -11,7 +11,7 @@ function formatCountdown(totalSeconds: number) {
 }
 
 export function TopBar() {
-  const { mode, setMode, copilotOpen, setCopilotOpen, openTab, heartbeatRemaining, theme } = useAppState();
+  const { mode, setMode, copilotOpen, setCopilotOpen, openTab, heartbeatRemaining, theme, session } = useAppState();
   const router = useRouter();
   const isLightTheme = theme === "light";
   const topControlClass = "inline-flex h-9 items-center rounded-button border px-3 text-xs font-medium";
@@ -76,6 +76,17 @@ export function TopBar() {
               </svg>
             </span>
           </div>
+          <span className="text-xs font-medium uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+            Demo{" "}
+            <span className="text-[30px] leading-none align-middle" style={{ color: "var(--tessera-accent-signal)" }}>
+              &middot;
+            </span>{" "}
+            ATL1{" "}
+            <span className="text-[30px] leading-none align-middle" style={{ color: "var(--tessera-accent-signal)" }}>
+              &middot;
+            </span>{" "}
+            {session.role}
+          </span>
         </div>
 
         <a href="/" className="justify-self-center" aria-label="Go to home page">
