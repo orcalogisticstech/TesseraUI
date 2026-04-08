@@ -1,0 +1,17 @@
+{
+  "layout_version": "demo_layout_1_v1",
+  "schema_version": "1.0.0",
+  "python_version": "3.9.6",
+  "networkx_version": "3.2.1",
+  "source_file": "layout_store/demo/ATL1/bronze/demo_layout_1.csv",
+  "created_at": "2026-02-23T22:10:43.381428Z",
+  "node_count": 6455,
+  "edge_count": 12918,
+  "pick_node_count": 5904,
+  "staging_node_count": 5,
+  "waypoint_node_count": 546,
+  "aisle_count": 18,
+  "adapter_name": "demo",
+  "topology_strategy": "aisle_corridor",
+  "cost_strategy": "distance_only"
+}

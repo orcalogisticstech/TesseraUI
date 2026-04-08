@@ -277,7 +277,7 @@ export type CopilotDraftAttachment = {
   subtitle: string;
 };
 
-export type WorkspaceTabId = "decision-feed" | "history" | "settings" | `run:${string}`;
+export type WorkspaceTabId = "decision-feed" | "history" | "layout" | "settings" | `run:${string}`;
 
 export type AppDataBundle = {
   session: MockSession;

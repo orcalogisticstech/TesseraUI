@@ -2,16 +2,18 @@
 
 import { DecisionFeedView } from "@/components/app/DecisionFeedView";
 import { HistoryView } from "@/components/app/HistoryView";
+import { LayoutView } from "@/components/app/LayoutView";
 import { RunDetailsView } from "@/components/app/RunDetailsView";
 import { SettingsView } from "@/components/app/SettingsView";
 import { useAppState } from "@/components/app/AppProvider";
 import type { WorkspaceTabId } from "@/lib/app-types";
 
-const pinnedTabs: WorkspaceTabId[] = ["decision-feed", "history"];
+const pinnedTabs: WorkspaceTabId[] = ["decision-feed", "history", "layout"];
 
 const tabMeta: Record<WorkspaceTabId, { label: string }> = {
   "decision-feed": { label: "Command" },
   history: { label: "History" },
+  layout: { label: "Layout" },
   settings: { label: "Settings" }
 };
 
@@ -21,6 +23,9 @@ function renderTabBody(tabId: WorkspaceTabId) {
   }
   if (tabId === "history") {
     return <HistoryView />;
+  }
+  if (tabId === "layout") {
+    return <LayoutView />;
   }
   if (tabId === "settings") {
     return <SettingsView />;

@@ -78,7 +78,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [posturePanelOpen, setPosturePanelOpen] = useState(false);
   const [copilotOpen, setCopilotOpen] = useState(false);
   const [copilotWidth, setCopilotWidthState] = useState<number>(COPILOT_WIDTH_DEFAULT);
-  const [openTabs, setOpenTabs] = useState<WorkspaceTabId[]>(["decision-feed", "history"]);
+  const [openTabs, setOpenTabs] = useState<WorkspaceTabId[]>(["decision-feed", "history", "layout"]);
   const [activeTab, setActiveTab] = useState<WorkspaceTabId>("decision-feed");
   const [runTabDetails, setRunTabDetails] = useState<Record<string, HeartbeatRunDetails>>({});
   const [activeHeartbeatPlans, setActiveHeartbeatPlans] = useState<HeartbeatPlan[] | null>(null);
@@ -110,7 +110,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
     [focusTab]
   );
   const closeTab = useCallback((tabId: WorkspaceTabId) => {
-    if (tabId === "decision-feed" || tabId === "history") {
+    if (tabId === "decision-feed" || tabId === "history" || tabId === "layout") {
       return;
     }
 
