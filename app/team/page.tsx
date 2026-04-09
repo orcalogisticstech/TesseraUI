@@ -1,4 +1,3 @@
-import { Reveal } from "@/components/Reveal";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import Link from "next/link";
 
@@ -25,8 +24,7 @@ export default function TeamPage() {
         </div>
       </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <article className="marketing-card p-8 md:p-10">
               <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -59,19 +57,16 @@ export default function TeamPage() {
               </p>
             </article>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space">
+      <section className="section-space">
           <div className="section-wrap marketing-card p-8 md:p-12">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">TALK TO US.</h2>
             <div className="mt-8">
               <Link href="/demo" className="btn-primary">Request a Demo</Link>
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
     </MarketingShell>
   );
 }

@@ -1,4 +1,3 @@
-import { Reveal } from "@/components/Reveal";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import Link from "next/link";
 
@@ -147,8 +146,7 @@ export default function ProductPage() {
         </div>
       </section>
 
-      <Reveal>
-        <section id="tess" className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section id="tess" className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">FOUR DECISIONS. ONE PASS.</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -167,11 +165,9 @@ export default function ProductPage() {
               ))}
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap max-w-[980px]">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">ONE MODEL. ONE PLAN.</h2>
             <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -184,11 +180,9 @@ export default function ProductPage() {
               The API surface that delivers this plan adapts to each customer&apos;s integration. That might be one endpoint returning the full solution, separate calls per decision type, or a different decomposition entirely. The model doesn&apos;t change; the delivery shape does.
             </p>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">OPERATOR INTENT, OPTIMIZER EXECUTION.</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -209,11 +203,9 @@ export default function ProductPage() {
               ))}
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>AI Copilot</p>
             <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.01em]">
@@ -249,11 +241,9 @@ export default function ProductPage() {
               ))}
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">INTEGRATION SCALES TO YOUR NEEDS.</h2>
             <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -301,11 +291,9 @@ export default function ProductPage() {
               No custom hardware, no sensor feeds, no worker GPS. Just data your WMS already tracks.
             </p>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space">
+      <section className="section-space">
           <div className="section-wrap marketing-card p-8 md:p-12">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">READY TO GO DEEPER?</h2>
             <div className="mt-8 flex flex-wrap gap-4">
@@ -315,8 +303,7 @@ export default function ProductPage() {
               </Link>
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
     </MarketingShell>
   );
 }

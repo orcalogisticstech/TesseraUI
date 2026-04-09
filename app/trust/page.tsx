@@ -1,4 +1,3 @@
-import { Reveal } from "@/components/Reveal";
 import { RuledFeatureList } from "@/components/marketing/RuledFeatureList";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import Link from "next/link";
@@ -53,8 +52,7 @@ export default function TrustPage() {
         </div>
       </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">AUTONOMY, WITH GUARDRAILS.</h2>
             <div className="mt-10">
@@ -66,11 +64,9 @@ export default function TrustPage() {
               />
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">ADVISORY OR CLOSED LOOP.</h2>
             <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -85,11 +81,9 @@ export default function TrustPage() {
               ))}
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">AI THAT SHOWS ITS WORK.</h2>
             <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -110,11 +104,9 @@ export default function TrustPage() {
               </article>
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">RIGOR YOU CAN MEASURE.</h2>
             <p className="mt-5 text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -135,19 +127,16 @@ export default function TrustPage() {
               Tessera does not ask you to trust a black box. Every recommendation includes predicted impact, and every cycle produces measurable before/after comparisons. The track record is visible, queryable, and auditable.
             </p>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space">
+      <section className="section-space">
           <div className="section-wrap marketing-card p-8 md:p-12">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">SEE IT IN ACTION.</h2>
             <div className="mt-8">
               <Link href="/demo" className="btn-primary">Request a Demo</Link>
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
     </MarketingShell>
   );
 }

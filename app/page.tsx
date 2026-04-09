@@ -1,4 +1,3 @@
-import { Reveal } from "@/components/Reveal";
 import { RuledFeatureList } from "@/components/marketing/RuledFeatureList";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import tileBlackFillLimeOutline from "@/tessera_svg_elements_exact/tile_black_fill_lime_outline.svg";
@@ -110,8 +109,7 @@ export default function HomePage() {
         </a>
       </section>
 
-      <Reveal>
-        <section id="the-problem" className="section-space scroll-mt-20 border-b md:scroll-mt-24" style={{ borderColor: "var(--tessera-border)" }}>
+      <section id="the-problem" className="section-space scroll-mt-20 border-b md:scroll-mt-24" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <p className="font-code text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
               The Problem
@@ -124,11 +122,9 @@ export default function HomePage() {
               <RuledFeatureList items={problemCards} />
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section id="explain-decide-predict" className="section-space scroll-mt-20 border-b md:scroll-mt-24" style={{ borderColor: "var(--tessera-border)" }}>
+      <section id="explain-decide-predict" className="section-space scroll-mt-20 border-b md:scroll-mt-24" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">EXPLAIN, DECIDE, PREDICT, EMPOWER.</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -150,11 +146,9 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">TALK TO YOUR OPTIMIZER. TALK TO TESS.</h2>
             <p className="mt-5 max-w-4xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -179,11 +173,9 @@ export default function HomePage() {
               </p>
             </article>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
+      <section className="section-space border-b" style={{ borderColor: "var(--tessera-border)" }}>
           <div className="section-wrap">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">RIGOR YOU CAN MEASURE.</h2>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -200,11 +192,9 @@ export default function HomePage() {
               Placeholder metrics. Replace with observed facility data when available.
             </p>
           </div>
-        </section>
-      </Reveal>
+      </section>
 
-      <Reveal>
-        <section className="section-space">
+      <section className="section-space">
           <div className="section-wrap marketing-card p-8 md:p-12">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">READY TO SEE IT RUN?</h2>
             <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -219,8 +209,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-        </section>
-      </Reveal>
+      </section>
     </MarketingShell>
   );
 }
