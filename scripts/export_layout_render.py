@@ -150,6 +150,7 @@ def main() -> None:
     output_path = args.output.resolve() if args.output else layout_dir / "layout.render.json"
 
     artifact = build_render_artifact(layout_dir)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(artifact, indent=2, allow_nan=False), encoding="utf-8")
     print(f"Wrote layout render artifact: {output_path}")
 

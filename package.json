@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export:layout-demo": "python3 scripts/export_layout_render.py demo_layout_1_v1"
+    "export:layout-demo": "python3 scripts/export_layout_render.py demo_layout_1_v1 --output public/layouts/demo_layout_1_v1/layout.render.json"
   },
   "dependencies": {
     "next": "^16.2.3",

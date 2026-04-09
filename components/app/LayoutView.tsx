@@ -78,7 +78,7 @@ export function LayoutView() {
     const load = async () => {
       setError(null);
       try {
-        const response = await fetch("/api/layout?layout=demo_layout_1_v1", { cache: "no-store" });
+        const response = await fetch("/layouts/demo_layout_1_v1/layout.render.json", { cache: "no-store" });
         const payload = (await response.json()) as LayoutGraphData | { error?: string };
         if (!response.ok) {
           throw new Error("error" in payload ? payload.error ?? "Unable to load layout." : "Unable to load layout.");
