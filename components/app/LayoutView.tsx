@@ -18,7 +18,21 @@ type LayoutGraphData = {
     maxY: number;
   };
   nodeTypeCounts: Record<string, number>;
-  nodes: Array<{ id: string; type: string; x: number; y: number }>;
+  nodes: Array<{
+    id: string;
+    type: string;
+    zoneId: string | null;
+    aisle: string | null;
+    bay: number | null;
+    side: string | null;
+    level: number | null;
+    position: number | null;
+    locationType: string | null;
+    sourceLocationId: string | null;
+    x: number;
+    y: number;
+    z: number | null;
+  }>;
   edges: Array<{ source: string; target: string }>;
 };
 
@@ -37,9 +51,18 @@ const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 3;
 const ZOOM_STEP = 0.25;
 const DEFAULT_ZOOM = 1;
+const INSPECTOR_GUTTER = 28;
+const INSPECTOR_WIDTH_EXPANDED = 320;
 
 function formatInt(value: number) {
   return new Intl.NumberFormat("en-US").format(value);
+}
+
+function formatNullable(value: string | number | null) {
+  if (value === null) {
+    return "-";
+  }
+  return String(value);
 }
 
 export function LayoutView() {
@@ -47,6 +70,7 @@ export function LayoutView() {
   const [error, setError] = useState<string | null>(null);
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const [enabledNodeTypes, setEnabledNodeTypes] = useState<Set<string>>(new Set());
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -119,6 +143,28 @@ export function LayoutView() {
     return data.nodes.filter((node) => enabledNodeTypes.has(node.type));
   }, [data, enabledNodeTypes]);
 
+  const allNodesById = useMemo(() => {
+    if (!data) {
+      return new Map<string, LayoutGraphData["nodes"][number]>();
+    }
+    return new Map(data.nodes.map((node) => [node.id, node]));
+  }, [data]);
+
+  const visibleNodeIds = useMemo(() => new Set(visibleNodes.map((node) => node.id)), [visibleNodes]);
+
+  const selectedNode = selectedNodeId ? allNodesById.get(selectedNodeId) ?? null : null;
+  const inspectorWidth = INSPECTOR_WIDTH_EXPANDED;
+  const inspectorReserve = INSPECTOR_WIDTH_EXPANDED + INSPECTOR_GUTTER * 2;
+
+  useEffect(() => {
+    if (!selectedNodeId) {
+      return;
+    }
+    if (!visibleNodeIds.has(selectedNodeId)) {
+      setSelectedNodeId(null);
+    }
+  }, [selectedNodeId, visibleNodeIds]);
+
   const zoomPercent = Math.round(zoom * 100);
 
   const resetView = () => {
@@ -127,6 +173,7 @@ export function LayoutView() {
     }
     setZoom(DEFAULT_ZOOM);
     setEnabledNodeTypes(new Set(nodeTypes));
+    setSelectedNodeId(null);
   };
 
   const enableAllTypes = () => {
@@ -273,8 +320,8 @@ export function LayoutView() {
                   aria-pressed={active}
                   title={`Toggle ${nodeType}`}
                 >
-                <span className="h-2.5 w-2.5 rounded-full" style={{ background: NODE_TYPE_COLORS[nodeType] ?? DEFAULT_NODE_COLOR }} aria-hidden="true" />
-                {nodeType} ({formatInt(count)})
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: NODE_TYPE_COLORS[nodeType] ?? DEFAULT_NODE_COLOR }} aria-hidden="true" />
+                  {nodeType} ({formatInt(count)})
                 </button>
               );
             })}
@@ -282,58 +329,125 @@ export function LayoutView() {
       </section>
 
       <section className="app-card p-2 md:p-3">
-        <div className="h-[70vh] overflow-auto rounded-[10px] border" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
-          <div
+        <div className="relative h-[70vh] rounded-[10px] border" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
+          <div className="h-full overflow-auto" style={{ paddingRight: `${inspectorReserve}px` }}>
+            <div
+              style={{
+                width: `${zoom * 100}%`
+              }}
+            >
+              <svg
+                role="img"
+                aria-label="Warehouse layout graph"
+                className="block h-auto w-full"
+                viewBox={`0 0 ${geometry.width} ${geometry.height}`}
+                preserveAspectRatio="xMidYMid meet"
+                onClick={() => setSelectedNodeId(null)}
+              >
+                <g data-layer="base-edges">
+                  {data.edges.map((edge, index) => {
+                    const sourceNode = geometry.nodeLookup.get(edge.source);
+                    const targetNode = geometry.nodeLookup.get(edge.target);
+                    if (!sourceNode || !targetNode) {
+                      return null;
+                    }
+                    return (
+                      <line
+                        key={`${edge.source}-${edge.target}-${index}`}
+                        x1={geometry.toSvgX(sourceNode.x)}
+                        y1={geometry.toSvgY(sourceNode.y)}
+                        x2={geometry.toSvgX(targetNode.x)}
+                        y2={geometry.toSvgY(targetNode.y)}
+                        stroke={BASE_EDGE_COLOR}
+                        strokeWidth={0.08}
+                        strokeOpacity={0.6}
+                      />
+                    );
+                  })}
+                </g>
+
+                <g data-layer="base-nodes">
+                  {visibleNodes.map((node) => (
+                    <circle
+                      key={node.id}
+                      cx={geometry.toSvgX(node.x)}
+                      cy={geometry.toSvgY(node.y)}
+                      r={selectedNodeId === node.id ? 0.24 : 0.14}
+                      fill={NODE_TYPE_COLORS[node.type] ?? DEFAULT_NODE_COLOR}
+                      fillOpacity={0.92}
+                      stroke={selectedNodeId === node.id ? "var(--tessera-accent-signal)" : "none"}
+                      strokeWidth={selectedNodeId === node.id ? 0.08 : 0}
+                      style={{ cursor: "pointer" }}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setSelectedNodeId((current) => (current === node.id ? null : node.id));
+                      }}
+                    />
+                  ))}
+                </g>
+
+                <g data-layer="overlay-routes" />
+                <g data-layer="overlay-markers" />
+              </svg>
+            </div>
+          </div>
+
+          <aside
+            className="absolute top-3 rounded-[10px] border p-3"
             style={{
-              width: `${zoom * 100}%`
+              right: `${INSPECTOR_GUTTER}px`,
+              width: `${inspectorWidth}px`,
+              borderColor: "var(--tessera-border)",
+              background: "color-mix(in srgb, var(--tessera-bg-surface) 92%, transparent)",
+              backdropFilter: "blur(6px)"
             }}
           >
-            <svg
-              role="img"
-              aria-label="Warehouse layout graph"
-              className="block h-auto w-full"
-              viewBox={`0 0 ${geometry.width} ${geometry.height}`}
-              preserveAspectRatio="xMidYMid meet"
-            >
-            <g data-layer="base-edges">
-              {data.edges.map((edge, index) => {
-                const sourceNode = geometry.nodeLookup.get(edge.source);
-                const targetNode = geometry.nodeLookup.get(edge.target);
-                if (!sourceNode || !targetNode) {
-                  return null;
-                }
-                return (
-                  <line
-                    key={`${edge.source}-${edge.target}-${index}`}
-                    x1={geometry.toSvgX(sourceNode.x)}
-                    y1={geometry.toSvgY(sourceNode.y)}
-                    x2={geometry.toSvgX(targetNode.x)}
-                    y2={geometry.toSvgY(targetNode.y)}
-                    stroke={BASE_EDGE_COLOR}
-                    strokeWidth={0.08}
-                    strokeOpacity={0.6}
-                  />
-                );
-              })}
-            </g>
-
-            <g data-layer="base-nodes">
-              {visibleNodes.map((node) => (
-                <circle
-                  key={node.id}
-                  cx={geometry.toSvgX(node.x)}
-                  cy={geometry.toSvgY(node.y)}
-                  r={0.14}
-                  fill={NODE_TYPE_COLORS[node.type] ?? DEFAULT_NODE_COLOR}
-                  fillOpacity={0.92}
-                />
-              ))}
-            </g>
-
-            <g data-layer="overlay-routes" />
-            <g data-layer="overlay-markers" />
-            </svg>
-          </div>
+            {selectedNode ? (
+              <>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                    Node Inspector
+                  </p>
+                  <button
+                    type="button"
+                    className="rounded-[8px] border px-2 py-1 text-[11px] uppercase tracking-[0.08em]"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+                    onClick={() => setSelectedNodeId(null)}
+                  >
+                    Clear
+                  </button>
+                </div>
+                <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Node ID</dt>
+                  <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>{selectedNode.id}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Node Type</dt>
+                  <dd>{selectedNode.type}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Zone</dt>
+                  <dd>{formatNullable(selectedNode.zoneId)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Aisle</dt>
+                  <dd>{formatNullable(selectedNode.aisle)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Location Type</dt>
+                  <dd>{formatNullable(selectedNode.locationType)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Source Location</dt>
+                  <dd>{formatNullable(selectedNode.sourceLocationId)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Bay</dt>
+                  <dd>{formatNullable(selectedNode.bay)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Side</dt>
+                  <dd>{formatNullable(selectedNode.side)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Level</dt>
+                  <dd>{formatNullable(selectedNode.level)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Position</dt>
+                  <dd>{formatNullable(selectedNode.position)}</dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Coordinates</dt>
+                  <dd>{`(${selectedNode.x.toFixed(2)}, ${selectedNode.y.toFixed(2)}, ${selectedNode.z?.toFixed(2) ?? "-"})`}</dd>
+                </dl>
+              </>
+            ) : (
+              <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+                Select a node to inspect.
+              </p>
+            )}
+          </aside>
         </div>
       </section>
     </div>

@@ -13,8 +13,17 @@ type LayoutMetadata = {
 export type LayoutNode = {
   id: string;
   type: string;
+  zoneId: string | null;
+  aisle: string | null;
+  bay: number | null;
+  side: string | null;
+  level: number | null;
+  position: number | null;
+  locationType: string | null;
+  sourceLocationId: string | null;
   x: number;
   y: number;
+  z: number | null;
 };
 
 export type LayoutEdge = {

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import pickle
 from pathlib import Path
 
@@ -50,6 +51,12 @@ def load_parquet_counts(parquet_path: Path, node_type_column: str | None = None)
     return parquet_file.metadata.num_rows, counts
 
 
+def to_finite_float(value: object) -> float | None:
+    if isinstance(value, (int, float)) and math.isfinite(value):
+        return float(value)
+    return None
+
+
 def build_render_artifact(layout_dir: Path) -> dict:
     metadata = load_json(layout_dir / "layout_metadata.json")
     graph = load_graph(layout_dir / "graph.pkl")
@@ -62,17 +69,27 @@ def build_render_artifact(layout_dir: Path) -> dict:
     max_y = float("-inf")
 
     for node_id, attrs in graph.nodes(data=True):
-        x = attrs.get("x")
-        y = attrs.get("y")
-        if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
+        x = to_finite_float(attrs.get("x"))
+        y = to_finite_float(attrs.get("y"))
+        z = to_finite_float(attrs.get("z"))
+        if x is None or y is None:
             continue
 
         node_type = str(attrs.get("node_type") or "unknown")
         node = {
             "id": str(node_id),
             "type": node_type,
-            "x": float(x),
-            "y": float(y),
+            "zoneId": str(attrs.get("zone_id")) if attrs.get("zone_id") is not None else None,
+            "aisle": str(attrs.get("aisle")) if attrs.get("aisle") is not None else None,
+            "bay": to_finite_float(attrs.get("bay")),
+            "side": str(attrs.get("side")) if attrs.get("side") is not None else None,
+            "level": to_finite_float(attrs.get("level")),
+            "position": to_finite_float(attrs.get("position")),
+            "locationType": str(attrs.get("location_type")) if attrs.get("location_type") is not None else None,
+            "sourceLocationId": str(attrs.get("source_location_id")) if attrs.get("source_location_id") is not None else None,
+            "x": x,
+            "y": y,
+            "z": z,
         }
         nodes.append(node)
         node_type_counts[node_type] = node_type_counts.get(node_type, 0) + 1
@@ -133,7 +150,7 @@ def main() -> None:
     output_path = args.output.resolve() if args.output else layout_dir / "layout.render.json"
 
     artifact = build_render_artifact(layout_dir)
-    output_path.write_text(json.dumps(artifact, indent=2), encoding="utf-8")
+    output_path.write_text(json.dumps(artifact, indent=2, allow_nan=False), encoding="utf-8")
     print(f"Wrote layout render artifact: {output_path}")
 
 
