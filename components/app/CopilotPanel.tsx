@@ -8,8 +8,8 @@ import Image from "next/image";
 import { useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 
-const COPILOT_WIDTH_MIN = 320;
-const COPILOT_WIDTH_MAX = 744;
+const COPILOT_WIDTH_MIN = 500;
+const COPILOT_WIDTH_MAX = 620;
 
 function clampCopilotWidth(width: number) {
   return Math.min(COPILOT_WIDTH_MAX, Math.max(COPILOT_WIDTH_MIN, width));

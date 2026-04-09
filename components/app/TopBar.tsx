@@ -56,27 +56,7 @@ export function TopBar() {
             <span style={{ color: "var(--tessera-text-primary)" }}>NEXT HEARTBEAT:</span>{" "}
             <span style={{ color: "var(--tessera-accent-signal)" }}>{formatCountdown(heartbeatRemaining)}</span>
           </span>
-          <div className="relative">
-            <select
-              value={mode}
-              onChange={(event) => setMode(event.target.value as typeof mode)}
-              className="h-9 appearance-none rounded-button border bg-transparent pl-3 pr-8 text-xs font-medium"
-              style={modeSelectStyle}
-            >
-              <option>Advisory</option>
-              <option>Closed-Loop</option>
-            </select>
-            <span
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
-              style={{ color: modeSelectStyle.color }}
-              aria-hidden="true"
-            >
-              <svg viewBox="0 0 12 12" className="h-3 w-3 fill-none stroke-current" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2.5 4.5 6 8l3.5-3.5" />
-              </svg>
-            </span>
-          </div>
-          <span className="text-xs font-medium uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+          <span className="whitespace-nowrap text-xs font-medium uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
             Demo{" "}
             <span className="text-[30px] leading-none align-middle" style={{ color: "var(--tessera-accent-signal)" }}>
               &middot;
@@ -98,6 +78,27 @@ export function TopBar() {
         </a>
 
         <div className="flex items-center justify-self-end gap-2">
+          <div className="relative">
+            <select
+              value={mode}
+              onChange={(event) => setMode(event.target.value as typeof mode)}
+              className="h-9 appearance-none rounded-button border bg-transparent pl-3 pr-8 text-xs font-medium"
+              style={modeSelectStyle}
+              aria-label="System mode"
+            >
+              <option>Advisory</option>
+              <option>Closed-Loop</option>
+            </select>
+            <span
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
+              style={{ color: modeSelectStyle.color }}
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 12 12" className="h-3 w-3 fill-none stroke-current" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2.5 4.5 6 8l3.5-3.5" />
+              </svg>
+            </span>
+          </div>
           <button
             type="button"
             className={iconControlClass}
