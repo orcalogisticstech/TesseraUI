@@ -13,8 +13,8 @@ export function HeroSection() {
             The decision intelligence layer for warehouse operations. Detect problems, prescribe fixes, show predicted impact — all from a single model.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a className="btn-primary" href="#contact">Request a demo</a>
-            <a className="btn-secondary" href="#capabilities">See it run</a>
+            <a className="btn-primary-marketing" href="#contact">Request a demo</a>
+            <a className="btn-secondary-marketing" href="#capabilities">See it run</a>
           </div>
         </div>
       </div>

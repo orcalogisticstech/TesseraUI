@@ -6,7 +6,7 @@ export function FooterCTA() {
         <p className="mt-5 max-w-3xl text-lg" style={{ color: "var(--tessera-text-secondary)" }}>
           Bring one facility. We'll produce an executable plan.
         </p>
-        <a href="#" className="btn-primary mt-8 inline-flex">
+        <a href="#" className="btn-primary-marketing mt-8 inline-flex">
           Talk to an operator
         </a>
       </div>

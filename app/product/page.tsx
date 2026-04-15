@@ -223,7 +223,7 @@ export default function ProductPage() {
                   </p>
                   <div className="mt-5 space-y-3">
                     {capability.conversations.map((conversation) => (
-                      <div key={conversation.tess} className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
+                      <div key={conversation.tess} className="border p-4" style={{ borderColor: "var(--tessera-border)" }}>
                         {"label" in conversation ? (
                           <p className="font-code text-xs uppercase tracking-[0.12em]" style={{ color: "var(--tessera-text-secondary)" }}>
                             {conversation.label}
@@ -297,7 +297,7 @@ export default function ProductPage() {
           <div className="section-wrap marketing-card p-8 md:p-12">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">READY TO GO DEEPER?</h2>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/demo" className="btn-primary">Request a Demo</Link>
+              <Link href="/demo" className="btn-primary-marketing">Request a Demo</Link>
               <Link href="/trust" className="inline-flex items-center text-sm font-medium" style={{ color: "var(--tessera-text-secondary)" }}>
                 How we earn trust →
               </Link>

@@ -74,8 +74,7 @@ export function DemoForm() {
           type="text"
           value={values.name}
           onChange={(event) => updateField("name", event.target.value)}
-          className="mt-2 w-full rounded-[12px] border px-3 py-2"
-          style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-input)" }}
+          className="marketing-input mt-2 px-3 py-2"
         />
       </label>
       <label className="block text-sm">
@@ -85,8 +84,7 @@ export function DemoForm() {
           type="email"
           value={values.email}
           onChange={(event) => updateField("email", event.target.value)}
-          className="mt-2 w-full rounded-[12px] border px-3 py-2"
-          style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-input)" }}
+          className="marketing-input mt-2 px-3 py-2"
         />
       </label>
       <label className="block text-sm">
@@ -96,8 +94,7 @@ export function DemoForm() {
           type="text"
           value={values.company}
           onChange={(event) => updateField("company", event.target.value)}
-          className="mt-2 w-full rounded-[12px] border px-3 py-2"
-          style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-input)" }}
+          className="marketing-input mt-2 px-3 py-2"
         />
       </label>
       <label className="block text-sm">
@@ -105,8 +102,7 @@ export function DemoForm() {
         <select
           value={values.platform}
           onChange={(event) => updateField("platform", event.target.value)}
-          className="mt-2 w-full rounded-[12px] border px-3 py-2"
-          style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-input)" }}
+          className="marketing-input mt-2 px-3 py-2"
         >
           {platforms.map((platform) => (
             <option key={platform}>{platform}</option>
@@ -119,12 +115,11 @@ export function DemoForm() {
           rows={3}
           value={values.message}
           onChange={(event) => updateField("message", event.target.value)}
-          className="mt-2 w-full rounded-[12px] border px-3 py-2"
-          style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-input)" }}
+          className="marketing-input mt-2 px-3 py-2"
         />
       </label>
 
-      <button type="submit" className="btn-primary mt-2 inline-flex w-full justify-center" disabled={status === "submitting"}>
+      <button type="submit" className="btn-primary-marketing mt-2 inline-flex w-full justify-center" disabled={status === "submitting"}>
         {status === "submitting" ? "Submitting..." : "Request Demo"}
       </button>
 

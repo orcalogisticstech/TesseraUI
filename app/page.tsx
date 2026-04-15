@@ -88,7 +88,7 @@ export default function HomePage() {
               Tessera sits on top of your WMS and decides what work to release, how to group it, and what to prioritize — accounting for every constraint on the floor simultaneously.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-7 md:mt-8">
-              <Link href="/demo" className="btn-primary">
+              <Link href="/demo" className="btn-primary-marketing">
                 Request a Demo
               </Link>
               <a
@@ -158,7 +158,7 @@ export default function HomePage() {
             <article className="marketing-card mt-8 p-6 md:p-8">
               <div className="space-y-4">
                 {tessHomepageConversations.map((conversation) => (
-                  <div key={conversation.operator} className="rounded-[12px] border p-4" style={{ borderColor: "var(--tessera-border)" }}>
+                  <div key={conversation.operator} className="border p-4" style={{ borderColor: "var(--tessera-border)" }}>
                     <p className="text-sm">Operator: {conversation.operator}</p>
                     <p className="mt-2 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
                       Tess: {conversation.tess}
@@ -201,7 +201,7 @@ export default function HomePage() {
               Bring one facility. We&apos;ll produce an executable plan.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/demo" className="btn-primary">
+              <Link href="/demo" className="btn-primary-marketing">
                 Request a Demo
               </Link>
               <Link href="/product" className="inline-flex items-center text-sm font-medium" style={{ color: "var(--tessera-text-secondary)" }}>

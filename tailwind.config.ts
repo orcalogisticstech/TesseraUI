@@ -32,7 +32,9 @@ const config: Config = {
       borderRadius: {
         card: "16px",
         appCard: "12px",
-        button: "14px"
+        button: "14px",
+        marketingCard: "0px",
+        marketingButton: "0px"
       },
       spacing: {
         1: "4px",

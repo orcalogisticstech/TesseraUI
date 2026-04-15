@@ -16,7 +16,8 @@
   --tessera-success: #34c759;
   --tessera-radius-card: 12px;
   --tessera-radius-button: 14px;
-  --tessera-radius-marketing-card: 16px;
+  --tessera-radius-marketing-card: 0px;
+  --tessera-radius-marketing-button: 0px;
   --tessera-bg-input: #1a1a2e;
 }
 
@@ -72,12 +73,28 @@ html {
   @apply rounded-button bg-signal px-4 py-3 font-medium text-[#0B0D10] transition duration-150 hover:brightness-90;
 }
 
+.btn-primary-marketing {
+  @apply bg-signal px-4 py-3 font-medium text-[#0B0D10] transition duration-150 hover:brightness-90;
+  border: 1px solid var(--tessera-accent-signal);
+  border-radius: var(--tessera-radius-marketing-button);
+}
+
 .btn-secondary {
   @apply rounded-button border px-4 py-3 font-medium transition duration-150;
   border-color: var(--tessera-border);
 }
 
+.btn-secondary-marketing {
+  @apply border px-4 py-3 font-medium transition duration-150;
+  border-color: var(--tessera-border);
+  border-radius: var(--tessera-radius-marketing-button);
+}
+
 .btn-secondary:hover {
+  background: color-mix(in srgb, var(--tessera-text-primary) 4%, transparent);
+}
+
+.btn-secondary-marketing:hover {
   background: color-mix(in srgb, var(--tessera-text-primary) 4%, transparent);
 }
 
@@ -102,6 +119,20 @@ html {
   background: var(--tessera-bg-surface);
   border: 1px solid var(--tessera-border);
   border-radius: var(--tessera-radius-marketing-card);
+}
+
+.marketing-input {
+  width: 100%;
+  border: 1px solid var(--tessera-border);
+  border-radius: var(--tessera-radius-marketing-button);
+  background: var(--tessera-bg-input);
+}
+
+.marketing-label-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--tessera-border);
+  border-radius: var(--tessera-radius-marketing-button);
 }
 
 .app-card {

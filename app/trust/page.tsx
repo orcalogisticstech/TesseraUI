@@ -133,7 +133,7 @@ export default function TrustPage() {
           <div className="section-wrap marketing-card p-8 md:p-12">
             <h2 className="headline text-4xl font-semibold md:text-[44px]">SEE IT IN ACTION.</h2>
             <div className="mt-8">
-              <Link href="/demo" className="btn-primary">Request a Demo</Link>
+              <Link href="/demo" className="btn-primary-marketing">Request a Demo</Link>
             </div>
           </div>
       </section>

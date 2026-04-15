@@ -12,7 +12,7 @@ export function Card({ title, description, tag, step }: CardProps) {
         <div className="mb-4 flex items-center gap-2 text-xs uppercase tracking-[0.14em]" style={{ color: "var(--tessera-text-secondary)" }}>
           {step && <span>{step}</span>}
           {tag && (
-            <span className="rounded-full border px-2 py-1" style={{ borderColor: "var(--tessera-border)" }}>
+            <span className="marketing-label-chip px-2 py-1" style={{ borderColor: "var(--tessera-border)" }}>
               {tag}
             </span>
           )}

@@ -46,7 +46,7 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b backdrop-blur-[12px] md:sticky" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-page) 80%, transparent)" }}>
+      <header className="fixed inset-x-0 top-0 z-50 border-b md:sticky" style={{ borderColor: "var(--tessera-border)", background: "color-mix(in srgb, var(--tessera-bg-page) 94%, transparent)" }}>
         <div className="section-wrap grid h-16 grid-cols-[48px_minmax(0,1fr)_48px] items-center gap-2 md:h-20 md:flex md:justify-between">
           <div aria-hidden className="h-12 w-12 md:hidden" />
 
@@ -61,22 +61,26 @@ export function Header() {
               {navItems.map((item) => {
                 const active = isActivePath(pathname, item.href);
                 return (
-                  <Link key={item.href} href={item.href} className="group relative pb-1 transition-colors hover:text-[var(--tessera-accent-signal)]" style={{ color: active ? "var(--tessera-text-primary)" : undefined }}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="group relative border-b border-transparent pb-1 transition-colors hover:border-[var(--tessera-accent-signal)] hover:text-[var(--tessera-accent-signal)]"
+                    style={{ color: active ? "var(--tessera-text-primary)" : undefined, borderColor: active ? "var(--tessera-accent-signal)" : undefined }}
+                  >
                     {item.label}
-                    <span className="absolute -bottom-0.5 left-0 h-[2px] w-full rounded-full transition-opacity group-hover:opacity-100" style={{ background: "var(--tessera-accent-signal)", opacity: active ? 1 : 0 }} />
                   </Link>
                 );
               })}
             </nav>
-            <Link href="/demo" className="btn-primary text-sm uppercase tracking-[0.08em]">
+            <Link href="/demo" className="btn-primary-marketing text-sm uppercase tracking-[0.08em]">
               Request Demo
             </Link>
           </div>
 
           <button
             type="button"
-            className="relative top-[2px] inline-flex h-12 w-12 items-center justify-center rounded-button md:hidden"
-            style={{ color: "var(--tessera-text-primary)" }}
+            className="relative top-[2px] inline-flex h-12 w-12 items-center justify-center border md:hidden"
+            style={{ color: "var(--tessera-text-primary)", borderColor: "var(--tessera-border)" }}
             aria-label={menuOpen ? "Close site navigation" : "Open site navigation"}
             aria-expanded={menuOpen}
             aria-controls="site-mobile-menu"
@@ -90,7 +94,7 @@ export function Header() {
       <aside
         id="site-mobile-menu"
         className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col p-6 transition-all duration-200 ease-out md:hidden ${menuOpen ? "pointer-events-auto visible translate-y-0 opacity-100" : "pointer-events-none invisible translate-y-1 opacity-0"}`}
-        style={{ background: "#66707a" }}
+        style={{ background: "color-mix(in srgb, var(--tessera-bg-page) 98%, #66707a 2%)", borderTop: "1px solid var(--tessera-border)" }}
       >
         <nav className="flex flex-col gap-6 pt-6 text-xl">
           <Link href="/" className="py-1" onClick={() => closeMobileMenuLink("/")}>
@@ -113,7 +117,7 @@ export function Header() {
           })}
         </nav>
         <div className="mt-auto pb-[calc(8px+env(safe-area-inset-bottom))]">
-          <Link href="/demo" className="btn-primary inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={() => closeMobileMenuLink("/demo")}>
+          <Link href="/demo" className="btn-primary-marketing inline-flex w-full justify-center text-sm uppercase tracking-[0.08em]" onClick={() => closeMobileMenuLink("/demo")}>
             Request Demo
           </Link>
         </div>
