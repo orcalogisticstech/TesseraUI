@@ -53,6 +53,7 @@ export function DecisionFeedView() {
     openRunTab,
     activeHeartbeatPlans,
     clearActiveHeartbeatPlans,
+    triggerNextHeartbeat,
     addAdoptedPlanToHistory,
     heartbeatRemaining,
     theme
@@ -111,6 +112,7 @@ export function DecisionFeedView() {
   const throughputColor = data.kpi.throughputPicksPerHour < 150 ? "var(--tessera-danger)" : data.kpi.throughputPicksPerHour < 170 ? "var(--tessera-warning)" : "var(--tessera-success)";
   const metricCardClass = "app-card flex h-full flex-col p-4";
   const metricLabelClass = "min-h-[2.75rem] text-xs uppercase tracking-[0.08em]";
+  const heartbeatTriggerDisabled = activeHeartbeatPlans !== null;
 
   const moveObjective = (objective: ObjectiveKey, nextTier: ObjectiveTier, nextIndex?: number) => {
     setObjectiveTiers((current) => {
@@ -235,6 +237,15 @@ export function DecisionFeedView() {
           <p className="mt-2 font-display text-[36px]" style={{ color: "var(--tessera-accent-signal)" }}>
             {formatCountdown(heartbeatRemaining)}
           </p>
+          <button
+            type="button"
+            className="btn-secondary mt-4 px-3 py-2 text-sm"
+            onClick={triggerNextHeartbeat}
+            disabled={heartbeatTriggerDisabled}
+            title={heartbeatTriggerDisabled ? "Resolve the current heartbeat proposal before triggering another cycle." : "Trigger the next heartbeat now"}
+          >
+            Trigger
+          </button>
         </article>
       </section>
 

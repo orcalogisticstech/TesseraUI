@@ -56,6 +56,7 @@ type AppContextValue = {
   openRunTab: (run: HeartbeatRunSummary) => void;
   activeHeartbeatPlans: HeartbeatPlan[] | null;
   clearActiveHeartbeatPlans: () => void;
+  triggerNextHeartbeat: () => void;
   adoptedPlansHistory: AdoptedPlanHistoryEntry[];
   addAdoptedPlanToHistory: (plan: HeartbeatPlan) => void;
   heartbeatRemaining: number;
@@ -269,6 +270,19 @@ export function AppProvider({
   const clearActiveHeartbeatPlans = useCallback(() => {
     setActiveHeartbeatPlans(null);
   }, []);
+  const triggerNextHeartbeat = useCallback(() => {
+    if (activeHeartbeatPlansRef.current === null) {
+      const totalPlanSets = initialHeartbeatPlanSets.length;
+      if (totalPlanSets > 0) {
+        const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
+        setActiveHeartbeatPlans(initialHeartbeatPlanSets[normalizedIndex]);
+        nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
+      }
+    }
+
+    setHeartbeatCycleCount((count) => count + 1);
+    setHeartbeatRemaining(HEARTBEAT_SECONDS);
+  }, [initialHeartbeatPlanSets]);
 
   const addAdoptedPlanToHistory = useCallback((plan: HeartbeatPlan) => {
     setAdoptedPlansHistory((current) => [
@@ -319,22 +333,14 @@ export function AppProvider({
     const timer = window.setInterval(() => {
       setHeartbeatRemaining((current) => {
         if (current === 0) {
-          if (activeHeartbeatPlansRef.current === null) {
-            const totalPlanSets = initialHeartbeatPlanSets.length;
-            if (totalPlanSets > 0) {
-              const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
-              setActiveHeartbeatPlans(initialHeartbeatPlanSets[normalizedIndex]);
-              nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
-            }
-          }
-          setHeartbeatCycleCount((count) => count + 1);
-          return HEARTBEAT_SECONDS;
+          triggerNextHeartbeat();
+          return current;
         }
         return current - 1;
       });
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [initialHeartbeatPlanSets]);
+  }, [triggerNextHeartbeat]);
 
   const value = useMemo(
     () => ({
@@ -365,6 +371,7 @@ export function AppProvider({
       openRunTab,
       activeHeartbeatPlans,
       clearActiveHeartbeatPlans,
+      triggerNextHeartbeat,
       adoptedPlansHistory,
       addAdoptedPlanToHistory,
       heartbeatRemaining,
@@ -393,6 +400,7 @@ export function AppProvider({
       openRunTab,
       activeHeartbeatPlans,
       clearActiveHeartbeatPlans,
+      triggerNextHeartbeat,
       adoptedPlansHistory,
       addAdoptedPlanToHistory,
       heartbeatRemaining,
