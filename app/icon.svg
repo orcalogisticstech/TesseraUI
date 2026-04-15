@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" fill="#0B0D10"/>
-  <polygon points="12,20 37,24 50,42 25,38" fill="#0B0D10" stroke="#D8FF2A" stroke-width="4" stroke-linejoin="miter"/>
+  <rect width="64" height="64" fill="#0B0D10" />
+  <svg x="8.6" y="17.6" width="46.8" height="28.8" viewBox="781 406 89 45" overflow="visible" aria-hidden="true">
+    <path
+      fill="#D8FF2A"
+      d="M 817.191406 444.203125 L 868.949219 450.511719 L 833.1875 412.566406 L 781.429688 406.257812 Z M 817.191406 444.203125"
+    />
+  </svg>
 </svg>
