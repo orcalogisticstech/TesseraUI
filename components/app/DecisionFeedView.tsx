@@ -2,6 +2,7 @@
 
 import { HeartbeatProposalCard } from "@/components/app/HeartbeatProposalCard";
 import { useAppState } from "@/components/app/AppProvider";
+import { formatFloatCompact, formatPercentFromRatio } from "@/lib/number-format";
 import { useEffect, useState } from "react";
 import type { DragEvent } from "react";
 
@@ -276,25 +277,25 @@ export function DecisionFeedView() {
         <article className={metricCardClass}>
           <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Max Zone Load</p>
           <p className="font-display text-[28px]" style={{ color: zoneLoadColor }}>
-            {data.kpi.maxZoneLoad}
+            {formatFloatCompact(data.kpi.maxZoneLoad)}
           </p>
         </article>
         <article className={metricCardClass}>
           <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Zone Crossings</p>
           <p className="font-display text-[28px]" style={{ color: zoneCrossingsColor }}>
-            {data.kpi.zoneCrossings}
+            {formatFloatCompact(data.kpi.zoneCrossings)}
           </p>
         </article>
         <article className={metricCardClass}>
           <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Priority Alignment</p>
           <p className="font-display text-[28px]" style={{ color: priorityAlignmentColor }}>
-            {Math.round(data.kpi.priorityAlignment * 100)}%
+            {formatPercentFromRatio(data.kpi.priorityAlignment)}
           </p>
         </article>
         <article className={metricCardClass}>
           <p className={metricLabelClass} style={{ color: "var(--tessera-text-secondary)" }}>Throughput</p>
           <p className="font-display text-[28px]" style={{ color: throughputColor }}>
-            {data.kpi.throughputPicksPerHour}
+            {formatFloatCompact(data.kpi.throughputPicksPerHour)}
           </p>
           <p className="mt-1 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
             picks/hr

@@ -1,6 +1,7 @@
 "use client";
 
 import { formatTradeoffLabel } from "@/lib/heartbeat-recordings-shared";
+import { formatFloatCompact, formatPercentFromRatio, formatRatio } from "@/lib/number-format";
 import type { FlattenedBatchRow, HeartbeatRunDetails, HeartbeatRunSummary } from "@/lib/app-types";
 import { useEffect, useState } from "react";
 
@@ -52,11 +53,11 @@ const batchColumnDefs: Array<{
 }> = [
   { key: "batchId", label: "Batch", render: (row) => row.batchId },
   { key: "priorityRank", label: "Rank", render: (row) => String(row.priorityRank) },
-  { key: "priorityScore", label: "Priority Score", render: (row) => row.priorityScore.toFixed(2) },
+  { key: "priorityScore", label: "Priority Score", render: (row) => formatFloatCompact(row.priorityScore) },
   { key: "cartTypeId", label: "Cart Type", render: (row) => row.cartTypeId },
   { key: "waveId", label: "Wave", render: (row) => row.waveId },
   { label: "Zones", render: (row) => row.zones.join(", ") },
-  { key: "routeDistance", label: "Route Distance", render: (row) => row.routeDistance.toFixed(1) },
+  { key: "routeDistance", label: "Route Distance", render: (row) => formatFloatCompact(row.routeDistance) },
   { key: "routeDuration", label: "Route Duration", render: (row) => formatSeconds(row.routeDuration) },
   { key: "routeCrossings", label: "Route Crossings", render: (row) => String(row.routeCrossings) },
   { key: "sequenceIndex", label: "Sequence", render: (row) => (row.sequenceIndex === null ? "" : String(row.sequenceIndex)) },
@@ -171,7 +172,7 @@ function renderSummaryHeader(run: HeartbeatRunSummary) {
         </div>
         <div>
           <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Solve Time</p>
-          <p className="mt-1 text-sm">{run.computationTime.toFixed(1)}s</p>
+          <p className="mt-1 text-sm">{formatFloatCompact(run.computationTime)}s</p>
         </div>
         <div>
           <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Workflow</p>
@@ -382,15 +383,15 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
               <div className="border p-3" style={{ borderColor: "var(--tessera-border)" }}>
                 <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Weights</p>
-                <p className="mt-2 text-sm">Travel {run.requestContext.weights.travelTime.toFixed(3)}</p>
-                <p className="text-sm">Tardiness {run.requestContext.weights.tardiness.toFixed(3)}</p>
-                <p className="text-sm">Zone {run.requestContext.weights.zoneBalance.toFixed(3)}</p>
+                <p className="mt-2 text-sm">Travel {formatRatio(run.requestContext.weights.travelTime)}</p>
+                <p className="text-sm">Tardiness {formatRatio(run.requestContext.weights.tardiness)}</p>
+                <p className="text-sm">Zone {formatRatio(run.requestContext.weights.zoneBalance)}</p>
               </div>
               <div className="border p-3" style={{ borderColor: "var(--tessera-border)" }}>
                 <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Penalties</p>
-                <p className="mt-2 text-sm">Zone Cross {run.requestContext.penalties.zoneCross.toFixed(3)}</p>
-                <p className="text-sm">Split Order {run.requestContext.penalties.splitOrder.toFixed(3)}</p>
-                <p className="text-sm">Grouping {run.requestContext.penalties.groupingViolation.toFixed(3)}</p>
+                <p className="mt-2 text-sm">Zone Cross {formatRatio(run.requestContext.penalties.zoneCross)}</p>
+                <p className="text-sm">Split Order {formatRatio(run.requestContext.penalties.splitOrder)}</p>
+                <p className="text-sm">Grouping {formatRatio(run.requestContext.penalties.groupingViolation)}</p>
               </div>
               <div className="border p-3" style={{ borderColor: "var(--tessera-border)" }}>
                 <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Limits</p>
@@ -422,13 +423,13 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
               <tbody>
                 <tr>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>Total Travel</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{run.solutionMetrics.totalDistance}</td>
+                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{formatFloatCompact(run.solutionMetrics.totalDistance)}</td>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>Total Duration</td>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{formatSeconds(run.solutionMetrics.totalDuration)}</td>
                 </tr>
                 <tr>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>Total Tardiness</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{run.solutionMetrics.totalTardiness}</td>
+                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{formatFloatCompact(run.solutionMetrics.totalTardiness)}</td>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>Late Orders</td>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{run.solutionMetrics.nLateOrders}</td>
                 </tr>
@@ -454,13 +455,13 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>Grouping Violations</td>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{run.solutionMetrics.nGroupingViolations}</td>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>Priority Alignment</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{Math.round(run.solutionMetrics.priorityAlignment * 100)}%</td>
+                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{formatPercentFromRatio(run.solutionMetrics.priorityAlignment)}</td>
                 </tr>
                 <tr>
                   <td className="px-3 py-2" style={{ color: "var(--tessera-text-secondary)" }}>Batch Duration Balance</td>
-                  <td className="px-3 py-2">{run.solutionMetrics.batchDurationBalance.toFixed(2)}</td>
+                  <td className="px-3 py-2">{formatRatio(run.solutionMetrics.batchDurationBalance)}</td>
                   <td className="px-3 py-2" style={{ color: "var(--tessera-text-secondary)" }}>Batch Distance Balance</td>
-                  <td className="px-3 py-2">{run.solutionMetrics.batchDistanceBalance.toFixed(2)}</td>
+                  <td className="px-3 py-2">{formatRatio(run.solutionMetrics.batchDistanceBalance)}</td>
                 </tr>
               </tbody>
             </table>

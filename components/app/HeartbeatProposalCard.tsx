@@ -1,6 +1,7 @@
 "use client";
 
 import type { HeartbeatPlan, SystemMode } from "@/lib/app-types";
+import { formatFloatCompact, formatPercentFromRatio } from "@/lib/number-format";
 
 type HeartbeatProposalCardProps = {
   plans: HeartbeatPlan[];
@@ -18,10 +19,10 @@ const metricRows: Array<{
 }> = [
   { key: "lateOrders", label: "Late Orders", direction: "lower", format: (value) => String(value) },
   { key: "selectedTasks", label: "Selected Tasks", direction: "higher", format: (value) => String(value) },
-  { key: "maxZoneLoad", label: "Max Zone Load", direction: "lower", format: (value) => String(value) },
-  { key: "zoneCrossings", label: "Zone Crossings", direction: "lower", format: (value) => String(value) },
-  { key: "priorityAlignment", label: "Priority Alignment", direction: "higher", format: (value) => `${Math.round(value * 100)}%` },
-  { key: "throughputPicksPerHour", label: "Throughput", direction: "higher", format: (value) => `${value} picks/hr` }
+  { key: "maxZoneLoad", label: "Max Zone Load", direction: "lower", format: (value) => formatFloatCompact(value) },
+  { key: "zoneCrossings", label: "Zone Crossings", direction: "lower", format: (value) => formatFloatCompact(value) },
+  { key: "priorityAlignment", label: "Priority Alignment", direction: "higher", format: (value) => formatPercentFromRatio(value) },
+  { key: "throughputPicksPerHour", label: "Throughput", direction: "higher", format: (value) => `${formatFloatCompact(value)} picks/hr` }
 ];
 
 function dominates(left: HeartbeatPlan, right: HeartbeatPlan) {

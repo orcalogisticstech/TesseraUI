@@ -3,6 +3,7 @@
 import { useAppState } from "@/components/app/AppProvider";
 import { BrandTile } from "@/components/BrandTile";
 import { formatTradeoffLabel } from "@/lib/heartbeat-recordings-shared";
+import { formatFloatCompact, formatPercentFromRatio } from "@/lib/number-format";
 
 function formatAdoptedTimestamp(iso: string) {
   const date = new Date(iso);
@@ -168,19 +169,19 @@ export function HistoryView() {
                 </div>
                 <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Max Zone Load</p>
-                  <p className="text-base" style={{ color: getZoneLoadColor(entry.plan.metrics.maxZoneLoad) }}>{entry.plan.metrics.maxZoneLoad}</p>
+                  <p className="text-base" style={{ color: getZoneLoadColor(entry.plan.metrics.maxZoneLoad) }}>{formatFloatCompact(entry.plan.metrics.maxZoneLoad)}</p>
                 </div>
                 <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Zone Crossings</p>
-                  <p className="text-base" style={{ color: getZoneCrossingsColor(entry.plan.metrics.zoneCrossings) }}>{entry.plan.metrics.zoneCrossings}</p>
+                  <p className="text-base" style={{ color: getZoneCrossingsColor(entry.plan.metrics.zoneCrossings) }}>{formatFloatCompact(entry.plan.metrics.zoneCrossings)}</p>
                 </div>
                 <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Priority Alignment</p>
-                  <p className="text-base" style={{ color: getPriorityAlignmentColor(entry.plan.metrics.priorityAlignment) }}>{Math.round(entry.plan.metrics.priorityAlignment * 100)}%</p>
+                  <p className="text-base" style={{ color: getPriorityAlignmentColor(entry.plan.metrics.priorityAlignment) }}>{formatPercentFromRatio(entry.plan.metrics.priorityAlignment)}</p>
                 </div>
                 <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Throughput</p>
-                  <p className="text-base" style={{ color: getThroughputColor(entry.plan.metrics.throughputPicksPerHour) }}>{entry.plan.metrics.throughputPicksPerHour} picks/hr</p>
+                  <p className="text-base" style={{ color: getThroughputColor(entry.plan.metrics.throughputPicksPerHour) }}>{formatFloatCompact(entry.plan.metrics.throughputPicksPerHour)} picks/hr</p>
                 </div>
               </div>
 
