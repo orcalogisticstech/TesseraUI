@@ -298,35 +298,35 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
       <section className="app-card p-4 md:p-6">
         <h2 className="font-display text-lg uppercase tracking-[-0.01em]">Request Context</h2>
         <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Request ID</p>
-            <p className="mt-1 font-code text-sm">{run.requestContext.requestId}</p>
+            <p className="mt-1 min-w-0 break-all font-code text-sm leading-snug">{run.requestContext.requestId}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Response ID</p>
-            <p className="mt-1 font-code text-sm">{run.requestContext.responseId}</p>
+            <p className="mt-1 min-w-0 break-all font-code text-sm leading-snug">{run.requestContext.responseId}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Job ID</p>
-            <p className="mt-1 font-code text-sm">{run.requestContext.jobId}</p>
+            <p className="mt-1 min-w-0 break-all font-code text-sm leading-snug">{run.requestContext.jobId}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Facility</p>
             <p className="mt-1 text-sm">{run.requestContext.facilityId}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Requested At</p>
             <p className="mt-1 text-sm">{formatIsoTimestamp(run.requestContext.requestTimestamp)}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Response At</p>
             <p className="mt-1 text-sm">{formatIsoTimestamp(run.requestContext.responseTimestamp)}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Candidate Tasks</p>
             <p className="mt-1 text-sm">{run.requestContext.candidateTaskCount}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>Distinct Orders</p>
             <p className="mt-1 text-sm">{run.requestContext.distinctOrderCount}</p>
           </div>
