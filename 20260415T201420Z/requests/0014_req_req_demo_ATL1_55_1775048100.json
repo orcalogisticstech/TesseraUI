@@ -1,0 +1,4656 @@
+{
+  "schema_version": "1.0",
+  "request_id": "req_demo_ATL1_55_1775048100",
+  "tenant_id": "demo",
+  "facility_id": "ATL1",
+  "layout_uri": "file:///Users/yatharthdubey/opt/Tessera/TesseraPick/layout_store/demo/ATL1/silver/demo_layout_1_v1/graph.pkl",
+  "workflow": "heartbeat",
+  "mode": "advisory",
+  "job": {
+    "job_id": "sandbox_run_travel_min_55_20260401T125500Z",
+    "created_ts": "2026-04-01T12:55:00Z",
+    "requested_by": {
+      "actor_type": "sandbox",
+      "actor_id": "sample-generator:travel_min"
+    }
+  },
+  "site_config": {
+    "cart_types": [
+      {
+        "cart_type_id": "CART_SMALL",
+        "max_items": 40,
+        "max_weight_kg": 120.0,
+        "max_volume_m3": null,
+        "max_totes": null
+      },
+      {
+        "cart_type_id": "CART_LARGE",
+        "max_items": 80,
+        "max_weight_kg": 200.0,
+        "max_volume_m3": null,
+        "max_totes": null
+      }
+    ],
+    "allowed_routing_policies": [
+      "FREE",
+      "S_SHAPE"
+    ],
+    "zone_crossing": {
+      "allowed": true,
+      "max_crossings_per_route": 2
+    },
+    "order_splitting_allowed": false,
+    "start_node_ids": [
+      "START_DEPOT"
+    ],
+    "end_node_ids": [
+      "PACK_01"
+    ],
+    "travel_metric": "TIME"
+  },
+  "job_config": {
+    "blocked_aisles": [],
+    "no_go_zones": [],
+    "blocked_terminals": [],
+    "weights": {
+      "travel_time": 0.644,
+      "tardiness": 0.237,
+      "zone_balance": 0.119
+    },
+    "penalties": {
+      "zone_cross": 0.806,
+      "split_order": 0.266,
+      "grouping_violation": 0.997
+    },
+    "required_group_splits": [],
+    "preferred_group_splits": [],
+    "available_carts": [
+      {
+        "cart_type_id": "CART_SMALL",
+        "count": 4
+      },
+      {
+        "cart_type_id": "CART_LARGE",
+        "count": 4
+      }
+    ],
+    "max_batches": 10,
+    "max_tasks_per_zone": 87
+  },
+  "pick_work_release": {
+    "release_id": "sandbox_release_travel_min_55_125500",
+    "created_ts": "2026-04-01T12:55:00Z",
+    "tasks": [
+      {
+        "task_id": "T000001",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-21-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-2235",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:27:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:58:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0001"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23215301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000002",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-11-R-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-0909",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:37:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:19:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23115101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000003",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-09-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-5961",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:21:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:06:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23095301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000004",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-15-R-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-1139",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:41:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:20:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23155202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000005",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A01-07-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A01-8280",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:28:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:01:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0001"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A01",
+            "pick_sequence": 1075302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000006",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-03-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-0228",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:36:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:20:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23030101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000007",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-22-R-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-3678",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:39:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:21:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0001"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23225101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000008",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-21-L-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-4692",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:36:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:20:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23210302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000009",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A23-18-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A23-4381",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:23:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0001"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A23",
+            "pick_sequence": 23185102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000010",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0001",
+        "order_line_id": "ORDER-0001-L10",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A24-09-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A24-0369",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 10,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:27:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:08:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0001"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A24",
+            "pick_sequence": 24090301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000011",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0002",
+        "order_line_id": "ORDER-0002-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-02-R-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-9247",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:38:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:29:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3025201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000012",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0002",
+        "order_line_id": "ORDER-0002-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-30-R-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-7745",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:20:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3305202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000013",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0002",
+        "order_line_id": "ORDER-0002-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-10-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-6480",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:50:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:39:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3105302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000014",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0002",
+        "order_line_id": "ORDER-0002-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A10-26-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A10-5516",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:32:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0002"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A10",
+            "pick_sequence": 10265102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000015",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0002",
+        "order_line_id": "ORDER-0002-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-04-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-2174",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:55:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:37:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3045302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000016",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0002",
+        "order_line_id": "ORDER-0002-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-20-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-5459",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:42:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:23:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0002"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3200101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000017",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-12-R-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-8409",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:04:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:11:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0003"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27125202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000018",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-12-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-6455",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:18:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:11:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25120202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000019",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-05-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-5119",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:09:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:11:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0003"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25050202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000020",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-10-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-4518",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:02:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:00:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25105301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000021",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-05-L-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-2344",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:03:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:02:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25050102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000022",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-01-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-2327",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:22:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:21:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0003"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25010202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000023",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-23-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-2183",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:13:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:11:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25230202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000024",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-08-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-5799",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:02:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:05:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0003"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25080202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000025",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0003",
+        "order_line_id": "ORDER-0003-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-05-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-6306",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:15:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:22:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25055102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000026",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-28-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-2017",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:06:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6280301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000027",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-11-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-1275",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:31:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:55:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6115301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000028",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-22-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-5430",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:35:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:51:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6225301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000029",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A10-11-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A10-9898",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:42:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:12:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A10",
+            "pick_sequence": 10115301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000030",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A21-23-R-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A21-3396",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:45:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:05:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0004"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A21",
+            "pick_sequence": 21235101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000031",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-15-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-9601",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:35:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:02:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0004"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6155302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000032",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A02-27-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A02-5207",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:37:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:05:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A02",
+            "pick_sequence": 2275301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000033",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-29-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-2797",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:45:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:00:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6290101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000034",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-15-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-3287",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:08:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0004"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6155102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000035",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L10",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-14-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-6733",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 10,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:41:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:04:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6140202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000036",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L11",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-23-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-6425",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 11,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:38:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:06:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0004"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6230301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000037",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L12",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-24-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-6075",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 12,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:09:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0004"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6240301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000038",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0004",
+        "order_line_id": "ORDER-0004-L13",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A09-20-L-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A09-2902",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 5,
+        "sequence_priority": 13,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:39:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:54:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A09",
+            "pick_sequence": 9200201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000039",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0005",
+        "order_line_id": "ORDER-0005-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-17-L-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-1800",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:59:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:08:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6170102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000040",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0005",
+        "order_line_id": "ORDER-0005-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-14-R-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-8138",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:08:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:21:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0005"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6145202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000041",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0005",
+        "order_line_id": "ORDER-0005-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-13-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-3388",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:12:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:28:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0005"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6135302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000042",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0005",
+        "order_line_id": "ORDER-0005-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-28-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-9641",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:02:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:16:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3285301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000043",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0005",
+        "order_line_id": "ORDER-0005-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-26-R-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-3602",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:59:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:18:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0005"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6265202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000044",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0005",
+        "order_line_id": "ORDER-0005-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-07-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-1467",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:57:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:20:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6075102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000045",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0005",
+        "order_line_id": "ORDER-0005-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A06-28-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A06-7478",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 4,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:10:00Z",
+        "carrier_cutoff_time": "2026-04-01T18:32:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A06",
+            "pick_sequence": 6280101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000046",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-27-R-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-6990",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:48:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:16:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5275201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000047",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-07-R-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-0084",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:12:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7075201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000048",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-20-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-4216",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:44:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:11:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0006"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7200202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000049",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A01-29-R-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A01-0326",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:50:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:18:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A01",
+            "pick_sequence": 1295202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000050",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-24-L-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-6759",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:15:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7240102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000051",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-10-R-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-3355",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:49:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:21:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7105202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000052",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-21-R-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-0460",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:46:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:17:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7215201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000053",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A10-16-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A10-1009",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:12:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A10",
+            "pick_sequence": 10165102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000054",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-12-L-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-5543",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:49:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:14:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7120102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000055",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L10",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-29-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-8569",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 10,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:41:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:07:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7295301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000056",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L11",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-30-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-0868",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 11,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:49:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:27:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7300202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000057",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L12",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-22-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-0169",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 12,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:44:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:12:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7220101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000058",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0006",
+        "order_line_id": "ORDER-0006-L13",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-21-L-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-4164",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 13,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T17:45:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:08:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7210201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000059",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-12-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-3371",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:02:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:18:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0007"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27120101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000060",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-20-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-8339",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:09:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:19:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0007"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27200301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000061",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A28-07-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A28-3597",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:07:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:14:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A28",
+            "pick_sequence": 28075102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000062",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-07-R-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-6686",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:18:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:31:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0007"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27075201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000063",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-15-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-6795",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:06:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:25:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27150301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000064",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-09-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-6288",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:14:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:24:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0007"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27090202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000065",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-20-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-5524",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:04:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:11:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27205102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000066",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A24-23-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A24-9459",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:08:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:25:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0007"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A24",
+            "pick_sequence": 24230202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000067",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-10-L-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-6815",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:01:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:08:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27100102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000068",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L10",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-17-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-3045",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 10,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:12:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:23:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0007"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27170202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000069",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0007",
+        "order_line_id": "ORDER-0007-L11",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-06-L-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-6077",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 11,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T18:07:00Z",
+        "carrier_cutoff_time": "2026-04-01T19:28:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0007"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27060201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000070",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A28-11-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A28-6356",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:21:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:40:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A28",
+            "pick_sequence": 28110202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000071",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-20-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-3465",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:23:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:43:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5200101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000072",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-27-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-8208",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:31:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:39:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0008"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7270301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000073",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-12-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-2493",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:38:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:49:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0008"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5120301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000074",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-27-L-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-7837",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:33:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:48:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5270302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000075",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-22-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-1185",
+        "quantity": 4,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:31:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:40:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5225302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000076",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-10-R-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-2973",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:21:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:27:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5105201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000077",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-19-L-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-6639",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:28:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:34:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5190102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000078",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-23-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-1928",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:25:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:45:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5235302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000079",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L10",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-28-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-8830",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 10,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:35:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:47:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5280101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000080",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L11",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-11-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-8949",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 11,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:31:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:49:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0008"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5115302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000081",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0008",
+        "order_line_id": "ORDER-0008-L12",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A05-26-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A05-0105",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 3,
+        "sequence_priority": 12,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:34:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:55:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A05",
+            "pick_sequence": 5265301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000082",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-09-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-6733",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:30:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:28:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22090202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000083",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-21-R-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-6961",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:25:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:24:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22215102.0
+          }
+        }
+      },
+      {
+        "task_id": "T000084",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-08-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-4133",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:42:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:47:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22085302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000085",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-20-R-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-2523",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:36:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:49:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22205101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000086",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-04-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-8185",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:23:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:34:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22040202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000087",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A25-13-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A25-7528",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:37:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:41:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A25",
+            "pick_sequence": 25130301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000088",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-20-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-0530",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:28:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:37:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0009"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22205301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000089",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A27-05-L-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A27-3049",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:36:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:35:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A27",
+            "pick_sequence": 27050101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000090",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-23-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-6303",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:25:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:37:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22230301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000091",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0009",
+        "order_line_id": "ORDER-0009-L10",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-02-L-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-4654",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 2,
+        "sequence_priority": 10,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:42:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:43:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22020301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000092",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L01",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-19-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-9561",
+        "quantity": 3,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 1,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:45:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:58:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3190202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000093",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L02",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-10-L-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-0982",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 2,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:36:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:44:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3100201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000094",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L03",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-16-R-02-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-6517",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 3,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:32:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:49:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3165201.0
+          }
+        }
+      },
+      {
+        "task_id": "T000095",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L04",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-29-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-2881",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 4,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:41:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:43:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [
+          "G-ORDER-0010"
+        ],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3290202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000096",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L05",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A22-06-R-03-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z02",
+        "sku_id": "SKU-A22-4228",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 5,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:40:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:51:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A22",
+            "pick_sequence": 22065302.0
+          }
+        }
+      },
+      {
+        "task_id": "T000097",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L06",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-13-L-02-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-8260",
+        "quantity": 6,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 6,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:29:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:30:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3130202.0
+          }
+        }
+      },
+      {
+        "task_id": "T000098",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L07",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-29-R-03-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-4077",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 7,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:35:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:51:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3295301.0
+          }
+        }
+      },
+      {
+        "task_id": "T000099",
+        "task_type": "pick",
+        "task_status": "candidate",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L08",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A07-10-R-01-01"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A07-8172",
+        "quantity": 2,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 8,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:39:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:49:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A07",
+            "pick_sequence": 7105101.0
+          }
+        }
+      },
+      {
+        "task_id": "T000100",
+        "task_type": "pick",
+        "task_status": "released",
+        "order_id": "ORDER-0010",
+        "order_line_id": "ORDER-0010-L09",
+        "wave_id": "WAVE-001",
+        "current_batch_id": null,
+        "current_list_id": null,
+        "current_sequence": null,
+        "location_ids": [
+          "A03-17-L-01-02"
+        ],
+        "location_id_processed": null,
+        "zone_id": "Z01",
+        "sku_id": "SKU-A03-3886",
+        "quantity": 1,
+        "uom": "EA",
+        "hu_id": null,
+        "hu_type": null,
+        "order_priority": 1,
+        "sequence_priority": 9,
+        "release_time": "2026-04-01T12:55:00Z",
+        "due_time": "2026-04-01T16:27:00Z",
+        "carrier_cutoff_time": "2026-04-01T17:37:00Z",
+        "sku_width": null,
+        "sku_height": null,
+        "sku_depth": null,
+        "sku_weight": null,
+        "group_ids": [],
+        "planning_constraints": {
+          "must_include": false,
+          "must_exclude": false,
+          "can_rebatch": true,
+          "can_resequence": true,
+          "can_defer": true
+        },
+        "extra": {
+          "sample_source": "sandbox",
+          "slotting": {
+            "aisle": "A03",
+            "pick_sequence": 3170102.0
+          }
+        }
+      }
+    ]
+  },
+  "state": {
+    "external_floor_load": [],
+    "current_plan": null,
+    "blocked_locations": [],
+    "blocked_zones": []
+  }
+}

@@ -1,0 +1,34 @@
+Optimizer Benchmark Summary
+experiment_dir: /Users/yatharthdubey/opt/Tessera/TesseraPick/sandbox/experiments/20260415T201420Z
+tenant/facility: demo/ATL1
+sample_size: 20 seeds: 42..61
+scenarios: balanced, travel_min, congested, urgent
+primary_max_seconds: 10.0
+alternative_max_seconds: 10.0
+
+Request outcomes
+- completed: 20/20 (1.000)
+- failed: 0
+- mean solve time: 20.552 s
+- p95 solve time: 21.749 s
+- mean returned solutions: 4.000
+
+Solution quality
+- all solutions: 80
+- all mean objective: 548.173
+- all mean distance: 1396.062
+- all mean late risk: 0.000
+- primary mean objective: 487.505
+- primary mean selected ratio: 0.822
+
+By tradeoff label
+- balance_zones: count=20 objective=576.446 distance=1493.540 late_risk=0.000
+- minimize_travel: count=20 objective=486.839 distance=1226.090 late_risk=0.000
+- primary: count=20 objective=487.505 distance=1226.330 late_risk=0.000
+- zero_late_risk: count=20 objective=641.900 distance=1638.290 late_risk=0.000
+
+By scenario
+- balanced: count=20 objective=533.193 distance=1634.410 late_risk=0.000
+- congested: count=20 objective=442.738 distance=1259.470 late_risk=0.000
+- travel_min: count=20 objective=1017.996 distance=1578.230 late_risk=0.000
+- urgent: count=20 objective=198.764 distance=1112.140 late_risk=0.000

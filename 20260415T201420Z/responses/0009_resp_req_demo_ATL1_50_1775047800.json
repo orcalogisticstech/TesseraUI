@@ -1,0 +1,3571 @@
+{
+  "schema_version": "1.0",
+  "response_id": "resp_2f7c33a4bdfe4254b3ed94f2a51904fc",
+  "request_id": "req_demo_ATL1_50_1775047800",
+  "status": "completed",
+  "timestamp": "2026-04-15T20:17:31.138649Z",
+  "computation_time": 21.53809779090807,
+  "request_echo": {
+    "request_id": "req_demo_ATL1_50_1775047800",
+    "job_id": "sandbox_run_balanced_50_20260401T125000Z",
+    "tenant_id": "demo",
+    "facility_id": "ATL1",
+    "layout_uri": "file:///Users/yatharthdubey/opt/Tessera/TesseraPick/layout_store/demo/ATL1/silver/demo_layout_1_v1/graph.pkl",
+    "workflow": "heartbeat",
+    "mode": "advisory",
+    "site_config": {
+      "cart_types": [
+        {
+          "cart_type_id": "CART_SMALL",
+          "max_items": 40,
+          "max_weight_kg": 120.0,
+          "max_volume_m3": null,
+          "max_totes": null
+        },
+        {
+          "cart_type_id": "CART_LARGE",
+          "max_items": 80,
+          "max_weight_kg": 200.0,
+          "max_volume_m3": null,
+          "max_totes": null
+        }
+      ],
+      "allowed_routing_policies": [
+        "FREE",
+        "S_SHAPE"
+      ],
+      "zone_crossing": {
+        "allowed": true,
+        "max_crossings_per_route": 2
+      },
+      "order_splitting_allowed": false,
+      "start_node_ids": [
+        "START_DEPOT"
+      ],
+      "end_node_ids": [
+        "PACK_01"
+      ],
+      "travel_metric": "TIME"
+    },
+    "job_config": {
+      "blocked_aisles": [
+        "A01"
+      ],
+      "no_go_zones": [],
+      "blocked_terminals": [],
+      "weights": {
+        "travel_time": 0.287,
+        "tardiness": 0.327,
+        "zone_balance": 0.386
+      },
+      "penalties": {
+        "zone_cross": 1.195,
+        "split_order": 0.443,
+        "grouping_violation": 1.197
+      },
+      "required_group_splits": [],
+      "preferred_group_splits": [],
+      "available_carts": [
+        {
+          "cart_type_id": "CART_SMALL",
+          "count": 6
+        },
+        {
+          "cart_type_id": "CART_LARGE",
+          "count": 5
+        }
+      ],
+      "max_batches": 12,
+      "max_tasks_per_zone": 78
+    }
+  },
+  "validation": {
+    "invalid_tasks": [],
+    "warnings": []
+  },
+  "solutions": [
+    {
+      "solution_id": "sol_primary",
+      "tradeoff_label": "primary",
+      "solution_metrics": {
+        "total_distance": 1438.2,
+        "total_duration": 1438.2,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.4084507042253521,
+        "n_batches": 4,
+        "n_selected_tasks": 100,
+        "n_unselected_tasks": 0,
+        "max_zone_load": 71,
+        "n_zone_crossings": 0,
+        "n_split_orders": 7,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.43955608402695173,
+        "batch_distance_balance": 0.43955608402695173,
+        "objective_value": 416.092738028169,
+        "graph_node_count": 6455,
+        "primary_attempt_index": 1,
+        "primary_random_seed": 5352464865144702555
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000006",
+            "T000004",
+            "T000001",
+            "T000082",
+            "T000081",
+            "T000038",
+            "T000003",
+            "T000005",
+            "T000002",
+            "T000049",
+            "T000083",
+            "T000054",
+            "T000050",
+            "T000045",
+            "T000080",
+            "T000046",
+            "T000047",
+            "T000051",
+            "T000055",
+            "T000053",
+            "T000048",
+            "T000052"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0004",
+            "ORDER-0005",
+            "ORDER-0009"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 307.99999999999994,
+            "duration": 307.99999999999994,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000053",
+              "sequence_index": 1,
+              "location_id": "A03-17-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000045",
+              "sequence_index": 2,
+              "location_id": "A03-30-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000051",
+              "sequence_index": 3,
+              "location_id": "A03-25-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000048",
+              "sequence_index": 4,
+              "location_id": "A03-24-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000054",
+              "sequence_index": 5,
+              "location_id": "A03-23-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000047",
+              "sequence_index": 6,
+              "location_id": "A03-22-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000046",
+              "sequence_index": 7,
+              "location_id": "A03-21-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000049",
+              "sequence_index": 8,
+              "location_id": "A03-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000050",
+              "sequence_index": 9,
+              "location_id": "A03-05-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000038",
+              "sequence_index": 10,
+              "location_id": "A04-28-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000001",
+              "sequence_index": 11,
+              "location_id": "A04-29-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 12,
+              "location_id": "A04-25-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 13,
+              "location_id": "A04-24-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000055",
+              "sequence_index": 14,
+              "location_id": "A04-14-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 15,
+              "location_id": "A04-11-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 16,
+              "location_id": "A04-10-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 17,
+              "location_id": "A05-07-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 18,
+              "location_id": "A05-30-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 19,
+              "location_id": "A05-22-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 20,
+              "location_id": "A05-07-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000005",
+              "sequence_index": 21,
+              "location_id": "A05-02-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000052",
+              "sequence_index": 22,
+              "location_id": "A06-02-L-03-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 307.99999999999994,
+            "duration": 307.99999999999994,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_3",
+          "priority_rank": 2,
+          "priority_score": 0.525689479060321,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000062",
+            "T000063",
+            "T000065",
+            "T000066",
+            "T000009",
+            "T000010",
+            "T000012",
+            "T000014",
+            "T000015",
+            "T000016",
+            "T000017",
+            "T000018",
+            "T000019",
+            "T000020",
+            "T000021",
+            "T000022",
+            "T000023",
+            "T000024",
+            "T000057",
+            "T000058",
+            "T000059",
+            "T000060",
+            "T000061",
+            "T000096",
+            "T000056",
+            "T000011",
+            "T000064",
+            "T000067",
+            "T000092"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0005",
+            "ORDER-0006",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000024",
+              "sequence_index": 1,
+              "location_id": "A27-02-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000019",
+              "sequence_index": 2,
+              "location_id": "A27-02-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 3,
+              "location_id": "A27-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000022",
+              "sequence_index": 4,
+              "location_id": "A27-23-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000020",
+              "sequence_index": 5,
+              "location_id": "A27-22-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000021",
+              "sequence_index": 6,
+              "location_id": "A27-20-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000018",
+              "sequence_index": 7,
+              "location_id": "A27-15-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 8,
+              "location_id": "A27-12-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 9,
+              "location_id": "A27-11-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 10,
+              "location_id": "A27-10-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000017",
+              "sequence_index": 11,
+              "location_id": "A27-06-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 12,
+              "location_id": "A28-24-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000061",
+              "sequence_index": 13,
+              "location_id": "A28-16-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 14,
+              "location_id": "A28-12-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 15,
+              "location_id": "A26-22-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000056",
+              "sequence_index": 16,
+              "location_id": "A25-17-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 17,
+              "location_id": "A22-02-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000062",
+              "sequence_index": 18,
+              "location_id": "A22-18-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000059",
+              "sequence_index": 19,
+              "location_id": "A22-24-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000023",
+              "sequence_index": 20,
+              "location_id": "A22-16-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000063",
+              "sequence_index": 21,
+              "location_id": "A22-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000065",
+              "sequence_index": 22,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000058",
+              "sequence_index": 23,
+              "location_id": "A22-12-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000060",
+              "sequence_index": 24,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000057",
+              "sequence_index": 25,
+              "location_id": "A22-03-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000067",
+              "sequence_index": 26,
+              "location_id": "A22-03-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000064",
+              "sequence_index": 27,
+              "location_id": "A22-02-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 28,
+              "location_id": "A21-01-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000066",
+              "sequence_index": 29,
+              "location_id": "A21-12-R-02-02",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_4",
+          "priority_rank": 3,
+          "priority_score": 0.4859640359640562,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000093",
+            "T000007",
+            "T000013",
+            "T000078",
+            "T000085",
+            "T000086",
+            "T000087",
+            "T000089",
+            "T000090",
+            "T000097",
+            "T000098",
+            "T000099",
+            "T000100",
+            "T000094",
+            "T000071",
+            "T000073",
+            "T000074",
+            "T000075",
+            "T000008",
+            "T000029",
+            "T000091",
+            "T000095",
+            "T000084",
+            "T000088",
+            "T000070",
+            "T000072",
+            "T000077",
+            "T000068",
+            "T000076"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0003",
+            "ORDER-0007",
+            "ORDER-0008",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 403.7999999999999,
+            "duration": 403.7999999999999,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000078",
+              "sequence_index": 1,
+              "location_id": "A01-20-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000093",
+              "sequence_index": 2,
+              "location_id": "A01-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000076",
+              "sequence_index": 3,
+              "location_id": "A02-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000075",
+              "sequence_index": 4,
+              "location_id": "A02-20-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 5,
+              "location_id": "A02-27-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000074",
+              "sequence_index": 6,
+              "location_id": "A02-25-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000073",
+              "sequence_index": 7,
+              "location_id": "A02-25-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000008",
+              "sequence_index": 8,
+              "location_id": "A02-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000071",
+              "sequence_index": 9,
+              "location_id": "A02-23-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000072",
+              "sequence_index": 10,
+              "location_id": "A02-18-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000068",
+              "sequence_index": 11,
+              "location_id": "A02-09-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000077",
+              "sequence_index": 12,
+              "location_id": "A02-07-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000070",
+              "sequence_index": 13,
+              "location_id": "A02-05-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000029",
+              "sequence_index": 14,
+              "location_id": "A06-06-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 15,
+              "location_id": "A06-29-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000095",
+              "sequence_index": 16,
+              "location_id": "A06-10-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 17,
+              "location_id": "A06-05-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000088",
+              "sequence_index": 18,
+              "location_id": "A08-03-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 19,
+              "location_id": "A08-13-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 20,
+              "location_id": "A07-06-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000089",
+              "sequence_index": 21,
+              "location_id": "A07-27-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000097",
+              "sequence_index": 22,
+              "location_id": "A07-29-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 23,
+              "location_id": "A07-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 24,
+              "location_id": "A07-23-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 25,
+              "location_id": "A07-22-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 26,
+              "location_id": "A07-18-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000098",
+              "sequence_index": 27,
+              "location_id": "A07-17-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 28,
+              "location_id": "A07-12-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 29,
+              "location_id": "A07-11-L-02-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 403.7999999999999,
+            "duration": 403.7999999999999,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 4,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000040",
+            "T000079",
+            "T000036",
+            "T000037",
+            "T000039",
+            "T000041",
+            "T000042",
+            "T000043",
+            "T000044",
+            "T000069",
+            "T000025",
+            "T000026",
+            "T000027",
+            "T000028",
+            "T000030",
+            "T000031",
+            "T000032",
+            "T000034",
+            "T000035",
+            "T000033"
+          ],
+          "order_ids": [
+            "ORDER-0003",
+            "ORDER-0004",
+            "ORDER-0007",
+            "ORDER-0008"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 221.79999999999993,
+            "duration": 221.79999999999993,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000033",
+              "sequence_index": 1,
+              "location_id": "A03-09-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000040",
+              "sequence_index": 2,
+              "location_id": "A09-09-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000035",
+              "sequence_index": 3,
+              "location_id": "A10-04-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000079",
+              "sequence_index": 4,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000037",
+              "sequence_index": 5,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000034",
+              "sequence_index": 6,
+              "location_id": "A10-14-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000069",
+              "sequence_index": 7,
+              "location_id": "A10-30-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000030",
+              "sequence_index": 8,
+              "location_id": "A10-28-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000028",
+              "sequence_index": 9,
+              "location_id": "A10-28-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000042",
+              "sequence_index": 10,
+              "location_id": "A10-24-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000027",
+              "sequence_index": 11,
+              "location_id": "A10-23-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 12,
+              "location_id": "A10-22-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000043",
+              "sequence_index": 13,
+              "location_id": "A10-19-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000025",
+              "sequence_index": 14,
+              "location_id": "A10-18-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000026",
+              "sequence_index": 15,
+              "location_id": "A10-11-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000044",
+              "sequence_index": 16,
+              "location_id": "A10-11-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000036",
+              "sequence_index": 17,
+              "location_id": "A10-11-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 18,
+              "location_id": "A10-08-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000039",
+              "sequence_index": 19,
+              "location_id": "A10-07-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000041",
+              "sequence_index": 20,
+              "location_id": "A10-02-L-01-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 221.79999999999993,
+            "duration": 221.79999999999993,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": []
+    },
+    {
+      "solution_id": "sol_min_travel",
+      "tradeoff_label": "minimize_travel",
+      "solution_metrics": {
+        "total_distance": 1438.2,
+        "total_duration": 1438.2,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.4084507042253521,
+        "n_batches": 4,
+        "n_selected_tasks": 100,
+        "n_unselected_tasks": 0,
+        "max_zone_load": 71,
+        "n_zone_crossings": 0,
+        "n_split_orders": 7,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.43955608402695173,
+        "batch_distance_balance": 0.43955608402695173,
+        "objective_value": 416.092738028169,
+        "graph_node_count": 6455,
+        "primary_attempt_index": 1,
+        "primary_random_seed": 5352464865144702555,
+        "alns_internal_objective": 1441.3010000000002
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000006",
+            "T000004",
+            "T000001",
+            "T000082",
+            "T000081",
+            "T000038",
+            "T000003",
+            "T000005",
+            "T000002",
+            "T000049",
+            "T000083",
+            "T000054",
+            "T000050",
+            "T000045",
+            "T000080",
+            "T000046",
+            "T000047",
+            "T000051",
+            "T000055",
+            "T000053",
+            "T000048",
+            "T000052"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0004",
+            "ORDER-0005",
+            "ORDER-0009"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 307.99999999999994,
+            "duration": 307.99999999999994,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000053",
+              "sequence_index": 1,
+              "location_id": "A03-17-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000045",
+              "sequence_index": 2,
+              "location_id": "A03-30-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000051",
+              "sequence_index": 3,
+              "location_id": "A03-25-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000048",
+              "sequence_index": 4,
+              "location_id": "A03-24-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000054",
+              "sequence_index": 5,
+              "location_id": "A03-23-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000047",
+              "sequence_index": 6,
+              "location_id": "A03-22-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000046",
+              "sequence_index": 7,
+              "location_id": "A03-21-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000049",
+              "sequence_index": 8,
+              "location_id": "A03-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000050",
+              "sequence_index": 9,
+              "location_id": "A03-05-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000038",
+              "sequence_index": 10,
+              "location_id": "A04-28-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000001",
+              "sequence_index": 11,
+              "location_id": "A04-29-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 12,
+              "location_id": "A04-25-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 13,
+              "location_id": "A04-24-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000055",
+              "sequence_index": 14,
+              "location_id": "A04-14-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 15,
+              "location_id": "A04-11-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 16,
+              "location_id": "A04-10-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 17,
+              "location_id": "A05-07-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 18,
+              "location_id": "A05-30-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 19,
+              "location_id": "A05-22-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 20,
+              "location_id": "A05-07-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000005",
+              "sequence_index": 21,
+              "location_id": "A05-02-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000052",
+              "sequence_index": 22,
+              "location_id": "A06-02-L-03-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 307.99999999999994,
+            "duration": 307.99999999999994,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_3",
+          "priority_rank": 2,
+          "priority_score": 0.525689479060321,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000062",
+            "T000063",
+            "T000065",
+            "T000066",
+            "T000009",
+            "T000010",
+            "T000012",
+            "T000014",
+            "T000015",
+            "T000016",
+            "T000017",
+            "T000018",
+            "T000019",
+            "T000020",
+            "T000021",
+            "T000022",
+            "T000023",
+            "T000024",
+            "T000057",
+            "T000058",
+            "T000059",
+            "T000060",
+            "T000061",
+            "T000096",
+            "T000056",
+            "T000011",
+            "T000064",
+            "T000067",
+            "T000092"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0005",
+            "ORDER-0006",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000024",
+              "sequence_index": 1,
+              "location_id": "A27-02-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000019",
+              "sequence_index": 2,
+              "location_id": "A27-02-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 3,
+              "location_id": "A27-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000022",
+              "sequence_index": 4,
+              "location_id": "A27-23-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000020",
+              "sequence_index": 5,
+              "location_id": "A27-22-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000021",
+              "sequence_index": 6,
+              "location_id": "A27-20-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000018",
+              "sequence_index": 7,
+              "location_id": "A27-15-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 8,
+              "location_id": "A27-12-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 9,
+              "location_id": "A27-11-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 10,
+              "location_id": "A27-10-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000017",
+              "sequence_index": 11,
+              "location_id": "A27-06-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 12,
+              "location_id": "A28-24-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000061",
+              "sequence_index": 13,
+              "location_id": "A28-16-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 14,
+              "location_id": "A28-12-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 15,
+              "location_id": "A26-22-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000056",
+              "sequence_index": 16,
+              "location_id": "A25-17-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 17,
+              "location_id": "A22-02-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000062",
+              "sequence_index": 18,
+              "location_id": "A22-18-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000059",
+              "sequence_index": 19,
+              "location_id": "A22-24-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000023",
+              "sequence_index": 20,
+              "location_id": "A22-16-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000063",
+              "sequence_index": 21,
+              "location_id": "A22-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000065",
+              "sequence_index": 22,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000058",
+              "sequence_index": 23,
+              "location_id": "A22-12-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000060",
+              "sequence_index": 24,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000057",
+              "sequence_index": 25,
+              "location_id": "A22-03-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000067",
+              "sequence_index": 26,
+              "location_id": "A22-03-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000064",
+              "sequence_index": 27,
+              "location_id": "A22-02-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 28,
+              "location_id": "A21-01-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000066",
+              "sequence_index": 29,
+              "location_id": "A21-12-R-02-02",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_4",
+          "priority_rank": 3,
+          "priority_score": 0.4859640359640562,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000093",
+            "T000007",
+            "T000013",
+            "T000078",
+            "T000085",
+            "T000086",
+            "T000087",
+            "T000089",
+            "T000090",
+            "T000097",
+            "T000098",
+            "T000099",
+            "T000100",
+            "T000094",
+            "T000071",
+            "T000073",
+            "T000074",
+            "T000075",
+            "T000008",
+            "T000029",
+            "T000091",
+            "T000095",
+            "T000084",
+            "T000088",
+            "T000070",
+            "T000072",
+            "T000077",
+            "T000068",
+            "T000076"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0003",
+            "ORDER-0007",
+            "ORDER-0008",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 403.7999999999999,
+            "duration": 403.7999999999999,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000078",
+              "sequence_index": 1,
+              "location_id": "A01-20-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000093",
+              "sequence_index": 2,
+              "location_id": "A01-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000076",
+              "sequence_index": 3,
+              "location_id": "A02-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000075",
+              "sequence_index": 4,
+              "location_id": "A02-20-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 5,
+              "location_id": "A02-27-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000074",
+              "sequence_index": 6,
+              "location_id": "A02-25-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000073",
+              "sequence_index": 7,
+              "location_id": "A02-25-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000008",
+              "sequence_index": 8,
+              "location_id": "A02-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000071",
+              "sequence_index": 9,
+              "location_id": "A02-23-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000072",
+              "sequence_index": 10,
+              "location_id": "A02-18-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000068",
+              "sequence_index": 11,
+              "location_id": "A02-09-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000077",
+              "sequence_index": 12,
+              "location_id": "A02-07-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000070",
+              "sequence_index": 13,
+              "location_id": "A02-05-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000029",
+              "sequence_index": 14,
+              "location_id": "A06-06-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 15,
+              "location_id": "A06-29-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000095",
+              "sequence_index": 16,
+              "location_id": "A06-10-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 17,
+              "location_id": "A06-05-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000088",
+              "sequence_index": 18,
+              "location_id": "A08-03-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 19,
+              "location_id": "A08-13-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 20,
+              "location_id": "A07-06-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000089",
+              "sequence_index": 21,
+              "location_id": "A07-27-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000097",
+              "sequence_index": 22,
+              "location_id": "A07-29-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 23,
+              "location_id": "A07-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 24,
+              "location_id": "A07-23-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 25,
+              "location_id": "A07-22-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 26,
+              "location_id": "A07-18-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000098",
+              "sequence_index": 27,
+              "location_id": "A07-17-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 28,
+              "location_id": "A07-12-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 29,
+              "location_id": "A07-11-L-02-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 403.7999999999999,
+            "duration": 403.7999999999999,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 4,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000040",
+            "T000079",
+            "T000036",
+            "T000037",
+            "T000039",
+            "T000041",
+            "T000042",
+            "T000043",
+            "T000044",
+            "T000069",
+            "T000025",
+            "T000026",
+            "T000027",
+            "T000028",
+            "T000030",
+            "T000031",
+            "T000032",
+            "T000034",
+            "T000035",
+            "T000033"
+          ],
+          "order_ids": [
+            "ORDER-0003",
+            "ORDER-0004",
+            "ORDER-0007",
+            "ORDER-0008"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 221.79999999999993,
+            "duration": 221.79999999999993,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000033",
+              "sequence_index": 1,
+              "location_id": "A03-09-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000040",
+              "sequence_index": 2,
+              "location_id": "A09-09-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000035",
+              "sequence_index": 3,
+              "location_id": "A10-04-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000079",
+              "sequence_index": 4,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000037",
+              "sequence_index": 5,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000034",
+              "sequence_index": 6,
+              "location_id": "A10-14-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000069",
+              "sequence_index": 7,
+              "location_id": "A10-30-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000030",
+              "sequence_index": 8,
+              "location_id": "A10-28-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000028",
+              "sequence_index": 9,
+              "location_id": "A10-28-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000042",
+              "sequence_index": 10,
+              "location_id": "A10-24-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000027",
+              "sequence_index": 11,
+              "location_id": "A10-23-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 12,
+              "location_id": "A10-22-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000043",
+              "sequence_index": 13,
+              "location_id": "A10-19-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000025",
+              "sequence_index": 14,
+              "location_id": "A10-18-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000026",
+              "sequence_index": 15,
+              "location_id": "A10-11-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000044",
+              "sequence_index": 16,
+              "location_id": "A10-11-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000036",
+              "sequence_index": 17,
+              "location_id": "A10-11-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 18,
+              "location_id": "A10-08-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000039",
+              "sequence_index": 19,
+              "location_id": "A10-07-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000041",
+              "sequence_index": 20,
+              "location_id": "A10-02-L-01-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 221.79999999999993,
+            "duration": 221.79999999999993,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": []
+    },
+    {
+      "solution_id": "sol_balance_zones",
+      "tradeoff_label": "balance_zones",
+      "solution_metrics": {
+        "total_distance": 1709.6000000000001,
+        "total_duration": 1709.6000000000001,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.4084507042253521,
+        "n_batches": 4,
+        "n_selected_tasks": 100,
+        "n_unselected_tasks": 0,
+        "max_zone_load": 71,
+        "n_zone_crossings": 0,
+        "n_split_orders": 4,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.6630994847403879,
+        "batch_distance_balance": 0.6630994847403879,
+        "objective_value": 492.65553802816896,
+        "graph_node_count": 6455,
+        "alns_internal_objective": 2.363549295774648
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000045",
+            "T000046",
+            "T000047",
+            "T000048",
+            "T000051",
+            "T000054",
+            "T000085",
+            "T000086",
+            "T000078",
+            "T000001",
+            "T000004",
+            "T000006",
+            "T000049",
+            "T000053",
+            "T000055",
+            "T000002",
+            "T000003",
+            "T000079",
+            "T000005",
+            "T000050",
+            "T000052"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0005",
+            "ORDER-0008",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 488.6,
+            "duration": 488.6,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000078",
+              "sequence_index": 1,
+              "location_id": "A01-20-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000053",
+              "sequence_index": 2,
+              "location_id": "A03-17-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000045",
+              "sequence_index": 3,
+              "location_id": "A03-30-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000051",
+              "sequence_index": 4,
+              "location_id": "A03-25-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000048",
+              "sequence_index": 5,
+              "location_id": "A03-24-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000054",
+              "sequence_index": 6,
+              "location_id": "A03-23-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000047",
+              "sequence_index": 7,
+              "location_id": "A03-22-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000046",
+              "sequence_index": 8,
+              "location_id": "A03-21-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000049",
+              "sequence_index": 9,
+              "location_id": "A03-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000050",
+              "sequence_index": 10,
+              "location_id": "A03-05-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000001",
+              "sequence_index": 11,
+              "location_id": "A04-29-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000055",
+              "sequence_index": 12,
+              "location_id": "A04-14-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 13,
+              "location_id": "A05-07-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 14,
+              "location_id": "A05-30-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 15,
+              "location_id": "A05-22-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 16,
+              "location_id": "A05-07-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000005",
+              "sequence_index": 17,
+              "location_id": "A05-02-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 18,
+              "location_id": "A07-23-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 19,
+              "location_id": "A07-12-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000079",
+              "sequence_index": 20,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000052",
+              "sequence_index": 21,
+              "location_id": "A06-02-L-03-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 488.6,
+            "duration": 488.6,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 2,
+          "priority_score": 0.4008678737094814,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000087",
+            "T000089",
+            "T000090",
+            "T000097",
+            "T000098",
+            "T000099",
+            "T000100",
+            "T000081",
+            "T000082",
+            "T000007",
+            "T000013",
+            "T000038",
+            "T000084",
+            "T000088",
+            "T000091",
+            "T000093",
+            "T000095",
+            "T000080",
+            "T000083"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0004",
+            "ORDER-0009",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 381.8,
+            "duration": 381.8,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000093",
+              "sequence_index": 1,
+              "location_id": "A01-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000038",
+              "sequence_index": 2,
+              "location_id": "A04-28-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 3,
+              "location_id": "A04-25-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 4,
+              "location_id": "A04-24-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 5,
+              "location_id": "A04-11-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 6,
+              "location_id": "A04-10-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 7,
+              "location_id": "A07-11-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 8,
+              "location_id": "A07-22-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000097",
+              "sequence_index": 9,
+              "location_id": "A07-29-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000089",
+              "sequence_index": 10,
+              "location_id": "A07-27-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 11,
+              "location_id": "A07-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 12,
+              "location_id": "A07-18-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000098",
+              "sequence_index": 13,
+              "location_id": "A07-17-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 14,
+              "location_id": "A07-06-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 15,
+              "location_id": "A08-13-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000088",
+              "sequence_index": 16,
+              "location_id": "A08-03-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 17,
+              "location_id": "A06-05-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 18,
+              "location_id": "A06-29-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000095",
+              "sequence_index": 19,
+              "location_id": "A06-10-R-01-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 381.8,
+            "duration": 381.8,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_3",
+          "priority_rank": 3,
+          "priority_score": 0.07728144697184457,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000060",
+            "T000061",
+            "T000096",
+            "T000056",
+            "T000064",
+            "T000067",
+            "T000092",
+            "T000009",
+            "T000010",
+            "T000012",
+            "T000014",
+            "T000015",
+            "T000016",
+            "T000017",
+            "T000018",
+            "T000019",
+            "T000020",
+            "T000021",
+            "T000022",
+            "T000023",
+            "T000024",
+            "T000057",
+            "T000058",
+            "T000059",
+            "T000062",
+            "T000063",
+            "T000065",
+            "T000066",
+            "T000011"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0005",
+            "ORDER-0006",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000024",
+              "sequence_index": 1,
+              "location_id": "A27-02-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000019",
+              "sequence_index": 2,
+              "location_id": "A27-02-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 3,
+              "location_id": "A27-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000022",
+              "sequence_index": 4,
+              "location_id": "A27-23-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000020",
+              "sequence_index": 5,
+              "location_id": "A27-22-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000021",
+              "sequence_index": 6,
+              "location_id": "A27-20-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000018",
+              "sequence_index": 7,
+              "location_id": "A27-15-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 8,
+              "location_id": "A27-12-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 9,
+              "location_id": "A27-11-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 10,
+              "location_id": "A27-10-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000017",
+              "sequence_index": 11,
+              "location_id": "A27-06-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 12,
+              "location_id": "A28-24-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000061",
+              "sequence_index": 13,
+              "location_id": "A28-16-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 14,
+              "location_id": "A28-12-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 15,
+              "location_id": "A26-22-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000056",
+              "sequence_index": 16,
+              "location_id": "A25-17-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 17,
+              "location_id": "A22-02-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000062",
+              "sequence_index": 18,
+              "location_id": "A22-18-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000059",
+              "sequence_index": 19,
+              "location_id": "A22-24-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000023",
+              "sequence_index": 20,
+              "location_id": "A22-16-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000063",
+              "sequence_index": 21,
+              "location_id": "A22-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000065",
+              "sequence_index": 22,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000058",
+              "sequence_index": 23,
+              "location_id": "A22-12-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000060",
+              "sequence_index": 24,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000057",
+              "sequence_index": 25,
+              "location_id": "A22-03-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000067",
+              "sequence_index": 26,
+              "location_id": "A22-03-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000064",
+              "sequence_index": 27,
+              "location_id": "A22-02-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 28,
+              "location_id": "A21-01-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000066",
+              "sequence_index": 29,
+              "location_id": "A21-12-R-02-02",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_4",
+          "priority_rank": 4,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000040",
+            "T000029",
+            "T000025",
+            "T000026",
+            "T000027",
+            "T000028",
+            "T000030",
+            "T000031",
+            "T000032",
+            "T000034",
+            "T000035",
+            "T000036",
+            "T000037",
+            "T000039",
+            "T000041",
+            "T000042",
+            "T000043",
+            "T000044",
+            "T000069",
+            "T000068",
+            "T000070",
+            "T000071",
+            "T000072",
+            "T000073",
+            "T000074",
+            "T000075",
+            "T000076",
+            "T000077",
+            "T000094",
+            "T000008",
+            "T000033"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0003",
+            "ORDER-0004",
+            "ORDER-0007",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 334.59999999999985,
+            "duration": 334.59999999999985,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000076",
+              "sequence_index": 1,
+              "location_id": "A02-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000075",
+              "sequence_index": 2,
+              "location_id": "A02-20-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 3,
+              "location_id": "A02-27-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000074",
+              "sequence_index": 4,
+              "location_id": "A02-25-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000073",
+              "sequence_index": 5,
+              "location_id": "A02-25-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000008",
+              "sequence_index": 6,
+              "location_id": "A02-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000071",
+              "sequence_index": 7,
+              "location_id": "A02-23-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000072",
+              "sequence_index": 8,
+              "location_id": "A02-18-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000068",
+              "sequence_index": 9,
+              "location_id": "A02-09-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000077",
+              "sequence_index": 10,
+              "location_id": "A02-07-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000070",
+              "sequence_index": 11,
+              "location_id": "A02-05-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000033",
+              "sequence_index": 12,
+              "location_id": "A03-09-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000040",
+              "sequence_index": 13,
+              "location_id": "A09-09-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000035",
+              "sequence_index": 14,
+              "location_id": "A10-04-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000037",
+              "sequence_index": 15,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000034",
+              "sequence_index": 16,
+              "location_id": "A10-14-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000069",
+              "sequence_index": 17,
+              "location_id": "A10-30-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000030",
+              "sequence_index": 18,
+              "location_id": "A10-28-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000028",
+              "sequence_index": 19,
+              "location_id": "A10-28-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000042",
+              "sequence_index": 20,
+              "location_id": "A10-24-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000027",
+              "sequence_index": 21,
+              "location_id": "A10-23-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 22,
+              "location_id": "A10-22-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000043",
+              "sequence_index": 23,
+              "location_id": "A10-19-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000025",
+              "sequence_index": 24,
+              "location_id": "A10-18-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000026",
+              "sequence_index": 25,
+              "location_id": "A10-11-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000044",
+              "sequence_index": 26,
+              "location_id": "A10-11-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000036",
+              "sequence_index": 27,
+              "location_id": "A10-11-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 28,
+              "location_id": "A10-08-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000039",
+              "sequence_index": 29,
+              "location_id": "A10-07-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000041",
+              "sequence_index": 30,
+              "location_id": "A10-02-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000029",
+              "sequence_index": 31,
+              "location_id": "A06-06-R-02-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 334.59999999999985,
+            "duration": 334.59999999999985,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": []
+    },
+    {
+      "solution_id": "sol_zero_late_risk",
+      "tradeoff_label": "zero_late_risk",
+      "solution_metrics": {
+        "total_distance": 1964.0,
+        "total_duration": 1964.0,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.4084507042253521,
+        "n_batches": 6,
+        "n_selected_tasks": 100,
+        "n_unselected_tasks": 0,
+        "max_zone_load": 71,
+        "n_zone_crossings": 0,
+        "n_split_orders": 3,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.5418152992469281,
+        "batch_distance_balance": 0.5418152992469281,
+        "objective_value": 565.225338028169,
+        "graph_node_count": 6455,
+        "alns_internal_objective": 1.329
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000084",
+            "T000091",
+            "T000098",
+            "T000099",
+            "T000001",
+            "T000002",
+            "T000003",
+            "T000004",
+            "T000005",
+            "T000006"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 283.19999999999993,
+            "duration": 283.19999999999993,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000001",
+              "sequence_index": 1,
+              "location_id": "A04-29-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 2,
+              "location_id": "A05-07-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 3,
+              "location_id": "A05-30-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 4,
+              "location_id": "A05-22-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 5,
+              "location_id": "A05-07-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000005",
+              "sequence_index": 6,
+              "location_id": "A05-02-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 7,
+              "location_id": "A06-05-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 8,
+              "location_id": "A07-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000098",
+              "sequence_index": 9,
+              "location_id": "A07-17-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 10,
+              "location_id": "A07-06-R-03-02",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 283.19999999999993,
+            "duration": 283.19999999999993,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 2,
+          "priority_score": 0.6784554312522839,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000030",
+            "T000040",
+            "T000041",
+            "T000033",
+            "T000038",
+            "T000025",
+            "T000027",
+            "T000028",
+            "T000039",
+            "T000043",
+            "T000044",
+            "T000080",
+            "T000081",
+            "T000083",
+            "T000082",
+            "T000026",
+            "T000031",
+            "T000032",
+            "T000034",
+            "T000035",
+            "T000036",
+            "T000037",
+            "T000042",
+            "T000029"
+          ],
+          "order_ids": [
+            "ORDER-0003",
+            "ORDER-0004",
+            "ORDER-0009"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 318.79999999999984,
+            "duration": 318.79999999999984,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000033",
+              "sequence_index": 1,
+              "location_id": "A03-09-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 2,
+              "location_id": "A04-11-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 3,
+              "location_id": "A04-25-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000038",
+              "sequence_index": 4,
+              "location_id": "A04-28-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 5,
+              "location_id": "A04-24-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 6,
+              "location_id": "A04-10-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000040",
+              "sequence_index": 7,
+              "location_id": "A09-09-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000035",
+              "sequence_index": 8,
+              "location_id": "A10-04-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000037",
+              "sequence_index": 9,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000034",
+              "sequence_index": 10,
+              "location_id": "A10-14-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000030",
+              "sequence_index": 11,
+              "location_id": "A10-28-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000028",
+              "sequence_index": 12,
+              "location_id": "A10-28-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000042",
+              "sequence_index": 13,
+              "location_id": "A10-24-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000027",
+              "sequence_index": 14,
+              "location_id": "A10-23-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 15,
+              "location_id": "A10-22-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000043",
+              "sequence_index": 16,
+              "location_id": "A10-19-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000025",
+              "sequence_index": 17,
+              "location_id": "A10-18-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000026",
+              "sequence_index": 18,
+              "location_id": "A10-11-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000044",
+              "sequence_index": 19,
+              "location_id": "A10-11-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000036",
+              "sequence_index": 20,
+              "location_id": "A10-11-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 21,
+              "location_id": "A10-08-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000039",
+              "sequence_index": 22,
+              "location_id": "A10-07-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000041",
+              "sequence_index": 23,
+              "location_id": "A10-02-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000029",
+              "sequence_index": 24,
+              "location_id": "A06-06-R-02-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 318.79999999999984,
+            "duration": 318.79999999999984,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_3",
+          "priority_rank": 3,
+          "priority_score": 0.6290947516731707,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000045",
+            "T000046",
+            "T000048",
+            "T000050",
+            "T000051",
+            "T000052",
+            "T000054",
+            "T000055",
+            "T000047",
+            "T000049",
+            "T000053",
+            "T000086",
+            "T000087",
+            "T000088",
+            "T000090",
+            "T000097"
+          ],
+          "order_ids": [
+            "ORDER-0005",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 282.0,
+            "duration": 282.0,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000053",
+              "sequence_index": 1,
+              "location_id": "A03-17-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000045",
+              "sequence_index": 2,
+              "location_id": "A03-30-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000051",
+              "sequence_index": 3,
+              "location_id": "A03-25-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000048",
+              "sequence_index": 4,
+              "location_id": "A03-24-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000054",
+              "sequence_index": 5,
+              "location_id": "A03-23-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000047",
+              "sequence_index": 6,
+              "location_id": "A03-22-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000046",
+              "sequence_index": 7,
+              "location_id": "A03-21-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000049",
+              "sequence_index": 8,
+              "location_id": "A03-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000050",
+              "sequence_index": 9,
+              "location_id": "A03-05-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000055",
+              "sequence_index": 10,
+              "location_id": "A04-14-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000088",
+              "sequence_index": 11,
+              "location_id": "A08-03-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000097",
+              "sequence_index": 12,
+              "location_id": "A07-29-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 13,
+              "location_id": "A07-22-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 14,
+              "location_id": "A07-12-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 15,
+              "location_id": "A07-11-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000052",
+              "sequence_index": 16,
+              "location_id": "A06-02-L-03-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 282.0,
+            "duration": 282.0,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_4",
+          "priority_rank": 4,
+          "priority_score": 0.504791804362219,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000018",
+            "T000019",
+            "T000020",
+            "T000021",
+            "T000022",
+            "T000023",
+            "T000024",
+            "T000057",
+            "T000058",
+            "T000059",
+            "T000060",
+            "T000061",
+            "T000096",
+            "T000056",
+            "T000011",
+            "T000064",
+            "T000067",
+            "T000092",
+            "T000009",
+            "T000014",
+            "T000012",
+            "T000010",
+            "T000017",
+            "T000016",
+            "T000015",
+            "T000065",
+            "T000063",
+            "T000066",
+            "T000062"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0005",
+            "ORDER-0006",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000024",
+              "sequence_index": 1,
+              "location_id": "A27-02-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000019",
+              "sequence_index": 2,
+              "location_id": "A27-02-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 3,
+              "location_id": "A27-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000022",
+              "sequence_index": 4,
+              "location_id": "A27-23-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000020",
+              "sequence_index": 5,
+              "location_id": "A27-22-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000021",
+              "sequence_index": 6,
+              "location_id": "A27-20-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000018",
+              "sequence_index": 7,
+              "location_id": "A27-15-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 8,
+              "location_id": "A27-12-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 9,
+              "location_id": "A27-11-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 10,
+              "location_id": "A27-10-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000017",
+              "sequence_index": 11,
+              "location_id": "A27-06-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 12,
+              "location_id": "A28-24-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000061",
+              "sequence_index": 13,
+              "location_id": "A28-16-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 14,
+              "location_id": "A28-12-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 15,
+              "location_id": "A26-22-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000056",
+              "sequence_index": 16,
+              "location_id": "A25-17-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 17,
+              "location_id": "A22-02-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000062",
+              "sequence_index": 18,
+              "location_id": "A22-18-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000059",
+              "sequence_index": 19,
+              "location_id": "A22-24-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000023",
+              "sequence_index": 20,
+              "location_id": "A22-16-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000063",
+              "sequence_index": 21,
+              "location_id": "A22-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000065",
+              "sequence_index": 22,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000058",
+              "sequence_index": 23,
+              "location_id": "A22-12-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000060",
+              "sequence_index": 24,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000057",
+              "sequence_index": 25,
+              "location_id": "A22-03-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000067",
+              "sequence_index": 26,
+              "location_id": "A22-03-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000064",
+              "sequence_index": 27,
+              "location_id": "A22-02-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 28,
+              "location_id": "A21-01-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000066",
+              "sequence_index": 29,
+              "location_id": "A21-12-R-02-02",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 504.6000000000002,
+            "duration": 504.6000000000002,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_6",
+          "priority_rank": 5,
+          "priority_score": 0.46331609566902204,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000007",
+            "T000008",
+            "T000013",
+            "T000085",
+            "T000089",
+            "T000094",
+            "T000095",
+            "T000100"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 302.00000000000006,
+            "duration": 302.00000000000006,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000008",
+              "sequence_index": 1,
+              "location_id": "A02-24-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 2,
+              "location_id": "A02-27-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 3,
+              "location_id": "A06-29-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000095",
+              "sequence_index": 4,
+              "location_id": "A06-10-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000089",
+              "sequence_index": 5,
+              "location_id": "A07-27-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 6,
+              "location_id": "A07-23-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 7,
+              "location_id": "A07-18-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 8,
+              "location_id": "A08-13-R-02-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 302.00000000000006,
+            "duration": 302.00000000000006,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_5",
+          "priority_rank": 6,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_SMALL",
+          "task_ids": [
+            "T000093",
+            "T000070",
+            "T000073",
+            "T000076",
+            "T000077",
+            "T000078",
+            "T000079",
+            "T000068",
+            "T000069",
+            "T000071",
+            "T000072",
+            "T000074",
+            "T000075"
+          ],
+          "order_ids": [
+            "ORDER-0007",
+            "ORDER-0008",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 273.4,
+            "duration": 273.4,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000078",
+              "sequence_index": 1,
+              "location_id": "A01-20-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000093",
+              "sequence_index": 2,
+              "location_id": "A01-18-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000076",
+              "sequence_index": 3,
+              "location_id": "A02-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000075",
+              "sequence_index": 4,
+              "location_id": "A02-20-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000074",
+              "sequence_index": 5,
+              "location_id": "A02-25-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000073",
+              "sequence_index": 6,
+              "location_id": "A02-25-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000071",
+              "sequence_index": 7,
+              "location_id": "A02-23-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000072",
+              "sequence_index": 8,
+              "location_id": "A02-18-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000068",
+              "sequence_index": 9,
+              "location_id": "A02-09-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000077",
+              "sequence_index": 10,
+              "location_id": "A02-07-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000070",
+              "sequence_index": 11,
+              "location_id": "A02-05-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000079",
+              "sequence_index": 12,
+              "location_id": "A10-14-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000069",
+              "sequence_index": 13,
+              "location_id": "A10-30-L-01-01",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 273.4,
+            "duration": 273.4,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": []
+    }
+  ],
+  "error": null
+}

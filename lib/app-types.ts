@@ -180,12 +180,36 @@ export type OptimizerBatch = {
     duration: number;
     nZoneCrossings: number;
   };
+  sequence: Array<{
+    taskId: string;
+    sequenceIndex: number;
+    locationId: string;
+    zoneId: string;
+  }>;
   batchMetrics: {
     distance: number;
     duration: number;
     nLateOrders: number;
     tardiness: number;
   };
+};
+
+export type FlattenedBatchRow = {
+  rowId: string;
+  batchId: string;
+  priorityRank: number;
+  priorityScore: number;
+  cartTypeId: string;
+  waveId: string;
+  zones: string[];
+  routeDistance: number;
+  routeDuration: number;
+  routeCrossings: number;
+  sequenceIndex: number | null;
+  taskId: string;
+  orderId: string;
+  locationId: string;
+  stopZoneId: string;
 };
 
 export type OptimizerUnselectedTask = {
@@ -244,8 +268,11 @@ export type HeartbeatRunDetails = HeartbeatRunSummary & {
   requestContext: HeartbeatRequestContext;
   solutionMetrics: OptimizerSolutionMetrics;
   batches: OptimizerBatch[];
+  flattenedBatchRows: FlattenedBatchRow[];
   unselectedTasks: OptimizerUnselectedTask[];
   unselectedTaskCount: number;
+  unselectedTaskPage: number;
+  unselectedTaskPageSize: number;
 };
 
 export type HeartbeatPlan = {

@@ -1,5 +1,6 @@
 import { formatTradeoffLabel } from "@/lib/heartbeat-recordings-shared";
 import type {
+  FlattenedBatchRow,
   HeartbeatPlan,
   HeartbeatRunDetails,
   HeartbeatRunSummary,
@@ -44,6 +45,7 @@ type RawRequest = {
   };
   pick_work_release: {
     tasks: Array<{
+      task_id: string;
       order_id: string;
     }>;
   };
@@ -90,6 +92,12 @@ type RawResponse = {
         duration: number;
         n_zone_crossings: number;
       };
+      sequence: Array<{
+        task_id: string;
+        sequence_index: number;
+        location_id: string;
+        zone_id: string;
+      }>;
       batch_metrics: {
         distance: number;
         duration: number;
@@ -103,21 +111,18 @@ type RawResponse = {
   }>;
 };
 
-type NormalizedCycle = {
-  requestId: string;
-  plans: HeartbeatPlan[];
-  detailsByTradeoff: Record<string, HeartbeatRunDetails>;
-};
-
-type NormalizedDataset = {
+type SummaryDataset = {
   planSets: HeartbeatPlan[][];
-  detailsByKey: Record<string, HeartbeatRunDetails>;
+  requestFileById: Record<string, string>;
+  responseFileById: Record<string, string>;
 };
 
-let cachedDataset: NormalizedDataset | null = null;
+let cachedSummaryDataset: SummaryDataset | null = null;
+const cachedRunDetails = new Map<string, HeartbeatRunDetails>();
+const DEFAULT_UNSELECTED_TASK_PAGE_SIZE = 100;
 
 function datasetRoot() {
-  return path.join(process.cwd(), "20260408T204912Z");
+  return path.join(process.cwd(), "20260415T201420Z");
 }
 
 function toSystemMode(mode: string): SystemMode {
@@ -218,6 +223,12 @@ function normalizeBatches(batches: RawResponse["solutions"][number]["batches"]):
       duration: batch.route.duration,
       nZoneCrossings: batch.route.n_zone_crossings
     },
+    sequence: batch.sequence.map((stop) => ({
+      taskId: stop.task_id,
+      sequenceIndex: stop.sequence_index,
+      locationId: stop.location_id,
+      zoneId: stop.zone_id
+    })),
     batchMetrics: {
       distance: batch.batch_metrics.distance,
       duration: batch.batch_metrics.duration,
@@ -234,9 +245,53 @@ function normalizeUnselectedTasks(unselectedTasks: RawResponse["solutions"][numb
   }));
 }
 
-function normalizeCycle(request: RawRequest, response: RawResponse): NormalizedCycle {
+function flattenBatchRows(batches: OptimizerBatch[], taskToOrderId: Map<string, string>): FlattenedBatchRow[] {
+  return batches.flatMap((batch): FlattenedBatchRow[] => {
+    if (batch.sequence.length === 0) {
+      return [
+        {
+          rowId: `${batch.batchId}:empty`,
+          batchId: batch.batchId,
+          priorityRank: batch.priorityRank,
+          priorityScore: batch.priorityScore,
+          cartTypeId: batch.cartTypeId,
+          waveId: batch.waveId,
+          zones: batch.zones,
+          routeDistance: batch.route.distance,
+          routeDuration: batch.route.duration,
+          routeCrossings: batch.route.nZoneCrossings,
+          sequenceIndex: null,
+          taskId: "",
+          orderId: "Unknown",
+          locationId: "",
+          stopZoneId: ""
+        }
+      ];
+    }
+
+    return batch.sequence.map((stop) => ({
+      rowId: `${batch.batchId}:${stop.sequenceIndex}:${stop.taskId}`,
+      batchId: batch.batchId,
+      priorityRank: batch.priorityRank,
+      priorityScore: batch.priorityScore,
+      cartTypeId: batch.cartTypeId,
+      waveId: batch.waveId,
+      zones: batch.zones,
+      routeDistance: batch.route.distance,
+      routeDuration: batch.route.duration,
+      routeCrossings: batch.route.nZoneCrossings,
+      sequenceIndex: stop.sequenceIndex,
+      taskId: stop.taskId,
+      orderId: taskToOrderId.get(stop.taskId) ?? "Unknown",
+      locationId: stop.locationId,
+      stopZoneId: stop.zoneId
+    }));
+  });
+}
+
+function normalizePlans(request: RawRequest, response: RawResponse): HeartbeatPlan[] {
   const requestLabel = formatRequestLabel(request);
-  const plans = response.solutions.map((solution) => {
+  return response.solutions.map((solution) => {
     const throughput = deriveThroughput(solution.solution_metrics.n_selected_tasks, solution.solution_metrics.total_duration);
     const runSummary: HeartbeatRunSummary = {
       runId: formatRunId(request, solution.tradeoff_label),
@@ -267,81 +322,82 @@ function normalizeCycle(request: RawRequest, response: RawResponse): NormalizedC
       run: runSummary
     };
   });
+}
+
+function normalizeRunDetails(request: RawRequest, response: RawResponse, tradeoffLabel: string): HeartbeatRunDetails | null {
+  const plans = normalizePlans(request, response);
+  const summary = plans.find((plan) => plan.run.tradeoffLabel === tradeoffLabel)?.run;
+  const solution = response.solutions.find((candidate) => candidate.tradeoff_label === tradeoffLabel);
+
+  if (!summary || !solution) {
+    return null;
+  }
 
   const distinctOrderCount = new Set(request.pick_work_release.tasks.map((task) => task.order_id)).size;
-
-  const detailsByTradeoff = Object.fromEntries(
-    response.solutions.map((solution) => {
-      const summary = plans.find((plan) => plan.run.tradeoffLabel === solution.tradeoff_label)?.run;
-      if (!summary) {
-        throw new Error(`Missing run summary for ${request.request_id}:${solution.tradeoff_label}`);
-      }
-
-      const details: HeartbeatRunDetails = {
-        ...summary,
-        responseId: response.response_id,
-        requestContext: {
-          requestId: request.request_id,
-          responseId: response.response_id,
-          jobId: request.job.job_id,
-          tenantId: request.tenant_id,
-          facilityId: request.facility_id,
-          requestTimestamp: request.job.created_ts,
-          responseTimestamp: response.timestamp,
-          candidateTaskCount: request.pick_work_release.tasks.length,
-          distinctOrderCount,
-          weights: {
-            travelTime: request.job_config.weights.travel_time,
-            tardiness: request.job_config.weights.tardiness,
-            zoneBalance: request.job_config.weights.zone_balance
-          },
-          penalties: {
-            zoneCross: request.job_config.penalties.zone_cross,
-            splitOrder: request.job_config.penalties.split_order,
-            groupingViolation: request.job_config.penalties.grouping_violation
-          },
-          limits: {
-            maxBatches: request.job_config.max_batches,
-            maxTasksPerZone: request.job_config.max_tasks_per_zone
-          },
-          availableCarts: request.job_config.available_carts.map((cart) => ({
-            cartTypeId: cart.cart_type_id,
-            count: cart.count
-          })),
-          noGoZones: request.job_config.no_go_zones,
-          blockedAisles: request.job_config.blocked_aisles,
-          blockedTerminals: request.job_config.blocked_terminals
-        },
-        solutionMetrics: normalizeSolutionMetrics(solution.solution_metrics),
-        batches: normalizeBatches(solution.batches),
-        unselectedTasks: normalizeUnselectedTasks(solution.unselected_tasks),
-        unselectedTaskCount: solution.unselected_tasks.length
-      };
-
-      return [solution.tradeoff_label, details];
-    })
-  );
+  const taskToOrderId = new Map(request.pick_work_release.tasks.map((task) => [task.task_id, task.order_id]));
+  const batches = normalizeBatches(solution.batches);
 
   return {
-    requestId: request.request_id,
-    plans,
-    detailsByTradeoff
+    ...summary,
+    responseId: response.response_id,
+    requestContext: {
+      requestId: request.request_id,
+      responseId: response.response_id,
+      jobId: request.job.job_id,
+      tenantId: request.tenant_id,
+      facilityId: request.facility_id,
+      requestTimestamp: request.job.created_ts,
+      responseTimestamp: response.timestamp,
+      candidateTaskCount: request.pick_work_release.tasks.length,
+      distinctOrderCount,
+      weights: {
+        travelTime: request.job_config.weights.travel_time,
+        tardiness: request.job_config.weights.tardiness,
+        zoneBalance: request.job_config.weights.zone_balance
+      },
+      penalties: {
+        zoneCross: request.job_config.penalties.zone_cross,
+        splitOrder: request.job_config.penalties.split_order,
+        groupingViolation: request.job_config.penalties.grouping_violation
+      },
+      limits: {
+        maxBatches: request.job_config.max_batches,
+        maxTasksPerZone: request.job_config.max_tasks_per_zone
+      },
+      availableCarts: request.job_config.available_carts.map((cart) => ({
+        cartTypeId: cart.cart_type_id,
+        count: cart.count
+      })),
+      noGoZones: request.job_config.no_go_zones,
+      blockedAisles: request.job_config.blocked_aisles,
+      blockedTerminals: request.job_config.blocked_terminals
+    },
+    solutionMetrics: normalizeSolutionMetrics(solution.solution_metrics),
+    batches,
+    flattenedBatchRows: flattenBatchRows(batches, taskToOrderId),
+    unselectedTasks: normalizeUnselectedTasks(solution.unselected_tasks),
+    unselectedTaskCount: solution.unselected_tasks.length,
+    unselectedTaskPage: 0,
+    unselectedTaskPageSize: DEFAULT_UNSELECTED_TASK_PAGE_SIZE
   };
 }
 
-function buildDataset(): NormalizedDataset {
+function buildSummaryDataset(): SummaryDataset {
   const requestsDirectory = path.join(datasetRoot(), "requests");
   const responsesDirectory = path.join(datasetRoot(), "responses");
   const requestFiles = fs.readdirSync(requestsDirectory).filter((fileName) => fileName.endsWith(".json")).sort();
   const responseFiles = fs.readdirSync(responsesDirectory).filter((fileName) => fileName.endsWith(".json")).sort();
   const responsesByRequestId = new Map<string, RawResponse>();
+  const responseFileById: Record<string, string> = {};
 
   for (const fileName of responseFiles) {
     const response = JSON.parse(fs.readFileSync(path.join(responsesDirectory, fileName), "utf8")) as RawResponse;
     responsesByRequestId.set(response.request_id, response);
+    responseFileById[response.request_id] = path.join(responsesDirectory, fileName);
   }
 
-  const cycles = requestFiles.map((fileName) => {
+  const requestFileById: Record<string, string> = {};
+  const planSets = requestFiles.map((fileName) => {
     const request = JSON.parse(fs.readFileSync(path.join(requestsDirectory, fileName), "utf8")) as RawRequest;
     const response = responsesByRequestId.get(request.request_id);
 
@@ -349,32 +405,69 @@ function buildDataset(): NormalizedDataset {
       throw new Error(`Missing response for request ${request.request_id}`);
     }
 
-    return normalizeCycle(request, response);
+    requestFileById[request.request_id] = path.join(requestsDirectory, fileName);
+    return normalizePlans(request, response);
   });
 
-  const detailsByKey = Object.fromEntries(
-    cycles.flatMap((cycle) =>
-      Object.entries(cycle.detailsByTradeoff).map(([tradeoffLabel, details]) => [`${cycle.requestId}:${tradeoffLabel}`, details])
-    )
-  );
-
   return {
-    planSets: cycles.map((cycle) => cycle.plans),
-    detailsByKey
+    planSets,
+    requestFileById,
+    responseFileById
   };
 }
 
-function getDataset() {
-  if (!cachedDataset) {
-    cachedDataset = buildDataset();
+function getSummaryDataset() {
+  if (!cachedSummaryDataset) {
+    cachedSummaryDataset = buildSummaryDataset();
   }
-  return cachedDataset;
+  return cachedSummaryDataset;
 }
 
 export function getRecordedHeartbeatPlanSets() {
-  return getDataset().planSets;
+  return getSummaryDataset().planSets;
 }
 
 export function getRecordedHeartbeatRunDetails(requestId: string, tradeoffLabel: string) {
-  return getDataset().detailsByKey[`${requestId}:${tradeoffLabel}`] ?? null;
+  const cacheKey = `${requestId}:${tradeoffLabel}`;
+  const cached = cachedRunDetails.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
+  const dataset = getSummaryDataset();
+  const requestFile = dataset.requestFileById[requestId];
+  const responseFile = dataset.responseFileById[requestId];
+
+  if (!requestFile || !responseFile) {
+    return null;
+  }
+
+  const request = JSON.parse(fs.readFileSync(requestFile, "utf8")) as RawRequest;
+  const response = JSON.parse(fs.readFileSync(responseFile, "utf8")) as RawResponse;
+  const details = normalizeRunDetails(request, response, tradeoffLabel);
+
+  if (!details) {
+    return null;
+  }
+
+  cachedRunDetails.set(cacheKey, details);
+  return details;
+}
+
+export function getRecordedHeartbeatRunDetailsPage(requestId: string, tradeoffLabel: string, page: number, pageSize = DEFAULT_UNSELECTED_TASK_PAGE_SIZE) {
+  const details = getRecordedHeartbeatRunDetails(requestId, tradeoffLabel);
+  if (!details) {
+    return null;
+  }
+
+  const safePage = Math.max(0, page);
+  const safePageSize = Math.max(1, pageSize);
+  const startIndex = safePage * safePageSize;
+
+  return {
+    ...details,
+    unselectedTasks: details.unselectedTasks.slice(startIndex, startIndex + safePageSize),
+    unselectedTaskPage: safePage,
+    unselectedTaskPageSize: safePageSize
+  };
 }

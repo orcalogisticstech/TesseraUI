@@ -1,0 +1,2791 @@
+{
+  "schema_version": "1.0",
+  "response_id": "resp_2886024741ae4361a2083897fa114a37",
+  "request_id": "req_demo_ATL1_48_1775047680",
+  "status": "completed",
+  "timestamp": "2026-04-15T20:16:52.055558Z",
+  "computation_time": 21.6232727910392,
+  "request_echo": {
+    "request_id": "req_demo_ATL1_48_1775047680",
+    "job_id": "sandbox_run_congested_48_20260401T124800Z",
+    "tenant_id": "demo",
+    "facility_id": "ATL1",
+    "layout_uri": "file:///Users/yatharthdubey/opt/Tessera/TesseraPick/layout_store/demo/ATL1/silver/demo_layout_1_v1/graph.pkl",
+    "workflow": "heartbeat",
+    "mode": "advisory",
+    "site_config": {
+      "cart_types": [
+        {
+          "cart_type_id": "CART_SMALL",
+          "max_items": 40,
+          "max_weight_kg": 120.0,
+          "max_volume_m3": null,
+          "max_totes": null
+        },
+        {
+          "cart_type_id": "CART_LARGE",
+          "max_items": 80,
+          "max_weight_kg": 200.0,
+          "max_volume_m3": null,
+          "max_totes": null
+        }
+      ],
+      "allowed_routing_policies": [
+        "FREE",
+        "S_SHAPE"
+      ],
+      "zone_crossing": {
+        "allowed": true,
+        "max_crossings_per_route": 2
+      },
+      "order_splitting_allowed": false,
+      "start_node_ids": [
+        "START_DEPOT"
+      ],
+      "end_node_ids": [
+        "PACK_01"
+      ],
+      "travel_metric": "TIME"
+    },
+    "job_config": {
+      "blocked_aisles": [
+        "A21",
+        "A26"
+      ],
+      "no_go_zones": [],
+      "blocked_terminals": [
+        "SHIP_01"
+      ],
+      "weights": {
+        "travel_time": 0.349,
+        "tardiness": 0.23,
+        "zone_balance": 0.421
+      },
+      "penalties": {
+        "zone_cross": 1.741,
+        "split_order": 0.608,
+        "grouping_violation": 1.523
+      },
+      "required_group_splits": [],
+      "preferred_group_splits": [],
+      "available_carts": [
+        {
+          "cart_type_id": "CART_SMALL",
+          "count": 6
+        },
+        {
+          "cart_type_id": "CART_LARGE",
+          "count": 8
+        }
+      ],
+      "max_batches": 13,
+      "max_tasks_per_zone": 42
+    }
+  },
+  "validation": {
+    "invalid_tasks": [],
+    "warnings": []
+  },
+  "solutions": [
+    {
+      "solution_id": "sol_primary",
+      "tradeoff_label": "primary",
+      "solution_metrics": {
+        "total_distance": 1070.4,
+        "total_duration": 1070.4,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.696969696969697,
+        "n_batches": 2,
+        "n_selected_tasks": 56,
+        "n_unselected_tasks": 44,
+        "max_zone_load": 33,
+        "n_zone_crossings": 2,
+        "n_split_orders": 2,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.5392579810181188,
+        "batch_distance_balance": 0.5392579810181188,
+        "objective_value": 378.40028108574194,
+        "graph_node_count": 6455
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000006",
+            "T000016",
+            "T000028",
+            "T000071",
+            "T000075",
+            "T000076",
+            "T000079",
+            "T000053",
+            "T000054",
+            "T000055",
+            "T000056",
+            "T000031",
+            "T000035",
+            "T000069",
+            "T000070",
+            "T000073",
+            "T000074",
+            "T000077",
+            "T000078",
+            "T000036",
+            "T000001",
+            "T000002",
+            "T000003",
+            "T000004",
+            "T000005",
+            "T000072",
+            "T000033",
+            "T000011",
+            "T000015",
+            "T000030",
+            "T000034"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0002",
+            "ORDER-0004",
+            "ORDER-0006",
+            "ORDER-0008"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01",
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 695.4000000000001,
+            "duration": 695.4000000000001,
+            "n_zone_crossings": 2
+          },
+          "sequence": [
+            {
+              "task_id": "T000005",
+              "sequence_index": 1,
+              "location_id": "A01-30-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000028",
+              "sequence_index": 2,
+              "location_id": "A04-21-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000036",
+              "sequence_index": 3,
+              "location_id": "A05-06-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 4,
+              "location_id": "A05-01-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 5,
+              "location_id": "A08-10-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 6,
+              "location_id": "A08-20-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 7,
+              "location_id": "A08-26-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000056",
+              "sequence_index": 8,
+              "location_id": "A08-24-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 9,
+              "location_id": "A08-19-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000001",
+              "sequence_index": 10,
+              "location_id": "A08-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000055",
+              "sequence_index": 11,
+              "location_id": "A10-17-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000053",
+              "sequence_index": 12,
+              "location_id": "A10-04-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000054",
+              "sequence_index": 13,
+              "location_id": "A10-02-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 14,
+              "location_id": "A22-17-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000033",
+              "sequence_index": 15,
+              "location_id": "A22-21-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 16,
+              "location_id": "A22-20-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000035",
+              "sequence_index": 17,
+              "location_id": "A27-15-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 18,
+              "location_id": "A27-20-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000072",
+              "sequence_index": 19,
+              "location_id": "A27-10-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000030",
+              "sequence_index": 20,
+              "location_id": "A28-06-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000034",
+              "sequence_index": 21,
+              "location_id": "A26-20-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000074",
+              "sequence_index": 22,
+              "location_id": "A09-01-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000069",
+              "sequence_index": 23,
+              "location_id": "A09-14-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000076",
+              "sequence_index": 24,
+              "location_id": "A09-26-L-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000071",
+              "sequence_index": 25,
+              "location_id": "A09-25-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000077",
+              "sequence_index": 26,
+              "location_id": "A09-24-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000075",
+              "sequence_index": 27,
+              "location_id": "A09-24-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000079",
+              "sequence_index": 28,
+              "location_id": "A09-20-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000070",
+              "sequence_index": 29,
+              "location_id": "A09-18-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000078",
+              "sequence_index": 30,
+              "location_id": "A09-16-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000073",
+              "sequence_index": 31,
+              "location_id": "A09-02-R-03-02",
+              "zone_id": "Z01"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 695.4000000000001,
+            "duration": 695.4000000000001,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 2,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000093",
+            "T000091",
+            "T000099",
+            "T000081",
+            "T000009",
+            "T000013",
+            "T000032",
+            "T000008",
+            "T000090",
+            "T000092",
+            "T000094",
+            "T000085",
+            "T000096",
+            "T000100",
+            "T000084",
+            "T000029",
+            "T000080",
+            "T000082",
+            "T000083",
+            "T000086",
+            "T000087",
+            "T000007",
+            "T000010",
+            "T000012",
+            "T000014"
+          ],
+          "order_ids": [
+            "ORDER-0002",
+            "ORDER-0004",
+            "ORDER-0009",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 374.9999999999999,
+            "duration": 374.9999999999999,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000029",
+              "sequence_index": 1,
+              "location_id": "A22-02-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 2,
+              "location_id": "A22-05-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 3,
+              "location_id": "A22-13-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 4,
+              "location_id": "A22-22-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 5,
+              "location_id": "A22-18-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 6,
+              "location_id": "A22-15-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 7,
+              "location_id": "A22-12-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 8,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000008",
+              "sequence_index": 9,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 10,
+              "location_id": "A22-04-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000093",
+              "sequence_index": 11,
+              "location_id": "A25-14-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 12,
+              "location_id": "A25-23-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 13,
+              "location_id": "A25-21-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 14,
+              "location_id": "A25-21-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 15,
+              "location_id": "A25-13-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 16,
+              "location_id": "A24-06-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 17,
+              "location_id": "A24-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 18,
+              "location_id": "A24-24-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 19,
+              "location_id": "A24-23-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 20,
+              "location_id": "A24-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 21,
+              "location_id": "A24-10-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 22,
+              "location_id": "A24-05-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 23,
+              "location_id": "A21-16-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 24,
+              "location_id": "A21-19-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 25,
+              "location_id": "A21-08-R-02-01",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 374.9999999999999,
+            "duration": 374.9999999999999,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": [
+        {
+          "task_id": "T000017",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000018",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000019",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000020",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000021",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000022",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000023",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000024",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000025",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000026",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000027",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000037",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000038",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000039",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000040",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000041",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000042",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000043",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000044",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000045",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000046",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000047",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000048",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000049",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000050",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000051",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000052",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000057",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000058",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000059",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000060",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000061",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000062",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000063",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000064",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000065",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000066",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000067",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000068",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000088",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000089",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000095",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000097",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000098",
+          "reason_code": "capacity_exceeded"
+        }
+      ]
+    },
+    {
+      "solution_id": "sol_min_travel",
+      "tradeoff_label": "minimize_travel",
+      "solution_metrics": {
+        "total_distance": 1022.9999999999998,
+        "total_duration": 1022.9999999999998,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.6666666666666666,
+        "n_batches": 2,
+        "n_selected_tasks": 55,
+        "n_unselected_tasks": 45,
+        "max_zone_load": 33,
+        "n_zone_crossings": 2,
+        "n_split_orders": 1,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.9251035001881818,
+        "batch_distance_balance": 0.9251035001881818,
+        "objective_value": 361.2613052969735,
+        "graph_node_count": 6455,
+        "alns_internal_objective": 1027.09397196364
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000086",
+            "T000087",
+            "T000084",
+            "T000090",
+            "T000091",
+            "T000092",
+            "T000098",
+            "T000066",
+            "T000082",
+            "T000083",
+            "T000097",
+            "T000081",
+            "T000057",
+            "T000058",
+            "T000059",
+            "T000060",
+            "T000061",
+            "T000080",
+            "T000085",
+            "T000062",
+            "T000063",
+            "T000064",
+            "T000065",
+            "T000067",
+            "T000068",
+            "T000088",
+            "T000093",
+            "T000094"
+          ],
+          "order_ids": [
+            "ORDER-0007",
+            "ORDER-0009",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01",
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 491.5999999999998,
+            "duration": 491.5999999999998,
+            "n_zone_crossings": 1
+          },
+          "sequence": [
+            {
+              "task_id": "T000063",
+              "sequence_index": 1,
+              "location_id": "A05-04-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000061",
+              "sequence_index": 2,
+              "location_id": "A05-12-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000057",
+              "sequence_index": 3,
+              "location_id": "A05-15-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000060",
+              "sequence_index": 4,
+              "location_id": "A05-19-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000068",
+              "sequence_index": 5,
+              "location_id": "A05-30-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000059",
+              "sequence_index": 6,
+              "location_id": "A05-27-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000058",
+              "sequence_index": 7,
+              "location_id": "A05-21-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000067",
+              "sequence_index": 8,
+              "location_id": "A05-09-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000065",
+              "sequence_index": 9,
+              "location_id": "A05-07-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000062",
+              "sequence_index": 10,
+              "location_id": "A05-02-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000064",
+              "sequence_index": 11,
+              "location_id": "A06-03-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000098",
+              "sequence_index": 12,
+              "location_id": "A25-04-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 13,
+              "location_id": "A25-23-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 14,
+              "location_id": "A25-21-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000097",
+              "sequence_index": 15,
+              "location_id": "A25-16-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000093",
+              "sequence_index": 16,
+              "location_id": "A25-14-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000088",
+              "sequence_index": 17,
+              "location_id": "A28-21-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 18,
+              "location_id": "A24-06-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 19,
+              "location_id": "A24-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 20,
+              "location_id": "A24-24-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 21,
+              "location_id": "A24-23-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000066",
+              "sequence_index": 22,
+              "location_id": "A24-15-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 23,
+              "location_id": "A24-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 24,
+              "location_id": "A24-10-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 25,
+              "location_id": "A24-05-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 26,
+              "location_id": "A21-19-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 27,
+              "location_id": "A21-16-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 28,
+              "location_id": "A21-08-R-02-01",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 491.5999999999998,
+            "duration": 491.5999999999998,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 2,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000002",
+            "T000003",
+            "T000004",
+            "T000005",
+            "T000006",
+            "T000031",
+            "T000008",
+            "T000011",
+            "T000032",
+            "T000007",
+            "T000009",
+            "T000010",
+            "T000012",
+            "T000013",
+            "T000089",
+            "T000095",
+            "T000096",
+            "T000099",
+            "T000100",
+            "T000001",
+            "T000014",
+            "T000015",
+            "T000016",
+            "T000053",
+            "T000054",
+            "T000055",
+            "T000056"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0002",
+            "ORDER-0004",
+            "ORDER-0006",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01",
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 531.4,
+            "duration": 531.4,
+            "n_zone_crossings": 1
+          },
+          "sequence": [
+            {
+              "task_id": "T000005",
+              "sequence_index": 1,
+              "location_id": "A01-30-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 2,
+              "location_id": "A05-01-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 3,
+              "location_id": "A08-10-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 4,
+              "location_id": "A08-20-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 5,
+              "location_id": "A08-26-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000056",
+              "sequence_index": 6,
+              "location_id": "A08-24-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 7,
+              "location_id": "A08-19-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000001",
+              "sequence_index": 8,
+              "location_id": "A08-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000055",
+              "sequence_index": 9,
+              "location_id": "A10-17-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000053",
+              "sequence_index": 10,
+              "location_id": "A10-04-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000054",
+              "sequence_index": 11,
+              "location_id": "A10-02-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 12,
+              "location_id": "A22-05-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 13,
+              "location_id": "A22-13-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 14,
+              "location_id": "A22-22-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 15,
+              "location_id": "A22-20-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 16,
+              "location_id": "A22-18-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 17,
+              "location_id": "A22-17-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 18,
+              "location_id": "A22-15-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 19,
+              "location_id": "A22-12-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 20,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000008",
+              "sequence_index": 21,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 22,
+              "location_id": "A22-04-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 23,
+              "location_id": "A27-20-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000095",
+              "sequence_index": 24,
+              "location_id": "A25-14-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000089",
+              "sequence_index": 25,
+              "location_id": "A25-23-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 26,
+              "location_id": "A25-21-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 27,
+              "location_id": "A25-13-L-02-02",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 531.4,
+            "duration": 531.4,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": [
+        {
+          "task_id": "T000017",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000018",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000019",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000020",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000021",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000022",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000023",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000024",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000025",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000026",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000027",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000028",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000029",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000030",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000033",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000034",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000035",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000036",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000037",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000038",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000039",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000040",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000041",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000042",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000043",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000044",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000045",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000046",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000047",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000048",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000049",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000050",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000051",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000052",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000069",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000070",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000071",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000072",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000073",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000074",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000075",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000076",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000077",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000078",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000079",
+          "reason_code": "capacity_exceeded"
+        }
+      ]
+    },
+    {
+      "solution_id": "sol_balance_zones",
+      "tradeoff_label": "balance_zones",
+      "solution_metrics": {
+        "total_distance": 1119.7999999999997,
+        "total_duration": 1119.7999999999997,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.5526315789473685,
+        "n_batches": 2,
+        "n_selected_tasks": 59,
+        "n_unselected_tasks": 41,
+        "max_zone_load": 38,
+        "n_zone_crossings": 2,
+        "n_split_orders": 0,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.9200960219478734,
+        "batch_distance_balance": 0.9200960219478734,
+        "objective_value": 394.4843402544325,
+        "graph_node_count": 6455,
+        "alns_internal_objective": 3.9331665702220646
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000098",
+            "T000099",
+            "T000063",
+            "T000091",
+            "T000082",
+            "T000083",
+            "T000093",
+            "T000097",
+            "T000057",
+            "T000058",
+            "T000059",
+            "T000060",
+            "T000061",
+            "T000062",
+            "T000064",
+            "T000065",
+            "T000066",
+            "T000067",
+            "T000068",
+            "T000087",
+            "T000090",
+            "T000092",
+            "T000100",
+            "T000080",
+            "T000085",
+            "T000088",
+            "T000089",
+            "T000094",
+            "T000095",
+            "T000096",
+            "T000081",
+            "T000084",
+            "T000086"
+          ],
+          "order_ids": [
+            "ORDER-0007",
+            "ORDER-0009",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01",
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 536.5999999999998,
+            "duration": 536.5999999999998,
+            "n_zone_crossings": 1
+          },
+          "sequence": [
+            {
+              "task_id": "T000063",
+              "sequence_index": 1,
+              "location_id": "A05-04-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000061",
+              "sequence_index": 2,
+              "location_id": "A05-12-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000057",
+              "sequence_index": 3,
+              "location_id": "A05-15-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000060",
+              "sequence_index": 4,
+              "location_id": "A05-19-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000068",
+              "sequence_index": 5,
+              "location_id": "A05-30-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000059",
+              "sequence_index": 6,
+              "location_id": "A05-27-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000058",
+              "sequence_index": 7,
+              "location_id": "A05-21-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000067",
+              "sequence_index": 8,
+              "location_id": "A05-09-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000065",
+              "sequence_index": 9,
+              "location_id": "A05-07-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000062",
+              "sequence_index": 10,
+              "location_id": "A05-02-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000064",
+              "sequence_index": 11,
+              "location_id": "A06-03-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000098",
+              "sequence_index": 12,
+              "location_id": "A25-04-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000093",
+              "sequence_index": 13,
+              "location_id": "A25-14-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 14,
+              "location_id": "A25-23-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000089",
+              "sequence_index": 15,
+              "location_id": "A25-23-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 16,
+              "location_id": "A25-21-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 17,
+              "location_id": "A25-21-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000097",
+              "sequence_index": 18,
+              "location_id": "A25-16-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000095",
+              "sequence_index": 19,
+              "location_id": "A25-14-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 20,
+              "location_id": "A25-13-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000088",
+              "sequence_index": 21,
+              "location_id": "A28-21-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 22,
+              "location_id": "A24-06-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 23,
+              "location_id": "A24-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 24,
+              "location_id": "A24-24-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 25,
+              "location_id": "A24-23-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000066",
+              "sequence_index": 26,
+              "location_id": "A24-15-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 27,
+              "location_id": "A24-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 28,
+              "location_id": "A24-10-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 29,
+              "location_id": "A24-05-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 30,
+              "location_id": "A22-12-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 31,
+              "location_id": "A21-19-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 32,
+              "location_id": "A21-16-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 33,
+              "location_id": "A21-08-R-02-01",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 536.5999999999998,
+            "duration": 536.5999999999998,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 2,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000028",
+            "T000030",
+            "T000035",
+            "T000036",
+            "T000073",
+            "T000012",
+            "T000013",
+            "T000016",
+            "T000001",
+            "T000002",
+            "T000003",
+            "T000004",
+            "T000005",
+            "T000006",
+            "T000008",
+            "T000010",
+            "T000011",
+            "T000015",
+            "T000031",
+            "T000009",
+            "T000029",
+            "T000032",
+            "T000034",
+            "T000033",
+            "T000007",
+            "T000014"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0002",
+            "ORDER-0004",
+            "ORDER-0008"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01",
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 583.2,
+            "duration": 583.2,
+            "n_zone_crossings": 1
+          },
+          "sequence": [
+            {
+              "task_id": "T000005",
+              "sequence_index": 1,
+              "location_id": "A01-30-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000028",
+              "sequence_index": 2,
+              "location_id": "A04-21-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000036",
+              "sequence_index": 3,
+              "location_id": "A05-06-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 4,
+              "location_id": "A05-01-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 5,
+              "location_id": "A08-10-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 6,
+              "location_id": "A08-26-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 7,
+              "location_id": "A08-20-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 8,
+              "location_id": "A08-19-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000001",
+              "sequence_index": 9,
+              "location_id": "A08-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000073",
+              "sequence_index": 10,
+              "location_id": "A09-02-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000030",
+              "sequence_index": 11,
+              "location_id": "A28-06-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000035",
+              "sequence_index": 12,
+              "location_id": "A27-15-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 13,
+              "location_id": "A27-20-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000034",
+              "sequence_index": 14,
+              "location_id": "A26-20-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000029",
+              "sequence_index": 15,
+              "location_id": "A22-02-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 16,
+              "location_id": "A22-05-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 17,
+              "location_id": "A22-13-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 18,
+              "location_id": "A22-22-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000033",
+              "sequence_index": 19,
+              "location_id": "A22-21-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 20,
+              "location_id": "A22-20-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 21,
+              "location_id": "A22-18-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 22,
+              "location_id": "A22-17-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 23,
+              "location_id": "A22-15-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 24,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000008",
+              "sequence_index": 25,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 26,
+              "location_id": "A22-04-R-03-01",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 583.2,
+            "duration": 583.2,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": [
+        {
+          "task_id": "T000017",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000018",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000019",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000020",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000021",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000022",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000023",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000024",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000025",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000026",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000027",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000037",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000038",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000039",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000040",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000041",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000042",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000043",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000044",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000045",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000046",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000047",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000048",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000049",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000050",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000051",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000052",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000053",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000054",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000055",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000056",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000069",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000070",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000071",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000072",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000074",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000075",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000076",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000077",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000078",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000079",
+          "reason_code": "capacity_exceeded"
+        }
+      ]
+    },
+    {
+      "solution_id": "sol_zero_late_risk",
+      "tradeoff_label": "zero_late_risk",
+      "solution_metrics": {
+        "total_distance": 1293.6,
+        "total_duration": 1293.6,
+        "n_late_risk_orders": 0,
+        "late_risk_cost": 0.0,
+        "zone_balance": 0.631578947368421,
+        "n_batches": 3,
+        "n_selected_tasks": 62,
+        "n_unselected_tasks": 38,
+        "max_zone_load": 38,
+        "n_zone_crossings": 2,
+        "n_split_orders": 2,
+        "n_grouping_violations": 0,
+        "priority_alignment": 1.0,
+        "batch_duration_balance": 0.25508819538670285,
+        "batch_distance_balance": 0.25508819538670285,
+        "objective_value": 456.3230065006451,
+        "graph_node_count": 6455,
+        "alns_internal_objective": 4.7015012374871565
+      },
+      "batches": [
+        {
+          "batch_id": "batch_1",
+          "priority_rank": 1,
+          "priority_score": 1.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000089",
+            "T000092",
+            "T000093",
+            "T000083",
+            "T000084",
+            "T000085",
+            "T000096",
+            "T000097",
+            "T000098",
+            "T000099",
+            "T000100",
+            "T000053",
+            "T000086",
+            "T000087",
+            "T000091",
+            "T000080",
+            "T000081",
+            "T000082",
+            "T000088",
+            "T000090",
+            "T000057",
+            "T000058",
+            "T000059",
+            "T000060",
+            "T000061",
+            "T000062",
+            "T000063",
+            "T000064",
+            "T000065",
+            "T000066",
+            "T000067",
+            "T000068",
+            "T000094",
+            "T000095"
+          ],
+          "order_ids": [
+            "ORDER-0006",
+            "ORDER-0007",
+            "ORDER-0009",
+            "ORDER-0010"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01",
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 553.5999999999998,
+            "duration": 553.5999999999998,
+            "n_zone_crossings": 1
+          },
+          "sequence": [
+            {
+              "task_id": "T000063",
+              "sequence_index": 1,
+              "location_id": "A05-04-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000061",
+              "sequence_index": 2,
+              "location_id": "A05-12-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000057",
+              "sequence_index": 3,
+              "location_id": "A05-15-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000060",
+              "sequence_index": 4,
+              "location_id": "A05-19-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000068",
+              "sequence_index": 5,
+              "location_id": "A05-30-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000059",
+              "sequence_index": 6,
+              "location_id": "A05-27-L-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000058",
+              "sequence_index": 7,
+              "location_id": "A05-21-R-03-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000067",
+              "sequence_index": 8,
+              "location_id": "A05-09-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000065",
+              "sequence_index": 9,
+              "location_id": "A05-07-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000062",
+              "sequence_index": 10,
+              "location_id": "A05-02-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000064",
+              "sequence_index": 11,
+              "location_id": "A06-03-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000053",
+              "sequence_index": 12,
+              "location_id": "A10-04-R-02-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000096",
+              "sequence_index": 13,
+              "location_id": "A22-12-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000088",
+              "sequence_index": 14,
+              "location_id": "A28-21-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000098",
+              "sequence_index": 15,
+              "location_id": "A25-04-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000093",
+              "sequence_index": 16,
+              "location_id": "A25-14-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000091",
+              "sequence_index": 17,
+              "location_id": "A25-23-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000089",
+              "sequence_index": 18,
+              "location_id": "A25-23-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000100",
+              "sequence_index": 19,
+              "location_id": "A25-21-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000090",
+              "sequence_index": 20,
+              "location_id": "A25-21-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000097",
+              "sequence_index": 21,
+              "location_id": "A25-16-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000095",
+              "sequence_index": 22,
+              "location_id": "A25-14-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000099",
+              "sequence_index": 23,
+              "location_id": "A25-13-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000087",
+              "sequence_index": 24,
+              "location_id": "A24-06-R-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000086",
+              "sequence_index": 25,
+              "location_id": "A24-24-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000084",
+              "sequence_index": 26,
+              "location_id": "A24-24-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000080",
+              "sequence_index": 27,
+              "location_id": "A24-23-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000066",
+              "sequence_index": 28,
+              "location_id": "A24-15-R-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000083",
+              "sequence_index": 29,
+              "location_id": "A24-13-L-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000085",
+              "sequence_index": 30,
+              "location_id": "A24-10-R-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000082",
+              "sequence_index": 31,
+              "location_id": "A24-05-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000092",
+              "sequence_index": 32,
+              "location_id": "A21-16-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000081",
+              "sequence_index": 33,
+              "location_id": "A21-19-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000094",
+              "sequence_index": 34,
+              "location_id": "A21-08-R-02-01",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 553.5999999999998,
+            "duration": 553.5999999999998,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_2",
+          "priority_rank": 2,
+          "priority_score": 0.9903837592378241,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000009",
+            "T000010",
+            "T000016",
+            "T000028",
+            "T000032",
+            "T000034",
+            "T000035",
+            "T000036",
+            "T000031",
+            "T000013",
+            "T000015",
+            "T000055",
+            "T000056",
+            "T000033",
+            "T000014",
+            "T000054",
+            "T000007",
+            "T000001",
+            "T000002",
+            "T000003",
+            "T000004",
+            "T000005",
+            "T000006",
+            "T000008",
+            "T000011",
+            "T000012"
+          ],
+          "order_ids": [
+            "ORDER-0001",
+            "ORDER-0002",
+            "ORDER-0004",
+            "ORDER-0006"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z01",
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 589.6,
+            "duration": 589.6,
+            "n_zone_crossings": 1
+          },
+          "sequence": [
+            {
+              "task_id": "T000005",
+              "sequence_index": 1,
+              "location_id": "A01-30-L-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000028",
+              "sequence_index": 2,
+              "location_id": "A04-21-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000036",
+              "sequence_index": 3,
+              "location_id": "A05-06-L-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000016",
+              "sequence_index": 4,
+              "location_id": "A05-01-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000006",
+              "sequence_index": 5,
+              "location_id": "A08-10-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000004",
+              "sequence_index": 6,
+              "location_id": "A08-20-L-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000002",
+              "sequence_index": 7,
+              "location_id": "A08-26-R-01-02",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000056",
+              "sequence_index": 8,
+              "location_id": "A08-24-L-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000003",
+              "sequence_index": 9,
+              "location_id": "A08-19-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000001",
+              "sequence_index": 10,
+              "location_id": "A08-04-R-03-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000055",
+              "sequence_index": 11,
+              "location_id": "A10-17-R-01-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000054",
+              "sequence_index": 12,
+              "location_id": "A10-02-R-02-01",
+              "zone_id": "Z01"
+            },
+            {
+              "task_id": "T000015",
+              "sequence_index": 13,
+              "location_id": "A27-20-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000035",
+              "sequence_index": 14,
+              "location_id": "A27-15-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000034",
+              "sequence_index": 15,
+              "location_id": "A26-20-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000032",
+              "sequence_index": 16,
+              "location_id": "A22-05-L-02-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000014",
+              "sequence_index": 17,
+              "location_id": "A22-13-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000012",
+              "sequence_index": 18,
+              "location_id": "A22-22-L-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000033",
+              "sequence_index": 19,
+              "location_id": "A22-21-R-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000031",
+              "sequence_index": 20,
+              "location_id": "A22-20-R-01-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000009",
+              "sequence_index": 21,
+              "location_id": "A22-18-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000011",
+              "sequence_index": 22,
+              "location_id": "A22-17-L-02-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000013",
+              "sequence_index": 23,
+              "location_id": "A22-15-L-01-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000007",
+              "sequence_index": 24,
+              "location_id": "A22-12-R-03-01",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000008",
+              "sequence_index": 25,
+              "location_id": "A22-07-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000010",
+              "sequence_index": 26,
+              "location_id": "A22-04-R-03-01",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 589.6,
+            "duration": 589.6,
+            "n_late_risk_orders": 0
+          }
+        },
+        {
+          "batch_id": "batch_3",
+          "priority_rank": 3,
+          "priority_score": 0.0,
+          "cart_type_id": "CART_LARGE",
+          "task_ids": [
+            "T000029",
+            "T000030"
+          ],
+          "order_ids": [
+            "ORDER-0004"
+          ],
+          "wave_id": "WAVE-001",
+          "zones": [
+            "Z02"
+          ],
+          "route": {
+            "start_node_id": "START_DEPOT",
+            "end_node_id": "PACK_01",
+            "distance": 150.4,
+            "duration": 150.4,
+            "n_zone_crossings": 0
+          },
+          "sequence": [
+            {
+              "task_id": "T000029",
+              "sequence_index": 1,
+              "location_id": "A22-02-L-03-02",
+              "zone_id": "Z02"
+            },
+            {
+              "task_id": "T000030",
+              "sequence_index": 2,
+              "location_id": "A28-06-L-01-02",
+              "zone_id": "Z02"
+            }
+          ],
+          "batch_metrics": {
+            "distance": 150.4,
+            "duration": 150.4,
+            "n_late_risk_orders": 0
+          }
+        }
+      ],
+      "unselected_tasks": [
+        {
+          "task_id": "T000017",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000018",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000019",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000020",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000021",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000022",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000023",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000024",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000025",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000026",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000027",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000037",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000038",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000039",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000040",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000041",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000042",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000043",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000044",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000045",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000046",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000047",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000048",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000049",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000050",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000051",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000052",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000069",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000070",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000071",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000072",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000073",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000074",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000075",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000076",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000077",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000078",
+          "reason_code": "capacity_exceeded"
+        },
+        {
+          "task_id": "T000079",
+          "reason_code": "capacity_exceeded"
+        }
+      ]
+    }
+  ],
+  "error": null
+}

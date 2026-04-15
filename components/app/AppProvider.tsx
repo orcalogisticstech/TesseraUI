@@ -115,6 +115,8 @@ export function AppProvider({
   const [theme, setTheme] = useState<AppTheme>("dark");
   const nextHeartbeatPlanSetIndexRef = useRef(0);
   const activeHeartbeatPlansRef = useRef<HeartbeatPlan[] | null>(null);
+  const runDetailsCacheRef = useRef<Record<string, HeartbeatRunDetails>>({});
+  const inflightRunDetailsRef = useRef<Record<string, Promise<HeartbeatRunDetails> | undefined>>({});
   const setCopilotWidth = useCallback((width: number) => {
     setCopilotWidthState(clampCopilotWidth(width));
   }, []);
@@ -128,54 +130,89 @@ export function AppProvider({
     },
     [focusTab]
   );
-  const loadRunDetails = useCallback(async (run: HeartbeatRunSummary, tabId: WorkspaceTabId) => {
-    try {
-      const query = new URLSearchParams({
-        requestId: run.requestId,
-        tradeoffLabel: run.tradeoffLabel
-      });
-      const response = await fetch(`/api/heartbeat-run-details?${query.toString()}`);
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
+  const getRunCacheKey = useCallback((run: HeartbeatRunSummary) => `${run.requestId}:${run.tradeoffLabel}`, []);
+  const fetchRunDetails = useCallback(
+    async (run: HeartbeatRunSummary) => {
+      const cacheKey = getRunCacheKey(run);
+      const cached = runDetailsCacheRef.current[cacheKey];
+      if (cached) {
+        return cached;
       }
-      const details = (await response.json()) as HeartbeatRunDetails;
-      setRunTabDetails((current) => {
-        const existing = current[tabId];
-        if (!existing) {
-          return current;
+
+      const inflight = inflightRunDetailsRef.current[cacheKey];
+      if (inflight) {
+        return inflight;
+      }
+
+      const promise = (async () => {
+        const query = new URLSearchParams({
+          requestId: run.requestId,
+          tradeoffLabel: run.tradeoffLabel,
+          page: "0",
+          pageSize: "100"
+        });
+        const response = await fetch(`/api/heartbeat-run-details?${query.toString()}`);
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
         }
-        return {
-          ...current,
-          [tabId]: {
-            ...existing,
-            details,
-            loading: false,
-            error: null
-          }
-        };
+        const details = (await response.json()) as HeartbeatRunDetails;
+        runDetailsCacheRef.current[cacheKey] = details;
+        delete inflightRunDetailsRef.current[cacheKey];
+        return details;
+      })().catch((error) => {
+        delete inflightRunDetailsRef.current[cacheKey];
+        throw error;
       });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unable to load run details.";
-      setRunTabDetails((current) => {
-        const existing = current[tabId];
-        if (!existing) {
-          return current;
-        }
-        return {
-          ...current,
-          [tabId]: {
-            ...existing,
-            loading: false,
-            error: message
+
+      inflightRunDetailsRef.current[cacheKey] = promise;
+      return promise;
+    },
+    [getRunCacheKey]
+  );
+  const loadRunDetails = useCallback(
+    async (run: HeartbeatRunSummary, tabId: WorkspaceTabId) => {
+      try {
+        const details = await fetchRunDetails(run);
+        setRunTabDetails((current) => {
+          const existing = current[tabId];
+          if (!existing) {
+            return current;
           }
-        };
-      });
-    }
-  }, []);
+          return {
+            ...current,
+            [tabId]: {
+              ...existing,
+              details,
+              loading: false,
+              error: null
+            }
+          };
+        });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unable to load run details.";
+        setRunTabDetails((current) => {
+          const existing = current[tabId];
+          if (!existing) {
+            return current;
+          }
+          return {
+            ...current,
+            [tabId]: {
+              ...existing,
+              loading: false,
+              error: message
+            }
+          };
+        });
+      }
+    },
+    [fetchRunDetails]
+  );
   const openRunTab = useCallback(
     (run: HeartbeatRunSummary) => {
       const tabId: WorkspaceTabId = `run:${run.runId}`;
       let shouldFetch = false;
+      const cached = runDetailsCacheRef.current[getRunCacheKey(run)] ?? null;
 
       setRunTabDetails((current) => {
         const existing = current[tabId];
@@ -194,18 +231,18 @@ export function AppProvider({
           ...current,
           [tabId]: {
             summary: run,
-            details: null,
-            loading: true,
+            details: cached,
+            loading: cached === null,
             error: null
           }
         };
       });
       focusTab(tabId);
-      if (shouldFetch) {
+      if (shouldFetch || cached === null) {
         void loadRunDetails(run, tabId);
       }
     },
-    [focusTab, loadRunDetails]
+    [focusTab, getRunCacheKey, loadRunDetails]
   );
   const closeTab = useCallback((tabId: WorkspaceTabId) => {
     if (tabId === "decision-feed" || tabId === "history" || tabId === "layout") {
@@ -247,6 +284,20 @@ export function AppProvider({
   useEffect(() => {
     activeHeartbeatPlansRef.current = activeHeartbeatPlans;
   }, [activeHeartbeatPlans]);
+
+  useEffect(() => {
+    if (!activeHeartbeatPlans) {
+      return;
+    }
+
+    for (const plan of activeHeartbeatPlans) {
+      const cacheKey = getRunCacheKey(plan.run);
+      if (runDetailsCacheRef.current[cacheKey] || inflightRunDetailsRef.current[cacheKey]) {
+        continue;
+      }
+      void fetchRunDetails(plan.run);
+    }
+  }, [activeHeartbeatPlans, fetchRunDetails, getRunCacheKey]);
 
   useEffect(() => {
     const savedValue = window.localStorage.getItem(COPILOT_WIDTH_STORAGE_KEY);

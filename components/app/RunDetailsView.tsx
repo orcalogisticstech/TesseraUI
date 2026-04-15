@@ -1,7 +1,7 @@
 "use client";
 
 import { formatTradeoffLabel } from "@/lib/heartbeat-recordings-shared";
-import type { HeartbeatRunDetails, HeartbeatRunSummary } from "@/lib/app-types";
+import type { FlattenedBatchRow, HeartbeatRunDetails, HeartbeatRunSummary } from "@/lib/app-types";
 import { useEffect, useState } from "react";
 
 type RunDetailsViewProps = {
@@ -14,6 +14,46 @@ type RunDetailsViewProps = {
 };
 
 const UNSELECTED_TASKS_PAGE_SIZE = 100;
+type BatchSortKey =
+  | "batchId"
+  | "priorityRank"
+  | "priorityScore"
+  | "cartTypeId"
+  | "waveId"
+  | "routeDistance"
+  | "routeDuration"
+  | "routeCrossings"
+  | "sequenceIndex"
+  | "taskId"
+  | "orderId"
+  | "locationId"
+  | "stopZoneId";
+
+type BatchSortState = {
+  key: BatchSortKey;
+  direction: "asc" | "desc";
+} | null;
+
+const batchColumnDefs: Array<{
+  key?: BatchSortKey;
+  label: string;
+  render: (row: FlattenedBatchRow) => string;
+}> = [
+  { key: "batchId", label: "Batch", render: (row) => row.batchId },
+  { key: "priorityRank", label: "Rank", render: (row) => String(row.priorityRank) },
+  { key: "priorityScore", label: "Priority Score", render: (row) => row.priorityScore.toFixed(2) },
+  { key: "cartTypeId", label: "Cart Type", render: (row) => row.cartTypeId },
+  { key: "waveId", label: "Wave", render: (row) => row.waveId },
+  { label: "Zones", render: (row) => row.zones.join(", ") },
+  { key: "routeDistance", label: "Route Distance", render: (row) => row.routeDistance.toFixed(1) },
+  { key: "routeDuration", label: "Route Duration", render: (row) => formatSeconds(row.routeDuration) },
+  { key: "routeCrossings", label: "Route Crossings", render: (row) => String(row.routeCrossings) },
+  { key: "sequenceIndex", label: "Sequence", render: (row) => (row.sequenceIndex === null ? "" : String(row.sequenceIndex)) },
+  { key: "taskId", label: "Task", render: (row) => row.taskId },
+  { key: "orderId", label: "Order", render: (row) => row.orderId },
+  { key: "locationId", label: "Location", render: (row) => row.locationId },
+  { key: "stopZoneId", label: "Stop Zone", render: (row) => row.stopZoneId }
+];
 
 function formatSeconds(totalSeconds: number) {
   const minutes = Math.floor(totalSeconds / 60);
@@ -43,6 +83,31 @@ function formatIsoTimestamp(value: string) {
     minute: "2-digit",
     second: "2-digit"
   });
+}
+
+function compareBatchRows(left: FlattenedBatchRow, right: FlattenedBatchRow, sortState: BatchSortState) {
+  if (!sortState) {
+    return 0;
+  }
+
+  const multiplier = sortState.direction === "asc" ? 1 : -1;
+  const leftValue = left[sortState.key];
+  const rightValue = right[sortState.key];
+
+  if (typeof leftValue === "number" || typeof rightValue === "number") {
+    const normalizedLeft = typeof leftValue === "number" ? leftValue : Number.NEGATIVE_INFINITY;
+    const normalizedRight = typeof rightValue === "number" ? rightValue : Number.NEGATIVE_INFINITY;
+    return (normalizedLeft - normalizedRight) * multiplier;
+  }
+
+  return String(leftValue).localeCompare(String(rightValue)) * multiplier;
+}
+
+function getSortLabel(columnKey: BatchSortKey, sortState: BatchSortState) {
+  if (!sortState || sortState.key !== columnKey) {
+    return "";
+  }
+  return sortState.direction === "asc" ? " ↑" : " ↓";
 }
 
 function renderSummaryHeader(run: HeartbeatRunSummary) {
@@ -86,10 +151,79 @@ function renderSummaryHeader(run: HeartbeatRunSummary) {
 
 export function RunDetailsView({ runTab }: RunDetailsViewProps) {
   const [taskPage, setTaskPage] = useState(0);
+  const [taskPageRows, setTaskPageRows] = useState(runTab.details?.unselectedTasks ?? []);
+  const [taskPageLoading, setTaskPageLoading] = useState(false);
+  const [taskPageError, setTaskPageError] = useState<string | null>(null);
+  const [batchSearch, setBatchSearch] = useState("");
+  const [zoneFilter, setZoneFilter] = useState("all");
+  const [cartTypeFilter, setCartTypeFilter] = useState("all");
+  const [waveFilter, setWaveFilter] = useState("all");
+  const [batchSort, setBatchSort] = useState<BatchSortState>(null);
 
   useEffect(() => {
     setTaskPage(0);
+    setTaskPageRows(runTab.details?.unselectedTasks ?? []);
+    setTaskPageError(null);
+    setTaskPageLoading(false);
+    setBatchSearch("");
+    setZoneFilter("all");
+    setCartTypeFilter("all");
+    setWaveFilter("all");
+    setBatchSort(null);
   }, [runTab.summary.requestId, runTab.summary.tradeoffLabel]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const run = runTab.details;
+    if (!run) {
+      setTaskPageLoading(false);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const loadTaskPage = async () => {
+      if (taskPage === run.unselectedTaskPage) {
+        setTaskPageRows(run.unselectedTasks);
+        setTaskPageError(null);
+        setTaskPageLoading(false);
+        return;
+      }
+
+      setTaskPageLoading(true);
+      setTaskPageError(null);
+
+      try {
+        const query = new URLSearchParams({
+          requestId: run.requestId,
+          tradeoffLabel: run.tradeoffLabel,
+          page: String(taskPage),
+          pageSize: String(run.unselectedTaskPageSize)
+        });
+        const response = await fetch(`/api/heartbeat-run-details?${query.toString()}`);
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+        const details = (await response.json()) as HeartbeatRunDetails;
+        if (!cancelled) {
+          setTaskPageRows(details.unselectedTasks);
+          setTaskPageLoading(false);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setTaskPageError(error instanceof Error ? error.message : "Unable to load unselected tasks.");
+          setTaskPageLoading(false);
+        }
+      }
+    };
+
+    void loadTaskPage();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [runTab.details, taskPage]);
 
   if (runTab.loading && runTab.details === null) {
     return (
@@ -118,9 +252,44 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
   }
 
   const run = runTab.details;
-  const totalPages = Math.max(1, Math.ceil(run.unselectedTaskCount / UNSELECTED_TASKS_PAGE_SIZE));
-  const startIndex = taskPage * UNSELECTED_TASKS_PAGE_SIZE;
-  const pageTasks = run.unselectedTasks.slice(startIndex, startIndex + UNSELECTED_TASKS_PAGE_SIZE);
+  const zoneOptions = Array.from(new Set(run.flattenedBatchRows.map((row) => row.stopZoneId).filter(Boolean))).sort((left, right) => left.localeCompare(right));
+  const cartTypeOptions = Array.from(new Set(run.flattenedBatchRows.map((row) => row.cartTypeId).filter(Boolean))).sort((left, right) =>
+    left.localeCompare(right)
+  );
+  const waveOptions = Array.from(new Set(run.flattenedBatchRows.map((row) => row.waveId).filter(Boolean))).sort((left, right) => left.localeCompare(right));
+  const normalizedBatchSearch = batchSearch.trim().toLowerCase();
+  const visibleBatchRows = [...run.flattenedBatchRows]
+    .filter((row) => {
+      if (zoneFilter !== "all" && row.stopZoneId !== zoneFilter) {
+        return false;
+      }
+      if (cartTypeFilter !== "all" && row.cartTypeId !== cartTypeFilter) {
+        return false;
+      }
+      if (waveFilter !== "all" && row.waveId !== waveFilter) {
+        return false;
+      }
+      if (!normalizedBatchSearch) {
+        return true;
+      }
+      return [row.batchId, row.taskId, row.orderId].some((value) => value.toLowerCase().includes(normalizedBatchSearch));
+    })
+    .sort((left, right) => compareBatchRows(left, right, batchSort));
+  const filtersActive = normalizedBatchSearch.length > 0 || zoneFilter !== "all" || cartTypeFilter !== "all" || waveFilter !== "all" || batchSort !== null;
+  const totalPages = Math.max(1, Math.ceil(run.unselectedTaskCount / run.unselectedTaskPageSize));
+  const startIndex = taskPage * run.unselectedTaskPageSize;
+
+  const toggleBatchSort = (key: BatchSortKey) => {
+    setBatchSort((current) => {
+      if (!current || current.key !== key) {
+        return { key, direction: "asc" };
+      }
+      if (current.direction === "asc") {
+        return { key, direction: "desc" };
+      }
+      return null;
+    });
+  };
 
   return (
     <div className="mx-auto w-full max-w-[1120px] space-y-4">
@@ -249,45 +418,132 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
 
       <section className="app-card p-4 md:p-6">
         <h2 className="font-display text-lg uppercase tracking-[-0.01em]">Batches</h2>
+        <div className="mt-3 flex flex-wrap items-end gap-3">
+          <label className="min-w-[220px] flex-1">
+            <span className="mb-1 block text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Search IDs
+            </span>
+            <input
+              type="search"
+              value={batchSearch}
+              onChange={(event) => setBatchSearch(event.target.value)}
+              placeholder="Batch, task, or order"
+              className="w-full border px-3 py-2 text-sm outline-none"
+              style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)", color: "var(--tessera-text-primary)" }}
+            />
+          </label>
+          <label>
+            <span className="mb-1 block text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Stop Zone
+            </span>
+            <select
+              value={zoneFilter}
+              onChange={(event) => setZoneFilter(event.target.value)}
+              className="border px-3 py-2 text-sm outline-none"
+              style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)", color: "var(--tessera-text-primary)" }}
+            >
+              <option value="all">All</option>
+              {zoneOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span className="mb-1 block text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Cart Type
+            </span>
+            <select
+              value={cartTypeFilter}
+              onChange={(event) => setCartTypeFilter(event.target.value)}
+              className="border px-3 py-2 text-sm outline-none"
+              style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)", color: "var(--tessera-text-primary)" }}
+            >
+              <option value="all">All</option>
+              {cartTypeOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span className="mb-1 block text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Wave
+            </span>
+            <select
+              value={waveFilter}
+              onChange={(event) => setWaveFilter(event.target.value)}
+              className="border px-3 py-2 text-sm outline-none"
+              style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)", color: "var(--tessera-text-primary)" }}
+            >
+              <option value="all">All</option>
+              {waveOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+          {filtersActive ? (
+            <button
+              type="button"
+              className="btn-secondary px-3 py-2 text-sm"
+              onClick={() => {
+                setBatchSearch("");
+                setZoneFilter("all");
+                setCartTypeFilter("all");
+                setWaveFilter("all");
+                setBatchSort(null);
+              }}
+            >
+              Clear
+            </button>
+          ) : null}
+        </div>
+        <div className="mt-3 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+          {visibleBatchRows.length} visible rows
+        </div>
         <div className="mt-3 overflow-auto border" style={{ borderColor: "var(--tessera-border)" }}>
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr>
-                {[
-                  "Batch",
-                  "Rank",
-                  "Priority Score",
-                  "Cart Type",
-                  "Wave",
-                  "Zones",
-                  "Route Distance",
-                  "Route Duration",
-                  "Route Crossings",
-                  "Tasks",
-                  "Orders"
-                ].map((header) => (
-                  <th key={header} className="border-b px-3 py-2 text-left" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-                    {header}
-                  </th>
-                ))}
+                {batchColumnDefs.map((column) => {
+                  const columnKey = column.key;
+                  return (
+                    <th key={column.label} className="border-b px-3 py-2 text-left" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+                      {columnKey ? (
+                        <button type="button" className="whitespace-nowrap text-left" onClick={() => toggleBatchSort(columnKey)} style={{ color: "inherit" }}>
+                          {column.label}
+                          {getSortLabel(columnKey, batchSort)}
+                        </button>
+                      ) : (
+                        column.label
+                      )}
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
-              {run.batches.map((batch) => (
-                <tr key={batch.batchId}>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.batchId}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.priorityRank}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.priorityScore.toFixed(2)}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.cartTypeId}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.waveId}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.zones.join(", ")}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.route.distance}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{formatSeconds(batch.route.duration)}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.route.nZoneCrossings}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.taskIds.join(", ")}</td>
-                  <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{batch.orderIds.join(", ")}</td>
+              {visibleBatchRows.length === 0 ? (
+                <tr>
+                  <td colSpan={batchColumnDefs.length} className="px-3 py-6 text-center" style={{ color: "var(--tessera-text-secondary)" }}>
+                    No rows match the current search or filters.
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                visibleBatchRows.map((row) => (
+                  <tr key={row.rowId}>
+                    {batchColumnDefs.map((column) => (
+                      <td key={`${row.rowId}:${column.label}`} className="border-b px-3 py-2 whitespace-nowrap" style={{ borderColor: "var(--tessera-border)" }}>
+                        {column.render(row)}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -297,7 +553,7 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
         <h2 className="font-display text-lg uppercase tracking-[-0.01em]">Unselected Tasks</h2>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
           <p>
-            Showing {startIndex + 1}-{Math.min(startIndex + pageTasks.length, run.unselectedTaskCount)} of {run.unselectedTaskCount}
+            Showing {run.unselectedTaskCount === 0 ? 0 : startIndex + 1}-{Math.min(startIndex + taskPageRows.length, run.unselectedTaskCount)} of {run.unselectedTaskCount}
           </p>
           <div className="flex items-center gap-2">
             <button type="button" className="btn-secondary px-3 py-1.5 text-xs" onClick={() => setTaskPage((page) => Math.max(0, page - 1))} disabled={taskPage === 0}>
@@ -316,6 +572,16 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
             </button>
           </div>
         </div>
+        {taskPageLoading ? (
+          <div className="mt-3 text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+            Loading task page...
+          </div>
+        ) : null}
+        {taskPageError ? (
+          <div className="mt-3 text-sm" style={{ color: "var(--tessera-danger)" }}>
+            {taskPageError}
+          </div>
+        ) : null}
         <div className="mt-3 overflow-auto border" style={{ borderColor: "var(--tessera-border)" }}>
           <table className="min-w-full border-collapse text-sm">
             <thead>
@@ -325,7 +591,7 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
               </tr>
             </thead>
             <tbody>
-              {pageTasks.map((task, index) => (
+              {taskPageRows.map((task, index) => (
                 <tr key={`${startIndex + index}-${task.taskId}`}>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{task.taskId}</td>
                   <td className="border-b px-3 py-2" style={{ borderColor: "var(--tessera-border)" }}>{task.reasonCode}</td>
