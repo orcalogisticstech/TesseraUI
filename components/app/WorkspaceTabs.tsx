@@ -6,6 +6,7 @@ import { LayoutView } from "@/components/app/LayoutView";
 import { RunDetailsView } from "@/components/app/RunDetailsView";
 import { SettingsView } from "@/components/app/SettingsView";
 import { useAppState } from "@/components/app/AppProvider";
+import { formatTradeoffLabel } from "@/lib/heartbeat-recordings-shared";
 import type { WorkspaceTabId } from "@/lib/app-types";
 
 const pinnedTabs: WorkspaceTabId[] = ["decision-feed", "history", "layout"];
@@ -33,14 +34,6 @@ function renderTabBody(tabId: WorkspaceTabId) {
   return null;
 }
 
-const strategyLabelMap: Record<string, string> = {
-  primary: "Tess's Choice",
-  minimize_travel: "Minimize Travel",
-  zero_late_risk: "Zero Late Risk",
-  balance_zones: "Balance Zones",
-  maximize_throughput: "Throughput Push"
-};
-
 function truncateLabel(label: string, maxLength: number) {
   if (label.length <= maxLength) {
     return label;
@@ -48,17 +41,20 @@ function truncateLabel(label: string, maxLength: number) {
   return `${label.slice(0, maxLength - 1)}…`;
 }
 
-function getTabLabel(tabId: WorkspaceTabId, runTabDetails: Record<string, { runId: string; postureName: string; tradeoffLabel: string }>) {
+function getTabLabel(
+  tabId: WorkspaceTabId,
+  runTabDetails: Record<string, { summary: { runId: string; tradeoffLabel: string } }>
+) {
   if (tabId in tabMeta) {
     return tabMeta[tabId as keyof typeof tabMeta].label;
   }
 
-  const run = runTabDetails[tabId];
-  if (!run) {
+  const runTab = runTabDetails[tabId];
+  if (!runTab) {
     return "Run";
   }
-  const strategy = strategyLabelMap[run.tradeoffLabel] ?? run.tradeoffLabel.replace(/_/g, " ");
-  return truncateLabel(`${run.runId} - ${strategy}`, 34);
+  const strategy = formatTradeoffLabel(runTab.summary.tradeoffLabel);
+  return truncateLabel(`${runTab.summary.runId} - ${strategy}`, 34);
 }
 
 export function WorkspaceTabBar() {
@@ -122,7 +118,7 @@ export function WorkspaceTabContent() {
 
   return (
     <main className="px-4 pb-4 pt-4 md:px-6 md:pb-6 lg:px-8 lg:pb-8">
-      <section key={activeTab}>{runTab ? <RunDetailsView run={runTab} /> : renderTabBody(activeTab)}</section>
+      <section key={activeTab}>{runTab ? <RunDetailsView runTab={runTab} /> : renderTabBody(activeTab)}</section>
     </main>
   );
 }

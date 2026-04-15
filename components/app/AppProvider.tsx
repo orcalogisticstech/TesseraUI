@@ -9,6 +9,7 @@ import type {
   CopilotMessage,
   DecisionCycle,
   HeartbeatPlan,
+  HeartbeatRunSummary,
   HeartbeatRunDetails,
   PostureConfig,
   SystemMode,
@@ -43,8 +44,16 @@ type AppContextValue = {
   openTab: (tabId: WorkspaceTabId) => void;
   focusTab: (tabId: WorkspaceTabId) => void;
   closeTab: (tabId: WorkspaceTabId) => void;
-  runTabDetails: Record<string, HeartbeatRunDetails>;
-  openRunTab: (run: HeartbeatRunDetails) => void;
+  runTabDetails: Record<
+    string,
+    {
+      summary: HeartbeatRunSummary;
+      details: HeartbeatRunDetails | null;
+      loading: boolean;
+      error: string | null;
+    }
+  >;
+  openRunTab: (run: HeartbeatRunSummary) => void;
   activeHeartbeatPlans: HeartbeatPlan[] | null;
   clearActiveHeartbeatPlans: () => void;
   adoptedPlansHistory: AdoptedPlanHistoryEntry[];
@@ -68,7 +77,15 @@ function clampCopilotWidth(width: number) {
   return Math.min(COPILOT_WIDTH_MAX, Math.max(COPILOT_WIDTH_MIN, width));
 }
 
-export function AppProvider({ children, session }: { children: ReactNode; session: MockSession }) {
+export function AppProvider({
+  children,
+  session,
+  initialHeartbeatPlanSets
+}: {
+  children: ReactNode;
+  session: MockSession;
+  initialHeartbeatPlanSets: HeartbeatPlan[][];
+}) {
   const data = useMemo(() => getAppData(session), [session]);
   const [mode, setMode] = useState<SystemMode>("Advisory");
   const [posture, setPosture] = useState<PostureConfig>(data.posture);
@@ -80,7 +97,17 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
   const [copilotWidth, setCopilotWidthState] = useState<number>(COPILOT_WIDTH_DEFAULT);
   const [openTabs, setOpenTabs] = useState<WorkspaceTabId[]>(["decision-feed", "history", "layout"]);
   const [activeTab, setActiveTab] = useState<WorkspaceTabId>("decision-feed");
-  const [runTabDetails, setRunTabDetails] = useState<Record<string, HeartbeatRunDetails>>({});
+  const [runTabDetails, setRunTabDetails] = useState<
+    Record<
+      string,
+      {
+        summary: HeartbeatRunSummary;
+        details: HeartbeatRunDetails | null;
+        loading: boolean;
+        error: string | null;
+      }
+    >
+  >({});
   const [activeHeartbeatPlans, setActiveHeartbeatPlans] = useState<HeartbeatPlan[] | null>(null);
   const [adoptedPlansHistory, setAdoptedPlansHistory] = useState<AdoptedPlanHistoryEntry[]>([]);
   const [heartbeatRemaining, setHeartbeatRemaining] = useState(HEARTBEAT_INITIAL_SECONDS);
@@ -101,13 +128,84 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
     },
     [focusTab]
   );
+  const loadRunDetails = useCallback(async (run: HeartbeatRunSummary, tabId: WorkspaceTabId) => {
+    try {
+      const query = new URLSearchParams({
+        requestId: run.requestId,
+        tradeoffLabel: run.tradeoffLabel
+      });
+      const response = await fetch(`/api/heartbeat-run-details?${query.toString()}`);
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+      const details = (await response.json()) as HeartbeatRunDetails;
+      setRunTabDetails((current) => {
+        const existing = current[tabId];
+        if (!existing) {
+          return current;
+        }
+        return {
+          ...current,
+          [tabId]: {
+            ...existing,
+            details,
+            loading: false,
+            error: null
+          }
+        };
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to load run details.";
+      setRunTabDetails((current) => {
+        const existing = current[tabId];
+        if (!existing) {
+          return current;
+        }
+        return {
+          ...current,
+          [tabId]: {
+            ...existing,
+            loading: false,
+            error: message
+          }
+        };
+      });
+    }
+  }, []);
   const openRunTab = useCallback(
-    (run: HeartbeatRunDetails) => {
+    (run: HeartbeatRunSummary) => {
       const tabId: WorkspaceTabId = `run:${run.runId}`;
-      setRunTabDetails((current) => ({ ...current, [tabId]: run }));
+      let shouldFetch = false;
+
+      setRunTabDetails((current) => {
+        const existing = current[tabId];
+        if (existing) {
+          shouldFetch = existing.details === null && !existing.loading;
+          return {
+            ...current,
+            [tabId]: {
+              ...existing,
+              summary: run
+            }
+          };
+        }
+        shouldFetch = true;
+        return {
+          ...current,
+          [tabId]: {
+            summary: run,
+            details: null,
+            loading: true,
+            error: null
+          }
+        };
+      });
       focusTab(tabId);
+      if (shouldFetch) {
+        void loadRunDetails(run, tabId);
+      }
     },
-    [focusTab]
+    [focusTab, loadRunDetails]
   );
   const closeTab = useCallback((tabId: WorkspaceTabId) => {
     if (tabId === "decision-feed" || tabId === "history" || tabId === "layout") {
@@ -171,10 +269,10 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       setHeartbeatRemaining((current) => {
         if (current === 0) {
           if (activeHeartbeatPlansRef.current === null) {
-            const totalPlanSets = data.heartbeatPlanSets.length;
+            const totalPlanSets = initialHeartbeatPlanSets.length;
             if (totalPlanSets > 0) {
               const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
-              setActiveHeartbeatPlans(data.heartbeatPlanSets[normalizedIndex]);
+              setActiveHeartbeatPlans(initialHeartbeatPlanSets[normalizedIndex]);
               nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
             }
           }
@@ -185,7 +283,7 @@ export function AppProvider({ children, session }: { children: ReactNode; sessio
       });
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [data.heartbeatPlanSets]);
+  }, [initialHeartbeatPlanSets]);
 
   const value = useMemo(
     () => ({

@@ -2,10 +2,12 @@ import { AppProvider } from "@/components/app/AppProvider";
 import { AppShell } from "@/components/app/AppShell";
 import { BrandWordmark } from "@/components/BrandWordmark";
 import { getMockSession } from "@/lib/mock-auth-server";
+import { getRecordedHeartbeatPlanSets } from "@/lib/server/heartbeat-recordings";
 import type { ReactNode } from "react";
 
 export default async function ProductLayout({ children }: { children: ReactNode }) {
   const session = await getMockSession();
+  const heartbeatPlanSets = getRecordedHeartbeatPlanSets();
 
   return (
     <>
@@ -25,7 +27,7 @@ export default async function ProductLayout({ children }: { children: ReactNode 
 
       <div className="hidden lg:block">
         {session ? (
-          <AppProvider session={session}>
+          <AppProvider session={session} initialHeartbeatPlanSets={heartbeatPlanSets}>
             <AppShell />
           </AppProvider>
         ) : (

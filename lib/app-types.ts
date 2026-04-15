@@ -193,9 +193,43 @@ export type OptimizerUnselectedTask = {
   reasonCode: string;
 };
 
-export type HeartbeatRunDetails = {
+export type HeartbeatRequestContext = {
+  requestId: string;
+  responseId: string;
+  jobId: string;
+  tenantId: string;
+  facilityId: string;
+  requestTimestamp: string;
+  responseTimestamp: string;
+  candidateTaskCount: number;
+  distinctOrderCount: number;
+  weights: {
+    travelTime: number;
+    tardiness: number;
+    zoneBalance: number;
+  };
+  penalties: {
+    zoneCross: number;
+    splitOrder: number;
+    groupingViolation: number;
+  };
+  limits: {
+    maxBatches: number;
+    maxTasksPerZone: number;
+  };
+  availableCarts: Array<{
+    cartTypeId: string;
+    count: number;
+  }>;
+  noGoZones: string[];
+  blockedAisles: string[];
+  blockedTerminals: string[];
+};
+
+export type HeartbeatRunSummary = {
   runId: string;
-  postureName: string;
+  requestId: string;
+  requestLabel: string;
   workflow: "heartbeat" | "replan";
   mode: SystemMode;
   status: "completed" | "failed" | "partial";
@@ -203,9 +237,15 @@ export type HeartbeatRunDetails = {
   computationTime: number;
   solutionId: string;
   tradeoffLabel: string;
+};
+
+export type HeartbeatRunDetails = HeartbeatRunSummary & {
+  responseId: string;
+  requestContext: HeartbeatRequestContext;
   solutionMetrics: OptimizerSolutionMetrics;
   batches: OptimizerBatch[];
   unselectedTasks: OptimizerUnselectedTask[];
+  unselectedTaskCount: number;
 };
 
 export type HeartbeatPlan = {
@@ -214,7 +254,7 @@ export type HeartbeatPlan = {
   isTessChoice: boolean;
   summary: string;
   metrics: HeartbeatPlanMetrics;
-  run: HeartbeatRunDetails;
+  run: HeartbeatRunSummary;
 };
 
 export type AdoptedPlanHistoryEntry = {
@@ -290,7 +330,6 @@ export type AppDataBundle = {
   workPackages: WorkPackage[];
   cycles: DecisionCycle[];
   alternativesByCycle: Record<string, AlternativePlan[]>;
-  heartbeatPlanSets: HeartbeatPlan[][];
   scenarioDefaults: ScenarioConfig;
   settings: TenantSettings;
   users: Array<{ id: string; name: string; email: string; role: UserRole }>;

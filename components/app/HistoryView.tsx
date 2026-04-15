@@ -2,6 +2,7 @@
 
 import { useAppState } from "@/components/app/AppProvider";
 import { BrandTile } from "@/components/BrandTile";
+import { formatTradeoffLabel } from "@/lib/heartbeat-recordings-shared";
 
 function formatAdoptedTimestamp(iso: string) {
   const date = new Date(iso);
@@ -57,14 +58,6 @@ function getThroughputColor(value: number) {
   }
   return "var(--tessera-success)";
 }
-
-const strategyLabelMap: Record<string, string> = {
-  primary: "Tess's Choice",
-  minimize_travel: "Minimize Travel",
-  zero_late_risk: "Zero Late Risk",
-  balance_zones: "Balance Zones",
-  maximize_throughput: "Throughput Push"
-};
 
 export function HistoryView() {
   const { adoptedPlansHistory, openRunTab, setCopilotDraftAttachments, setCopilotOpen, theme } = useAppState();
@@ -151,13 +144,13 @@ export function HistoryView() {
                   </span>
                 ) : (
                   <span className="text-xs" style={{ color: "var(--tessera-text-primary)", border: "1px solid var(--tessera-border)", borderRadius: "0px", padding: "0.28rem 0.55rem" }}>
-                    {strategyLabelMap[entry.plan.run.tradeoffLabel] ?? entry.plan.label}
+                    {formatTradeoffLabel(entry.plan.run.tradeoffLabel)}
                   </span>
                 )}
               </div>
 
               <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-                {entry.plan.run.postureName}
+                {entry.plan.run.requestLabel}
               </p>
 
               <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
