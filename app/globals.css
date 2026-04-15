@@ -14,8 +14,8 @@
   --tessera-danger: #ff3b30;
   --tessera-warning: #ffb020;
   --tessera-success: #34c759;
-  --tessera-radius-card: 12px;
-  --tessera-radius-button: 14px;
+  --tessera-radius-card: 0px;
+  --tessera-radius-button: 0px;
   --tessera-radius-marketing-card: 0px;
   --tessera-radius-marketing-button: 0px;
   --tessera-bg-input: #1a1a2e;
@@ -70,7 +70,9 @@ html {
 }
 
 .btn-primary {
-  @apply rounded-button bg-signal px-4 py-3 font-medium text-[#0B0D10] transition duration-150 hover:brightness-90;
+  @apply bg-signal px-4 py-3 font-medium text-[#0B0D10] transition duration-150 hover:brightness-90;
+  border: 1px solid var(--tessera-accent-signal);
+  border-radius: var(--tessera-radius-button);
 }
 
 .btn-primary-marketing {
@@ -80,8 +82,9 @@ html {
 }
 
 .btn-secondary {
-  @apply rounded-button border px-4 py-3 font-medium transition duration-150;
+  @apply border px-4 py-3 font-medium transition duration-150;
   border-color: var(--tessera-border);
+  border-radius: var(--tessera-radius-button);
 }
 
 .btn-secondary-marketing {
@@ -112,7 +115,7 @@ html {
 .surface-card {
   background: var(--tessera-bg-surface);
   border: 1px solid var(--tessera-border);
-  @apply rounded-card;
+  border-radius: var(--tessera-radius-card);
 }
 
 .marketing-card {

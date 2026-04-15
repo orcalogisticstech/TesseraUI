@@ -10,7 +10,7 @@ export default async function ProductLayout({ children }: { children: ReactNode 
   return (
     <>
       <main className="flex min-h-screen items-center justify-center px-6 py-10 lg:hidden" style={{ background: "var(--tessera-bg-page)" }}>
-        <section className="w-full max-w-[420px] rounded-[14px] border p-6 text-center" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}>
+        <section className="w-full max-w-[420px] border p-6 text-center" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}>
           <div className="mx-auto w-max">
             <BrandWordmark className="relative block h-10 w-[220px] overflow-hidden" />
           </div>

@@ -340,7 +340,7 @@ export function DecisionFeedView() {
               return (
                 <article
                   key={tier}
-                  className="rounded-[12px] border p-3"
+                  className="border p-3"
                   style={{
                     borderColor: "var(--tessera-border)",
                     background: "color-mix(in srgb, var(--tessera-bg-surface) 82%, var(--tessera-bg-page))",
@@ -370,7 +370,7 @@ export function DecisionFeedView() {
                   </p>
                   <div className="mt-3 min-h-[70px] space-y-2">
                     {objectiveTiers[typedTier].length === 0 ? (
-                      <div className="rounded-[10px] border border-dashed px-3 py-2 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+                      <div className="border border-dashed px-3 py-2 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
                         Drop objective here
                       </div>
                     ) : (
@@ -402,7 +402,7 @@ export function DecisionFeedView() {
                               moveObjective(draggedObjective, typedTier, index);
                             }
                           }}
-                          className="flex w-full items-center justify-between rounded-[10px] border px-3 py-2 text-left text-sm"
+                          className="flex w-full items-center justify-between border px-3 py-2 text-left text-sm"
                           style={{
                             borderColor: "var(--tessera-border)",
                             background: "var(--tessera-bg-page)",
@@ -435,7 +435,7 @@ export function DecisionFeedView() {
               <label key={penalty.key} className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
                 {penalty.label}
                 <select
-                  className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                  className="mt-1 block w-full border bg-transparent px-3 py-2 text-sm"
                   style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   disabled={!isConfigEditing}
                   value={penaltyLevels[penalty.key]}
@@ -474,7 +474,7 @@ export function DecisionFeedView() {
                 disabled={!isConfigEditing}
                 value={availableCarts}
                 onChange={(event) => setAvailableCarts(Number(event.target.value))}
-                className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                className="mt-1 block w-full border bg-transparent px-3 py-2 text-sm"
                 style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
               />
             </label>
@@ -487,7 +487,7 @@ export function DecisionFeedView() {
                 disabled={!isConfigEditing}
                 value={maxBatches}
                 onChange={(event) => setMaxBatches(Number(event.target.value))}
-                className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                className="mt-1 block w-full border bg-transparent px-3 py-2 text-sm"
                 style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
               />
             </label>
@@ -500,7 +500,7 @@ export function DecisionFeedView() {
                 disabled={!isConfigEditing}
                 value={maxTasksPerZone}
                 onChange={(event) => setMaxTasksPerZone(Number(event.target.value))}
-                className="mt-1 block w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                className="mt-1 block w-full border bg-transparent px-3 py-2 text-sm"
                 style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
               />
             </label>
@@ -563,7 +563,7 @@ export function DecisionFeedView() {
                       setBlockedLocations((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, locationId: event.target.value } : item)))
                     }
                     placeholder="location_id"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <input
@@ -574,7 +574,7 @@ export function DecisionFeedView() {
                       setBlockedLocations((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
                     }
                     placeholder="reason"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <button
@@ -618,7 +618,7 @@ export function DecisionFeedView() {
                       setBlockedZones((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, zoneId: event.target.value } : item)))
                     }
                     placeholder="zone_id"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <input
@@ -629,7 +629,7 @@ export function DecisionFeedView() {
                       setBlockedZones((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
                     }
                     placeholder="reason"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <button
@@ -673,7 +673,7 @@ export function DecisionFeedView() {
                       setBlockedAisles((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, aisleId: event.target.value } : item)))
                     }
                     placeholder="aisle_id"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <input
@@ -684,7 +684,7 @@ export function DecisionFeedView() {
                       setBlockedAisles((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
                     }
                     placeholder="reason"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <button
@@ -728,7 +728,7 @@ export function DecisionFeedView() {
                       setBlockedTerminals((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, nodeId: event.target.value } : item)))
                     }
                     placeholder="node_id"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <input
@@ -739,7 +739,7 @@ export function DecisionFeedView() {
                       setBlockedTerminals((current) => current.map((item, itemIndex) => (itemIndex === index ? { ...item, reason: event.target.value } : item)))
                     }
                     placeholder="reason"
-                    className="rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                    className="border bg-transparent px-3 py-2 text-sm"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
                   />
                   <button

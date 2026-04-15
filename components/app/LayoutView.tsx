@@ -251,7 +251,7 @@ export function LayoutView() {
         <div className="mt-5 flex flex-wrap items-center gap-2">
           <button
             type="button"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-[10px] border text-sm"
+            className="inline-flex h-8 w-8 items-center justify-center border text-sm"
             style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
             onClick={zoomOut}
             disabled={zoom <= MIN_ZOOM}
@@ -265,7 +265,7 @@ export function LayoutView() {
           </p>
           <button
             type="button"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-[10px] border text-sm"
+            className="inline-flex h-8 w-8 items-center justify-center border text-sm"
             style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-primary)" }}
             onClick={zoomIn}
             disabled={zoom >= MAX_ZOOM}
@@ -276,7 +276,7 @@ export function LayoutView() {
           </button>
           <button
             type="button"
-            className="inline-flex h-8 items-center rounded-[10px] border px-3 text-xs uppercase tracking-[0.08em]"
+            className="inline-flex h-8 items-center border px-3 text-xs uppercase tracking-[0.08em]"
             style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
             onClick={resetView}
           >
@@ -284,7 +284,7 @@ export function LayoutView() {
           </button>
           <button
             type="button"
-            className="inline-flex h-8 items-center rounded-[10px] border px-3 text-xs uppercase tracking-[0.08em]"
+            className="inline-flex h-8 items-center border px-3 text-xs uppercase tracking-[0.08em]"
             style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
             onClick={enableAllTypes}
           >
@@ -292,7 +292,7 @@ export function LayoutView() {
           </button>
           <button
             type="button"
-            className="inline-flex h-8 items-center rounded-[10px] border px-3 text-xs uppercase tracking-[0.08em]"
+            className="inline-flex h-8 items-center border px-3 text-xs uppercase tracking-[0.08em]"
             style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
             onClick={disableAllTypes}
           >
@@ -310,7 +310,7 @@ export function LayoutView() {
                   key={nodeType}
                   type="button"
                   onClick={() => toggleNodeType(nodeType)}
-                  className="inline-flex items-center gap-2 rounded-full border px-3 py-1"
+                  className="inline-flex items-center gap-2 border px-3 py-1"
                   style={{
                     borderColor: active ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
                     color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)",
@@ -320,7 +320,7 @@ export function LayoutView() {
                   aria-pressed={active}
                   title={`Toggle ${nodeType}`}
                 >
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: NODE_TYPE_COLORS[nodeType] ?? DEFAULT_NODE_COLOR }} aria-hidden="true" />
+                  <span className="h-2.5 w-2.5" style={{ background: NODE_TYPE_COLORS[nodeType] ?? DEFAULT_NODE_COLOR }} aria-hidden="true" />
                   {nodeType} ({formatInt(count)})
                 </button>
               );
@@ -329,7 +329,7 @@ export function LayoutView() {
       </section>
 
       <section className="app-card p-2 md:p-3">
-        <div className="relative h-[70vh] rounded-[10px] border" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
+        <div className="relative h-[70vh] border" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
           <div className="h-full overflow-auto" style={{ paddingRight: `${inspectorReserve}px` }}>
             <div
               style={{
@@ -393,7 +393,7 @@ export function LayoutView() {
           </div>
 
           <aside
-            className="absolute top-3 rounded-[10px] border p-3"
+            className="absolute top-3 border p-3"
             style={{
               right: `${INSPECTOR_GUTTER}px`,
               width: `${inspectorWidth}px`,
@@ -410,7 +410,7 @@ export function LayoutView() {
                   </p>
                   <button
                     type="button"
-                    className="rounded-[8px] border px-2 py-1 text-[11px] uppercase tracking-[0.08em]"
+                    className="border px-2 py-1 text-[11px] uppercase tracking-[0.08em]"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
                     onClick={() => setSelectedNodeId(null)}
                   >

@@ -80,7 +80,7 @@ export function WorkspaceTabBar() {
             return (
               <div
                 key={tabId}
-                className="inline-flex items-center gap-2 rounded-[10px] border px-3 py-2"
+                className="inline-flex items-center gap-2 border px-3 py-2"
                 style={{
                   borderColor: active ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
                   background: active ? "color-mix(in srgb, var(--tessera-accent-signal) 14%, transparent)" : "transparent"
@@ -97,7 +97,7 @@ export function WorkspaceTabBar() {
                 {!pinned ? (
                   <button
                     type="button"
-                    className="rounded-full px-1 text-xs"
+                    className="px-1 text-xs"
                     style={{ color: "var(--tessera-text-secondary)" }}
                     onClick={() => closeTab(tabId)}
                     aria-label={`Close ${getTabLabel(tabId, runTabDetails)} tab`}

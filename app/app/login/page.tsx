@@ -62,7 +62,7 @@ export default function LoginPage() {
                 key={option.role}
                 type="button"
                 onClick={() => setSelectedRole(option.role)}
-                className="w-full rounded-card border p-4 text-left transition duration-150"
+                className="w-full border p-4 text-left transition duration-150"
                 style={{
                   borderColor: active ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
                   background: active ? "color-mix(in srgb, var(--tessera-accent-signal) 12%, transparent)" : "transparent"

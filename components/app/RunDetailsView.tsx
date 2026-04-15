@@ -44,7 +44,7 @@ export function RunDetailsView({ run }: RunDetailsViewProps) {
       <section className="app-card p-4 md:p-6">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="font-display text-2xl uppercase tracking-[-0.01em]">Solution Run</h1>
-          <span className="rounded-full border px-3 py-1 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+          <span className="border px-3 py-1 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
             {formatRunStatus(run.status).toUpperCase()}
           </span>
         </div>
@@ -74,7 +74,7 @@ export function RunDetailsView({ run }: RunDetailsViewProps) {
 
       <section className="app-card p-4 md:p-6">
         <h2 className="font-display text-lg uppercase tracking-[-0.01em]">Solution Metrics</h2>
-        <div className="mt-3 overflow-auto rounded-[10px] border" style={{ borderColor: "var(--tessera-border)" }}>
+        <div className="mt-3 overflow-auto border" style={{ borderColor: "var(--tessera-border)" }}>
           <table className="min-w-full border-collapse text-sm">
             <tbody>
               <tr>
@@ -126,7 +126,7 @@ export function RunDetailsView({ run }: RunDetailsViewProps) {
 
       <section className="app-card p-4 md:p-6">
         <h2 className="font-display text-lg uppercase tracking-[-0.01em]">Batches</h2>
-        <div className="mt-3 overflow-auto rounded-[10px] border" style={{ borderColor: "var(--tessera-border)" }}>
+        <div className="mt-3 overflow-auto border" style={{ borderColor: "var(--tessera-border)" }}>
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr>
@@ -172,7 +172,7 @@ export function RunDetailsView({ run }: RunDetailsViewProps) {
 
       <section className="app-card p-4 md:p-6">
         <h2 className="font-display text-lg uppercase tracking-[-0.01em]">Unselected Tasks</h2>
-        <div className="mt-3 overflow-auto rounded-[10px] border" style={{ borderColor: "var(--tessera-border)" }}>
+        <div className="mt-3 overflow-auto border" style={{ borderColor: "var(--tessera-border)" }}>
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr>

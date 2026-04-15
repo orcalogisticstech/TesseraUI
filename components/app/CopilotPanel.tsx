@@ -142,12 +142,12 @@ export function CopilotPanel() {
                     {message.text}
                   </p>
                 ) : (
-                  <div className={`max-w-[90%] rounded-card border p-3 ${message.actor === "operator" ? "ml-auto" : "mr-auto"}`} style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}>
+                  <div className={`max-w-[90%] border p-3 ${message.actor === "operator" ? "ml-auto" : "mr-auto"}`} style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}>
                     <p className="text-sm leading-relaxed">{message.text}</p>
 
                     {message.grounding && (
-                      <p className="mt-2 inline-flex items-center gap-2 rounded-full border px-2 py-1 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-                        <span className="h-2 w-2 rounded-full" style={{ background: "var(--tessera-accent-signal)" }} />
+                      <p className="mt-2 inline-flex items-center gap-2 border px-2 py-1 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+                        <span className="h-2 w-2" style={{ background: "var(--tessera-accent-signal)" }} />
                         Grounded · Cycle {message.grounding.cycleNumber}
                       </p>
                     )}
@@ -155,7 +155,7 @@ export function CopilotPanel() {
                     {message.metricCards && (
                       <div className="mt-3 grid grid-cols-2 gap-2">
                         {message.metricCards.map((card) => (
-                          <div key={card.label} className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                          <div key={card.label} className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                             <p className="text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
                               {card.label}
                             </p>
@@ -172,7 +172,7 @@ export function CopilotPanel() {
                         </Link>
                       )}
                       {message.action && (
-                        <button type="button" className="rounded-button px-3 py-2 text-xs" style={{ border: "1px solid var(--tessera-accent-signal)", color: "var(--tessera-accent-signal)" }} onClick={() => onAction(message.action!.actionId)}>
+                        <button type="button" className="border px-3 py-2 text-xs" style={{ borderColor: "var(--tessera-accent-signal)", color: "var(--tessera-accent-signal)" }} onClick={() => onAction(message.action!.actionId)}>
                           {message.action.label}
                         </button>
                       )}
@@ -187,7 +187,7 @@ export function CopilotPanel() {
             {copilotDraftAttachments.length > 0 ? (
               <div className="mb-3 flex flex-wrap gap-2">
                 {copilotDraftAttachments.map((attachment) => (
-                  <div key={attachment.id} className="inline-flex items-center gap-2 rounded-[10px] border px-3 py-2" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}>
+                  <div key={attachment.id} className="inline-flex items-center gap-2 border px-3 py-2" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}>
                     <div>
                       <p className="text-xs font-medium">{attachment.title}</p>
                       <p className="text-[11px]" style={{ color: "var(--tessera-text-secondary)" }}>
@@ -196,7 +196,7 @@ export function CopilotPanel() {
                     </div>
                     <button
                       type="button"
-                      className="rounded-full px-2 py-1 text-xs"
+                      className="px-2 py-1 text-xs"
                       style={{ color: "var(--tessera-text-secondary)" }}
                       onClick={() => setCopilotDraftAttachments((current) => current.filter((item) => item.id !== attachment.id))}
                       aria-label={`Remove ${attachment.title}`}
@@ -219,7 +219,7 @@ export function CopilotPanel() {
                   }
                 }}
                 placeholder="Ask Tess about this cycle..."
-                className="w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+                className="w-full border bg-transparent px-3 py-2 text-sm"
                 style={{ borderColor: "var(--tessera-border)" }}
               />
               <button type="button" className="btn-primary px-3 py-2" onClick={submitMessage}>

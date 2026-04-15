@@ -14,8 +14,8 @@ export function TopBar() {
   const { mode, setMode, copilotOpen, setCopilotOpen, openTab, heartbeatRemaining, theme, session } = useAppState();
   const router = useRouter();
   const isLightTheme = theme === "light";
-  const topControlClass = "inline-flex h-9 items-center rounded-button border px-3 text-xs font-medium";
-  const iconControlClass = "inline-flex h-9 w-9 items-center justify-center rounded-button border";
+  const topControlClass = "inline-flex h-9 items-center border px-3 text-xs font-medium";
+  const iconControlClass = "inline-flex h-9 w-9 items-center justify-center border";
   const modeSelectStyle =
     mode === "Closed-Loop"
       ? {
@@ -37,7 +37,7 @@ export function TopBar() {
 
   return (
     <header
-      className="border-b backdrop-blur"
+      className="border-b"
       style={{
         borderColor: "var(--tessera-border)",
         background: "var(--tessera-bg-page)"
@@ -82,7 +82,7 @@ export function TopBar() {
             <select
               value={mode}
               onChange={(event) => setMode(event.target.value as typeof mode)}
-              className="h-9 appearance-none rounded-button border bg-transparent pl-3 pr-8 text-xs font-medium"
+              className="h-9 appearance-none border bg-transparent pl-3 pr-8 text-xs font-medium"
               style={modeSelectStyle}
               aria-label="System mode"
             >

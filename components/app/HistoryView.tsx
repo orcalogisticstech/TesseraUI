@@ -123,7 +123,7 @@ export function HistoryView() {
                     border: isLightTheme
                       ? "1px solid color-mix(in srgb, var(--tessera-neutral-support) 55%, var(--tessera-border))"
                       : "1px solid var(--tessera-border)",
-                    borderRadius: "999px",
+                    borderRadius: "0px",
                     padding: "0.35rem 0.6rem"
                   }}
                 >
@@ -143,14 +143,14 @@ export function HistoryView() {
                       border: isLightTheme
                         ? "1px solid color-mix(in srgb, var(--tessera-neutral-support) 65%, var(--tessera-border))"
                         : "1px solid color-mix(in srgb, var(--tessera-accent-signal) 50%, var(--tessera-border))",
-                      borderRadius: "999px",
+                      borderRadius: "0px",
                       padding: "0.28rem 0.55rem"
                     }}
                   >
                     Tess's Choice
                   </span>
                 ) : (
-                  <span className="text-xs" style={{ color: "var(--tessera-text-primary)", border: "1px solid var(--tessera-border)", borderRadius: "999px", padding: "0.28rem 0.55rem" }}>
+                  <span className="text-xs" style={{ color: "var(--tessera-text-primary)", border: "1px solid var(--tessera-border)", borderRadius: "0px", padding: "0.28rem 0.55rem" }}>
                     {strategyLabelMap[entry.plan.run.tradeoffLabel] ?? entry.plan.label}
                   </span>
                 )}
@@ -165,27 +165,27 @@ export function HistoryView() {
               </p>
 
               <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-6">
-                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Late Orders</p>
                   <p className="text-base" style={{ color: getLateOrdersColor(entry.plan.metrics.lateOrders) }}>{entry.plan.metrics.lateOrders}</p>
                 </div>
-                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Selected Tasks</p>
                   <p className="text-base">{entry.plan.metrics.selectedTasks}</p>
                 </div>
-                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Max Zone Load</p>
                   <p className="text-base" style={{ color: getZoneLoadColor(entry.plan.metrics.maxZoneLoad) }}>{entry.plan.metrics.maxZoneLoad}</p>
                 </div>
-                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Zone Crossings</p>
                   <p className="text-base" style={{ color: getZoneCrossingsColor(entry.plan.metrics.zoneCrossings) }}>{entry.plan.metrics.zoneCrossings}</p>
                 </div>
-                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Priority Alignment</p>
                   <p className="text-base" style={{ color: getPriorityAlignmentColor(entry.plan.metrics.priorityAlignment) }}>{Math.round(entry.plan.metrics.priorityAlignment * 100)}%</p>
                 </div>
-                <div className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                <div className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p className="text-[11px] uppercase" style={{ color: "var(--tessera-text-secondary)" }}>Throughput</p>
                   <p className="text-base" style={{ color: getThroughputColor(entry.plan.metrics.throughputPicksPerHour) }}>{entry.plan.metrics.throughputPicksPerHour} picks/hr</p>
                 </div>

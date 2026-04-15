@@ -56,7 +56,7 @@ export function HeartbeatProposalCard({ plans, mode, onAdopt, onViewDetails, onA
         </div>
       </div>
 
-      <div className="overflow-auto rounded-[10px] border" style={{ borderColor: "var(--tessera-border)" }}>
+      <div className="overflow-auto border" style={{ borderColor: "var(--tessera-border)" }}>
         <table className="min-w-full border-collapse text-sm">
           <thead>
             <tr>

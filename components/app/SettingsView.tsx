@@ -37,7 +37,7 @@ export function SettingsView() {
               max={60}
               value={cycleInterval}
               onChange={(event) => setCycleInterval(Number(event.target.value))}
-              className="mt-2 w-full rounded-[10px] border bg-transparent px-3 py-2"
+              className="mt-2 w-full border bg-transparent px-3 py-2"
               style={{ borderColor: "var(--tessera-border)" }}
             />
           </label>
@@ -67,7 +67,7 @@ export function SettingsView() {
             type="text"
             value={locationRegex}
             onChange={(event) => setLocationRegex(event.target.value)}
-            className="mt-2 w-full rounded-[10px] border bg-transparent px-3 py-2"
+            className="mt-2 w-full border bg-transparent px-3 py-2"
             style={{ borderColor: "var(--tessera-border)" }}
           />
         </label>
@@ -86,7 +86,7 @@ export function SettingsView() {
             max={6}
             value={cutoffWindow}
             onChange={(event) => setCutoffWindow(Number(event.target.value))}
-            className="mt-2 w-full rounded-[10px] border bg-transparent px-3 py-2"
+            className="mt-2 w-full border bg-transparent px-3 py-2"
             style={{ borderColor: "var(--tessera-border)" }}
           />
         </label>
@@ -98,7 +98,7 @@ export function SettingsView() {
             max={350}
             value={floorCap}
             onChange={(event) => setFloorCap(Number(event.target.value))}
-            className="mt-2 w-full rounded-[10px] border bg-transparent px-3 py-2"
+            className="mt-2 w-full border bg-transparent px-3 py-2"
             style={{ borderColor: "var(--tessera-border)" }}
           />
         </label>
@@ -122,7 +122,7 @@ export function SettingsView() {
           {session.role === "Admin" ? (
             <div className="mt-3 space-y-2 text-sm">
               {data.users.map((user) => (
-                <div key={user.id} className="rounded-[10px] border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                <div key={user.id} className="border p-2" style={{ borderColor: "var(--tessera-border)" }}>
                   <p>{user.name}</p>
                   <p style={{ color: "var(--tessera-text-secondary)" }}>{user.email} · {user.role}</p>
                 </div>

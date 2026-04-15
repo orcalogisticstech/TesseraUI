@@ -30,9 +30,9 @@ const config: Config = {
         success: "#34C759"
       },
       borderRadius: {
-        card: "16px",
-        appCard: "12px",
-        button: "14px",
+        card: "0px",
+        appCard: "0px",
+        button: "0px",
         marketingCard: "0px",
         marketingButton: "0px"
       },

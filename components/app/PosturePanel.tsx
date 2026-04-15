@@ -94,7 +94,7 @@ export function PosturePanel() {
                 />
               </label>
             ))}
-            <p className="rounded-[10px] border p-3 text-sm" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+            <p className="border p-3 text-sm" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
               {objectiveSummary(posture.weights)}
             </p>
           </section>
@@ -102,13 +102,13 @@ export function PosturePanel() {
           <section className="app-card space-y-3 p-4">
             <h3 className="font-display text-lg uppercase">Zone Constraints</h3>
             {posture.zones.map((zone, index) => (
-              <div key={zone.zoneId} className="rounded-[10px] border p-3" style={{ borderColor: "var(--tessera-border)" }}>
+              <div key={zone.zoneId} className="border p-3" style={{ borderColor: "var(--tessera-border)" }}>
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-medium">{zone.zoneName}</p>
                   <select
                     value={zone.status}
                     onChange={(event) => updateZone(index, { status: event.target.value as ZoneStatus })}
-                    className="rounded-[8px] border bg-transparent px-2 py-1 text-xs"
+                    className="border bg-transparent px-2 py-1 text-xs"
                     style={{ borderColor: "var(--tessera-border)" }}
                   >
                     <option>Active</option>
@@ -132,7 +132,7 @@ export function PosturePanel() {
                   value={zone.reason}
                   onChange={(event) => updateZone(index, { reason: event.target.value })}
                   placeholder="Reason"
-                  className="mt-2 w-full rounded-[8px] border bg-transparent px-2 py-1 text-xs"
+                  className="mt-2 w-full border bg-transparent px-2 py-1 text-xs"
                   style={{ borderColor: "var(--tessera-border)" }}
                 />
               </div>
@@ -151,7 +151,7 @@ export function PosturePanel() {
             <select
               value={posture.horizon}
               onChange={(event) => setPosture({ ...posture, horizon: event.target.value as TimeHorizon })}
-              className="w-full rounded-[10px] border bg-transparent px-3 py-2 text-sm"
+              className="w-full border bg-transparent px-3 py-2 text-sm"
               style={{ borderColor: "var(--tessera-border)" }}
             >
               <option>This shift</option>
