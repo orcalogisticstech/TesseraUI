@@ -54,6 +54,19 @@ type AppContextValue = {
     }
   >;
   openRunTab: (run: HeartbeatRunSummary) => void;
+  layoutOverlayTabDetails: Record<
+    string,
+    {
+      summary: HeartbeatRunSummary;
+      details: HeartbeatRunDetails | null;
+      loading: boolean;
+      error: string | null;
+      selectedBatchIds: string[];
+      selectionInitialized: boolean;
+    }
+  >;
+  openLayoutOverlayTab: (run: HeartbeatRunSummary) => void;
+  setLayoutOverlayTabSelectedBatchIds: (tabId: WorkspaceTabId, batchIds: string[]) => void;
   activeHeartbeatPlans: HeartbeatPlan[] | null;
   clearActiveHeartbeatPlans: () => void;
   triggerNextHeartbeat: () => void;
@@ -106,6 +119,19 @@ export function AppProvider({
         details: HeartbeatRunDetails | null;
         loading: boolean;
         error: string | null;
+      }
+    >
+  >({});
+  const [layoutOverlayTabDetails, setLayoutOverlayTabDetails] = useState<
+    Record<
+      string,
+      {
+        summary: HeartbeatRunSummary;
+        details: HeartbeatRunDetails | null;
+        loading: boolean;
+        error: string | null;
+        selectedBatchIds: string[];
+        selectionInitialized: boolean;
       }
     >
   >({});
@@ -209,6 +235,49 @@ export function AppProvider({
     },
     [fetchRunDetails]
   );
+  const loadLayoutOverlayDetails = useCallback(
+    async (run: HeartbeatRunSummary, tabId: WorkspaceTabId) => {
+      try {
+        const details = await fetchRunDetails(run);
+        setLayoutOverlayTabDetails((current) => {
+          const existing = current[tabId];
+          if (!existing) {
+            return current;
+          }
+          const validSelected = existing.selectedBatchIds.filter((batchId) => details.batches.some((batch) => batch.batchId === batchId));
+          const shouldInitializeSelection = !existing.selectionInitialized;
+          return {
+            ...current,
+            [tabId]: {
+              ...existing,
+              details,
+              loading: false,
+              error: null,
+              selectedBatchIds: shouldInitializeSelection ? details.batches.map((batch) => batch.batchId) : validSelected,
+              selectionInitialized: true
+            }
+          };
+        });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unable to load run details.";
+        setLayoutOverlayTabDetails((current) => {
+          const existing = current[tabId];
+          if (!existing) {
+            return current;
+          }
+          return {
+            ...current,
+            [tabId]: {
+              ...existing,
+              loading: false,
+              error: message
+            }
+          };
+        });
+      }
+    },
+    [fetchRunDetails]
+  );
   const openRunTab = useCallback(
     (run: HeartbeatRunSummary) => {
       const tabId: WorkspaceTabId = `run:${run.runId}`;
@@ -245,6 +314,63 @@ export function AppProvider({
     },
     [focusTab, getRunCacheKey, loadRunDetails]
   );
+  const openLayoutOverlayTab = useCallback(
+    (run: HeartbeatRunSummary) => {
+      const tabId: WorkspaceTabId = `layout-overlay:${run.runId}`;
+      let shouldFetch = false;
+      const cached = runDetailsCacheRef.current[getRunCacheKey(run)] ?? null;
+
+      setLayoutOverlayTabDetails((current) => {
+        const existing = current[tabId];
+        if (existing) {
+          shouldFetch = existing.details === null && !existing.loading;
+          return {
+            ...current,
+            [tabId]: {
+              ...existing,
+              summary: run
+            }
+          };
+        }
+
+        shouldFetch = true;
+        return {
+          ...current,
+          [tabId]: {
+            summary: run,
+            details: cached,
+            loading: cached === null,
+            error: null,
+            selectedBatchIds: cached ? cached.batches.map((batch) => batch.batchId) : [],
+            selectionInitialized: cached !== null
+          }
+        };
+      });
+
+      focusTab(tabId);
+      if (shouldFetch || cached === null) {
+        void loadLayoutOverlayDetails(run, tabId);
+      }
+    },
+    [focusTab, getRunCacheKey, loadLayoutOverlayDetails]
+  );
+  const setLayoutOverlayTabSelectedBatchIds = useCallback((tabId: WorkspaceTabId, batchIds: string[]) => {
+    setLayoutOverlayTabDetails((current) => {
+      const existing = current[tabId];
+      if (!existing) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [tabId]: {
+          ...existing,
+          selectedBatchIds: [...batchIds],
+          selectionInitialized: true
+        }
+      };
+    });
+  }, []);
   const closeTab = useCallback((tabId: WorkspaceTabId) => {
     if (tabId === "decision-feed" || tabId === "history" || tabId === "layout") {
       return;
@@ -261,6 +387,13 @@ export function AppProvider({
 
     if (tabId.startsWith("run:")) {
       setRunTabDetails((current) => {
+        const next = { ...current };
+        delete next[tabId];
+        return next;
+      });
+    }
+    if (tabId.startsWith("layout-overlay:")) {
+      setLayoutOverlayTabDetails((current) => {
         const next = { ...current };
         delete next[tabId];
         return next;
@@ -369,6 +502,9 @@ export function AppProvider({
       closeTab,
       runTabDetails,
       openRunTab,
+      layoutOverlayTabDetails,
+      openLayoutOverlayTab,
+      setLayoutOverlayTabSelectedBatchIds,
       activeHeartbeatPlans,
       clearActiveHeartbeatPlans,
       triggerNextHeartbeat,
@@ -398,6 +534,9 @@ export function AppProvider({
       closeTab,
       runTabDetails,
       openRunTab,
+      layoutOverlayTabDetails,
+      openLayoutOverlayTab,
+      setLayoutOverlayTabSelectedBatchIds,
       activeHeartbeatPlans,
       clearActiveHeartbeatPlans,
       triggerNextHeartbeat,

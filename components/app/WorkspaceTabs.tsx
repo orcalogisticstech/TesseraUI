@@ -3,6 +3,7 @@
 import { DecisionFeedView } from "@/components/app/DecisionFeedView";
 import { HistoryView } from "@/components/app/HistoryView";
 import { LayoutView } from "@/components/app/LayoutView";
+import { LayoutOverlayView } from "@/components/app/LayoutOverlayView";
 import { RunDetailsView } from "@/components/app/RunDetailsView";
 import { SettingsView } from "@/components/app/SettingsView";
 import { useAppState } from "@/components/app/AppProvider";
@@ -43,7 +44,8 @@ function truncateLabel(label: string, maxLength: number) {
 
 function getTabLabel(
   tabId: WorkspaceTabId,
-  runTabDetails: Record<string, { summary: { runId: string; tradeoffLabel: string } }>
+  runTabDetails: Record<string, { summary: { runId: string; tradeoffLabel: string } }>,
+  layoutOverlayTabDetails: Record<string, { summary: { runId: string } }>
 ) {
   if (tabId in tabMeta) {
     return tabMeta[tabId as keyof typeof tabMeta].label;
@@ -51,14 +53,18 @@ function getTabLabel(
 
   const runTab = runTabDetails[tabId];
   if (!runTab) {
-    return "Run";
+    const overlayTab = layoutOverlayTabDetails[tabId];
+    if (overlayTab) {
+      return truncateLabel(`${overlayTab.summary.runId} - Layout`, 34);
+    }
+    return "Tab";
   }
   const strategy = formatTradeoffLabel(runTab.summary.tradeoffLabel);
   return truncateLabel(`${runTab.summary.runId} - ${strategy}`, 34);
 }
 
 export function WorkspaceTabBar() {
-  const { openTabs, activeTab, focusTab, closeTab, runTabDetails } = useAppState();
+  const { openTabs, activeTab, focusTab, closeTab, runTabDetails, layoutOverlayTabDetails } = useAppState();
 
   return (
     <section
@@ -88,7 +94,7 @@ export function WorkspaceTabBar() {
                   style={{ color: active ? "var(--tessera-text-primary)" : "var(--tessera-text-secondary)" }}
                     onClick={() => focusTab(tabId)}
                   >
-                    {getTabLabel(tabId, runTabDetails)}
+                    {getTabLabel(tabId, runTabDetails, layoutOverlayTabDetails)}
                   </button>
                 {!pinned ? (
                   <button
@@ -96,8 +102,8 @@ export function WorkspaceTabBar() {
                     className="px-1 text-xs"
                     style={{ color: "var(--tessera-text-secondary)" }}
                     onClick={() => closeTab(tabId)}
-                    aria-label={`Close ${getTabLabel(tabId, runTabDetails)} tab`}
-                    title={`Close ${getTabLabel(tabId, runTabDetails)}`}
+                    aria-label={`Close ${getTabLabel(tabId, runTabDetails, layoutOverlayTabDetails)} tab`}
+                    title={`Close ${getTabLabel(tabId, runTabDetails, layoutOverlayTabDetails)}`}
                   >
                     x
                   </button>
@@ -112,13 +118,20 @@ export function WorkspaceTabBar() {
 }
 
 export function WorkspaceTabContent() {
-  const { activeTab, runTabDetails } = useAppState();
+  const { activeTab, runTabDetails, layoutOverlayTabDetails, setLayoutOverlayTabSelectedBatchIds } = useAppState();
 
   const runTab = activeTab.startsWith("run:") ? runTabDetails[activeTab] : null;
+  const overlayTab = activeTab.startsWith("layout-overlay:") ? layoutOverlayTabDetails[activeTab] : null;
 
   return (
     <main className="px-4 pb-4 pt-4 md:px-6 md:pb-6 lg:px-8 lg:pb-8">
-      <section key={activeTab}>{runTab ? <RunDetailsView runTab={runTab} /> : renderTabBody(activeTab)}</section>
+      <section key={activeTab}>
+        {runTab ? <RunDetailsView runTab={runTab} /> : null}
+        {overlayTab ? (
+          <LayoutOverlayView tabId={activeTab} runTab={overlayTab} onSelectedBatchIdsChange={setLayoutOverlayTabSelectedBatchIds} />
+        ) : null}
+        {!runTab && !overlayTab ? renderTabBody(activeTab) : null}
+      </section>
     </main>
   );
 }

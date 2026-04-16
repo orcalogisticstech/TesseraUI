@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppState } from "@/components/app/AppProvider";
 import { formatTradeoffLabel } from "@/lib/heartbeat-recordings-shared";
 import { formatFloatCompact, formatPercentFromRatio, formatRatio } from "@/lib/number-format";
 import type { FlattenedBatchRow, HeartbeatRunDetails, HeartbeatRunSummary } from "@/lib/app-types";
@@ -148,14 +149,19 @@ function SectionHeader({
   );
 }
 
-function renderSummaryHeader(run: HeartbeatRunSummary) {
+function renderSummaryHeader(run: HeartbeatRunSummary, onViewInLayout: () => void) {
   return (
     <section className="app-card p-4 md:p-6">
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="font-display text-2xl uppercase tracking-[-0.01em]">Solution Run</h1>
-        <span className="border px-3 py-1 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
-          {formatRunStatus(run.status).toUpperCase()}
-        </span>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-display text-2xl uppercase tracking-[-0.01em]">Solution Run</h1>
+          <span className="border px-3 py-1 text-xs" style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}>
+            {formatRunStatus(run.status).toUpperCase()}
+          </span>
+        </div>
+        <button type="button" className="btn-secondary px-3 py-2 text-xs uppercase tracking-[0.08em]" onClick={onViewInLayout}>
+          View in Layout
+        </button>
       </div>
       <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <div>
@@ -188,6 +194,7 @@ function renderSummaryHeader(run: HeartbeatRunSummary) {
 }
 
 export function RunDetailsView({ runTab }: RunDetailsViewProps) {
+  const { openLayoutOverlayTab } = useAppState();
   const [taskPage, setTaskPage] = useState(0);
   const [taskPageRows, setTaskPageRows] = useState(runTab.details?.unselectedTasks ?? []);
   const [taskPageLoading, setTaskPageLoading] = useState(false);
@@ -265,10 +272,14 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
     };
   }, [runTab.details, taskPage]);
 
+  const openLayoutOverlay = () => {
+    openLayoutOverlayTab(runTab.summary);
+  };
+
   if (runTab.loading && runTab.details === null) {
     return (
       <div className="mx-auto w-full max-w-[1120px] space-y-4">
-        {renderSummaryHeader(runTab.summary)}
+        {renderSummaryHeader(runTab.summary, openLayoutOverlay)}
         <section className="app-card p-4 md:p-6" style={{ color: "var(--tessera-text-secondary)" }}>
           Loading recorded request and solution details...
         </section>
@@ -279,7 +290,7 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
   if (runTab.error && runTab.details === null) {
     return (
       <div className="mx-auto w-full max-w-[1120px] space-y-4">
-        {renderSummaryHeader(runTab.summary)}
+        {renderSummaryHeader(runTab.summary, openLayoutOverlay)}
         <section className="app-card p-4 md:p-6" style={{ color: "var(--tessera-danger)" }}>
           {runTab.error}
         </section>
@@ -340,7 +351,7 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
 
   return (
     <div className="mx-auto w-full max-w-[1120px] space-y-4">
-      {renderSummaryHeader(run)}
+      {renderSummaryHeader(run, openLayoutOverlay)}
 
       <section className="app-card p-4 md:p-6">
         <SectionHeader title="Request Context" collapsed={collapsedSections.requestContext} onToggle={() => toggleSection("requestContext")} />
