@@ -32,11 +32,20 @@ export type LayoutGraphData = {
   edges: Array<{ source: string; target: string }>;
 };
 
+export type LayoutOverlayStop = {
+  nodeId: string;
+  taskId: string;
+  sequenceIndex: number;
+  locationId: string;
+  zoneId: string;
+};
+
 export type LayoutOverlayBatch = {
   batchId: string;
   color: string;
   edgePairs: Array<{ sourceId: string; targetId: string }>;
   stopNodeIds: string[];
+  stops: LayoutOverlayStop[];
   startNodeId: string | null;
   endNodeId: string | null;
 };

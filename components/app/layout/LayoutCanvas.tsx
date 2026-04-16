@@ -5,7 +5,8 @@ import {
   DEFAULT_NODE_COLOR,
   NODE_TYPE_COLORS,
   type LayoutGraphData,
-  type LayoutOverlayBatch
+  type LayoutOverlayBatch,
+  type LayoutOverlayStop
 } from "@/components/app/layout/layout-types";
 import { useEffect, useMemo, useState } from "react";
 
@@ -28,6 +29,13 @@ function formatNullable(value: string | number | null) {
   return String(value);
 }
 
+type SelectedStop = {
+  batchId: string;
+  nodeId: string;
+  color: string;
+  stops: LayoutOverlayStop[];
+};
+
 type LayoutCanvasProps = {
   title: string;
   data: LayoutGraphData;
@@ -40,6 +48,7 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const [enabledNodeTypes, setEnabledNodeTypes] = useState<Set<string>>(new Set());
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [selectedStop, setSelectedStop] = useState<SelectedStop | null>(null);
 
   const geometry = useMemo(() => {
     const width = data.bounds.maxX - data.bounds.minX + PADDING * 2;
@@ -99,6 +108,7 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
     setZoom(DEFAULT_ZOOM);
     setEnabledNodeTypes(new Set(nodeTypes));
     setSelectedNodeId(null);
+    setSelectedStop(null);
   };
 
   const enableAllTypes = () => {
@@ -127,6 +137,11 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
 
   const zoomIn = () => {
     setZoom((current) => Math.min(MAX_ZOOM, Number((current + ZOOM_STEP).toFixed(2))));
+  };
+
+  const clearSelection = () => {
+    setSelectedNodeId(null);
+    setSelectedStop(null);
   };
 
   return (
@@ -248,7 +263,7 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                 className="block h-auto w-full"
                 viewBox={`0 0 ${geometry.width} ${geometry.height}`}
                 preserveAspectRatio="xMidYMid meet"
-                onClick={() => setSelectedNodeId(null)}
+                onClick={clearSelection}
               >
                 <g data-layer="base-edges">
                   {data.edges.map((edge, index) => {
@@ -286,6 +301,7 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                       style={{ cursor: "pointer" }}
                       onClick={(event) => {
                         event.stopPropagation();
+                        setSelectedStop(null);
                         setSelectedNodeId((current) => (current === node.id ? null : node.id));
                       }}
                     />
@@ -323,16 +339,28 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                       if (!node) {
                         return null;
                       }
+                      const isSelected = selectedStop?.batchId === batch.batchId && selectedStop?.nodeId === stopNodeId;
+                      const stopsAtNode = batch.stops.filter((s) => s.nodeId === stopNodeId);
                       return (
                         <circle
                           key={`${batch.batchId}:stop:${stopNodeId}:${stopIndex}`}
                           cx={geometry.toSvgX(node.x)}
                           cy={geometry.toSvgY(node.y)}
-                          r={0.28}
+                          r={isSelected ? 0.38 : 0.28}
                           fill={batch.color}
-                          stroke="#222222"
-                          strokeWidth={0.05}
+                          stroke={isSelected ? "#ffffff" : "#222222"}
+                          strokeWidth={isSelected ? 0.1 : 0.05}
                           fillOpacity={0.98}
+                          style={{ cursor: "pointer" }}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            setSelectedNodeId(null);
+                            setSelectedStop((current) =>
+                              current?.batchId === batch.batchId && current?.nodeId === stopNodeId
+                                ? null
+                                : { batchId: batch.batchId, nodeId: stopNodeId, color: batch.color, stops: stopsAtNode }
+                            );
+                          }}
                         />
                       );
                     })
@@ -408,7 +436,7 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                     type="button"
                     className="border px-2 py-1 text-[11px] uppercase tracking-[0.08em]"
                     style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
-                    onClick={() => setSelectedNodeId(null)}
+                    onClick={clearSelection}
                   >
                     Clear
                   </button>
@@ -440,9 +468,61 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                   <dd>{`(${selectedNode.x.toFixed(2)}, ${selectedNode.y.toFixed(2)}, ${selectedNode.z?.toFixed(2) ?? "-"})`}</dd>
                 </dl>
               </>
+            ) : selectedStop ? (
+              <>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-block h-2.5 w-2.5 shrink-0" style={{ background: selectedStop.color }} />
+                    <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                      Stop Inspector
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="border px-2 py-1 text-[11px] uppercase tracking-[0.08em]"
+                    style={{ borderColor: "var(--tessera-border)", color: "var(--tessera-text-secondary)" }}
+                    onClick={clearSelection}
+                  >
+                    Clear
+                  </button>
+                </div>
+                <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Batch</dt>
+                  <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>
+                    {selectedStop.batchId}
+                  </dd>
+                  <dt style={{ color: "var(--tessera-text-secondary)" }}>Node ID</dt>
+                  <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>
+                    {selectedStop.nodeId}
+                  </dd>
+                </dl>
+                <div className="mt-3 space-y-2">
+                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                    Tasks ({selectedStop.stops.length})
+                  </p>
+                  {selectedStop.stops.map((stop, index) => (
+                    <dl
+                      key={`${stop.taskId}-${index}`}
+                      className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 border p-2 text-xs"
+                      style={{ borderColor: "var(--tessera-border)" }}
+                    >
+                      <dt style={{ color: "var(--tessera-text-secondary)" }}>Task ID</dt>
+                      <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>
+                        {stop.taskId}
+                      </dd>
+                      <dt style={{ color: "var(--tessera-text-secondary)" }}>Seq #</dt>
+                      <dd>{stop.sequenceIndex + 1}</dd>
+                      <dt style={{ color: "var(--tessera-text-secondary)" }}>Location</dt>
+                      <dd className="font-code">{stop.locationId}</dd>
+                      <dt style={{ color: "var(--tessera-text-secondary)" }}>Zone</dt>
+                      <dd>{stop.zoneId}</dd>
+                    </dl>
+                  ))}
+                </div>
+              </>
             ) : (
               <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-                Select a node to inspect.
+                Select a node or stop to inspect.
               </p>
             )}
           </aside>

@@ -5,7 +5,8 @@ import {
   DEFAULT_NODE_COLOR,
   NODE_TYPE_COLORS,
   type LayoutGraphData,
-  type LayoutOverlayBatch
+  type LayoutOverlayBatch,
+  type LayoutOverlayStop
 } from "@/components/app/layout/layout-types";
 import { useLayoutGraphData } from "@/components/app/layout/useLayoutGraphData";
 import type { HeartbeatRunDetails, WorkspaceTabId } from "@/lib/app-types";
@@ -165,6 +166,7 @@ function resolveBatchOverlay({
 
   const overlayBatches: LayoutOverlayBatch[] = selectedBatches.map((batch) => {
     const mappedStops: string[] = [];
+    const stops: LayoutOverlayStop[] = [];
     for (const stop of batch.sequence) {
       const mappedNodeId = locationToNodeId.get(stop.locationId) ?? (nodeById.has(stop.locationId) ? stop.locationId : null);
       if (!mappedNodeId) {
@@ -172,6 +174,7 @@ function resolveBatchOverlay({
         continue;
       }
       mappedStops.push(mappedNodeId);
+      stops.push({ nodeId: mappedNodeId, taskId: stop.taskId, sequenceIndex: stop.sequenceIndex, locationId: stop.locationId, zoneId: stop.zoneId });
     }
 
     const startNodeId = batch.route.startNodeId && nodeById.has(batch.route.startNodeId) ? batch.route.startNodeId : null;
@@ -205,6 +208,7 @@ function resolveBatchOverlay({
       color: colorByBatchId.get(batch.batchId) ?? "#1f77b4",
       edgePairs,
       stopNodeIds: mappedStops,
+      stops,
       startNodeId,
       endNodeId
     };
@@ -291,7 +295,7 @@ export function LayoutOverlayView({ tabId, runTab, onSelectedBatchIdsChange }: L
         : null;
 
   return (
-    <div className="mx-auto w-full max-w-[1220px] space-y-4">
+    <div className="mx-auto w-full max-w-[1180px] space-y-4">
       <section className="app-card p-4 md:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="font-display text-2xl uppercase tracking-[-0.01em]">Layout Overlay</h1>
@@ -462,7 +466,7 @@ export function LayoutOverlayView({ tabId, runTab, onSelectedBatchIdsChange }: L
       ) : null}
 
       {!renderError && !isLoading && layoutData ? (
-        <LayoutCanvas title="Layout Overlay" data={layoutData} overlayBatches={overlayBatches} canvasNotice={overlayEmptyMessage} />
+        <LayoutCanvas title={layoutData.metadata.layout_version} data={layoutData} overlayBatches={overlayBatches} canvasNotice={overlayEmptyMessage} />
       ) : null}
     </div>
   );
