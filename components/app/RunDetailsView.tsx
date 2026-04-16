@@ -149,7 +149,7 @@ function SectionHeader({
   );
 }
 
-function renderSummaryHeader(run: HeartbeatRunSummary, onViewInLayout: () => void) {
+function renderSummaryHeader(run: HeartbeatRunSummary, onViewInLayout: () => void, onAskTess: () => void) {
   return (
     <section className="app-card p-4 md:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -159,9 +159,14 @@ function renderSummaryHeader(run: HeartbeatRunSummary, onViewInLayout: () => voi
             {formatRunStatus(run.status).toUpperCase()}
           </span>
         </div>
-        <button type="button" className="btn-secondary px-3 py-2 text-xs uppercase tracking-[0.08em]" onClick={onViewInLayout}>
-          View in Layout
-        </button>
+        <div className="flex flex-row gap-2">
+          <button type="button" className="btn-secondary px-3 py-2 text-xs uppercase tracking-[0.08em]" onClick={onViewInLayout}>
+            View in Layout
+          </button>
+          <button type="button" className="btn-secondary px-3 py-2 text-xs uppercase tracking-[0.08em]" onClick={onAskTess}>
+            Ask TESS
+          </button>
+        </div>
       </div>
       <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <div>
@@ -194,7 +199,7 @@ function renderSummaryHeader(run: HeartbeatRunSummary, onViewInLayout: () => voi
 }
 
 export function RunDetailsView({ runTab }: RunDetailsViewProps) {
-  const { openLayoutOverlayTab } = useAppState();
+  const { openLayoutOverlayTab, setCopilotDraftAttachments, setCopilotOpen } = useAppState();
   const [taskPage, setTaskPage] = useState(0);
   const [taskPageRows, setTaskPageRows] = useState(runTab.details?.unselectedTasks ?? []);
   const [taskPageLoading, setTaskPageLoading] = useState(false);
@@ -276,10 +281,29 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
     openLayoutOverlayTab(runTab.summary);
   };
 
+  const askTess = () => {
+    setCopilotDraftAttachments((current) => {
+      const attachmentId = `run-${runTab.summary.runId}-${runTab.summary.tradeoffLabel}`;
+      if (current.some((item) => item.id === attachmentId)) {
+        return current;
+      }
+      return [
+        ...current,
+        {
+          id: attachmentId,
+          type: "heartbeat-plan" as const,
+          title: `${runTab.summary.runId} - ${formatTradeoffLabel(runTab.summary.tradeoffLabel)}`,
+          subtitle: "Solution run"
+        }
+      ];
+    });
+    setCopilotOpen(true);
+  };
+
   if (runTab.loading && runTab.details === null) {
     return (
       <div className="mx-auto w-full max-w-[1120px] space-y-4">
-        {renderSummaryHeader(runTab.summary, openLayoutOverlay)}
+        {renderSummaryHeader(runTab.summary, openLayoutOverlay, askTess)}
         <section className="app-card p-4 md:p-6" style={{ color: "var(--tessera-text-secondary)" }}>
           Loading recorded request and solution details...
         </section>
@@ -290,7 +314,7 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
   if (runTab.error && runTab.details === null) {
     return (
       <div className="mx-auto w-full max-w-[1120px] space-y-4">
-        {renderSummaryHeader(runTab.summary, openLayoutOverlay)}
+        {renderSummaryHeader(runTab.summary, openLayoutOverlay, askTess)}
         <section className="app-card p-4 md:p-6" style={{ color: "var(--tessera-danger)" }}>
           {runTab.error}
         </section>
@@ -351,7 +375,7 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
 
   return (
     <div className="mx-auto w-full max-w-[1120px] space-y-4">
-      {renderSummaryHeader(run, openLayoutOverlay)}
+      {renderSummaryHeader(run, openLayoutOverlay, askTess)}
 
       <section className="app-card p-4 md:p-6">
         <SectionHeader title="Request Context" collapsed={collapsedSections.requestContext} onToggle={() => toggleSection("requestContext")} />

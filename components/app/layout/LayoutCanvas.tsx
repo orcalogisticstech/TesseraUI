@@ -29,7 +29,8 @@ function formatNullable(value: string | number | null) {
   return String(value);
 }
 
-type SelectedStop = {
+type SelectedMarker = {
+  kind: "stop" | "start" | "end";
   batchId: string;
   nodeId: string;
   color: string;
@@ -42,13 +43,14 @@ type LayoutCanvasProps = {
   overlayBatches?: LayoutOverlayBatch[];
   canvasNotice?: string | null;
   topRightLabel?: string;
+  batchControls?: React.ReactNode;
 };
 
-export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = null, topRightLabel }: LayoutCanvasProps) {
+export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = null, topRightLabel, batchControls }: LayoutCanvasProps) {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const [enabledNodeTypes, setEnabledNodeTypes] = useState<Set<string>>(new Set());
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const [selectedStop, setSelectedStop] = useState<SelectedStop | null>(null);
+  const [selectedMarker, setSelectedMarker] = useState<SelectedMarker | null>(null);
 
   const geometry = useMemo(() => {
     const width = data.bounds.maxX - data.bounds.minX + PADDING * 2;
@@ -101,14 +103,18 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
   const inspectorReserve = INSPECTOR_WIDTH_EXPANDED + INSPECTOR_GUTTER * 2;
   const zoomPercent = Math.round(zoom * 100);
 
+  const clearSelection = () => {
+    setSelectedNodeId(null);
+    setSelectedMarker(null);
+  };
+
   const resetView = () => {
     if (!nodeTypes.length) {
       return;
     }
     setZoom(DEFAULT_ZOOM);
     setEnabledNodeTypes(new Set(nodeTypes));
-    setSelectedNodeId(null);
-    setSelectedStop(null);
+    clearSelection();
   };
 
   const enableAllTypes = () => {
@@ -139,9 +145,12 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
     setZoom((current) => Math.min(MAX_ZOOM, Number((current + ZOOM_STEP).toFixed(2))));
   };
 
-  const clearSelection = () => {
+  const handleMarkerClick = (event: React.MouseEvent, next: SelectedMarker) => {
+    event.stopPropagation();
     setSelectedNodeId(null);
-    setSelectedStop(null);
+    setSelectedMarker((current) =>
+      current?.kind === next.kind && current?.batchId === next.batchId && current?.nodeId === next.nodeId ? null : next
+    );
   };
 
   return (
@@ -247,16 +256,14 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
               );
             })}
         </div>
+
+        {batchControls}
       </section>
 
       <section className="app-card p-2 md:p-3">
         <div className="relative h-[70vh] border" style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)" }}>
           <div className="h-full overflow-auto" style={{ paddingRight: `${inspectorReserve}px` }}>
-            <div
-              style={{
-                width: `${zoom * 100}%`
-              }}
-            >
+            <div style={{ width: `${zoom * 100}%` }}>
               <svg
                 role="img"
                 aria-label="Warehouse layout graph"
@@ -301,7 +308,7 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                       style={{ cursor: "pointer" }}
                       onClick={(event) => {
                         event.stopPropagation();
-                        setSelectedStop(null);
+                        setSelectedMarker(null);
                         setSelectedNodeId((current) => (current === node.id ? null : node.id));
                       }}
                     />
@@ -339,7 +346,10 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                       if (!node) {
                         return null;
                       }
-                      const isSelected = selectedStop?.batchId === batch.batchId && selectedStop?.nodeId === stopNodeId;
+                      const isSelected =
+                        selectedMarker?.kind === "stop" &&
+                        selectedMarker.batchId === batch.batchId &&
+                        selectedMarker.nodeId === stopNodeId;
                       const stopsAtNode = batch.stops.filter((s) => s.nodeId === stopNodeId);
                       return (
                         <circle
@@ -352,15 +362,15 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                           strokeWidth={isSelected ? 0.1 : 0.05}
                           fillOpacity={0.98}
                           style={{ cursor: "pointer" }}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            setSelectedNodeId(null);
-                            setSelectedStop((current) =>
-                              current?.batchId === batch.batchId && current?.nodeId === stopNodeId
-                                ? null
-                                : { batchId: batch.batchId, nodeId: stopNodeId, color: batch.color, stops: stopsAtNode }
-                            );
-                          }}
+                          onClick={(event) =>
+                            handleMarkerClick(event, {
+                              kind: "stop",
+                              batchId: batch.batchId,
+                              nodeId: stopNodeId,
+                              color: batch.color,
+                              stops: stopsAtNode
+                            })
+                          }
                         />
                       );
                     })
@@ -375,14 +385,28 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                     }
                     const cx = geometry.toSvgX(node.x);
                     const cy = geometry.toSvgY(node.y);
+                    const isSelected =
+                      selectedMarker?.kind === "start" &&
+                      selectedMarker.batchId === batch.batchId &&
+                      selectedMarker.nodeId === batch.startNodeId;
                     return (
                       <polygon
                         key={`${batch.batchId}:start`}
                         points={`${cx},${cy - 0.56} ${cx - 0.46},${cy + 0.38} ${cx + 0.46},${cy + 0.38}`}
                         fill={batch.color}
-                        stroke="#111111"
-                        strokeWidth={0.05}
+                        stroke={isSelected ? "#ffffff" : "#111111"}
+                        strokeWidth={isSelected ? 0.1 : 0.05}
                         fillOpacity={0.98}
+                        style={{ cursor: "pointer" }}
+                        onClick={(event) =>
+                          handleMarkerClick(event, {
+                            kind: "start",
+                            batchId: batch.batchId,
+                            nodeId: batch.startNodeId!,
+                            color: batch.color,
+                            stops: []
+                          })
+                        }
                       />
                     );
                   })}
@@ -397,6 +421,10 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                     const cx = geometry.toSvgX(node.x);
                     const cy = geometry.toSvgY(node.y);
                     const side = 0.9;
+                    const isSelected =
+                      selectedMarker?.kind === "end" &&
+                      selectedMarker.batchId === batch.batchId &&
+                      selectedMarker.nodeId === batch.endNodeId;
                     return (
                       <rect
                         key={`${batch.batchId}:end`}
@@ -405,9 +433,19 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                         width={side}
                         height={side}
                         fill={batch.color}
-                        stroke="#111111"
-                        strokeWidth={0.05}
+                        stroke={isSelected ? "#ffffff" : "#111111"}
+                        strokeWidth={isSelected ? 0.1 : 0.05}
                         fillOpacity={0.98}
+                        style={{ cursor: "pointer" }}
+                        onClick={(event) =>
+                          handleMarkerClick(event, {
+                            kind: "end",
+                            batchId: batch.batchId,
+                            nodeId: batch.endNodeId!,
+                            color: batch.color,
+                            stops: []
+                          })
+                        }
                       />
                     );
                   })}
@@ -468,13 +506,13 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                   <dd>{`(${selectedNode.x.toFixed(2)}, ${selectedNode.y.toFixed(2)}, ${selectedNode.z?.toFixed(2) ?? "-"})`}</dd>
                 </dl>
               </>
-            ) : selectedStop ? (
+            ) : selectedMarker ? (
               <>
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="inline-block h-2.5 w-2.5 shrink-0" style={{ background: selectedStop.color }} />
+                    <span className="inline-block h-2.5 w-2.5 shrink-0" style={{ background: selectedMarker.color }} />
                     <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                      Stop Inspector
+                      {selectedMarker.kind === "stop" ? "Stop" : selectedMarker.kind === "start" ? "Start Node" : "End Node"}
                     </p>
                   </div>
                   <button
@@ -489,40 +527,52 @@ export function LayoutCanvas({ title, data, overlayBatches = [], canvasNotice = 
                 <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
                   <dt style={{ color: "var(--tessera-text-secondary)" }}>Batch</dt>
                   <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>
-                    {selectedStop.batchId}
+                    {selectedMarker.batchId}
                   </dd>
                   <dt style={{ color: "var(--tessera-text-secondary)" }}>Node ID</dt>
                   <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>
-                    {selectedStop.nodeId}
+                    {selectedMarker.nodeId}
                   </dd>
-                </dl>
-                <div className="mt-3 space-y-2">
-                  <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                    Tasks ({selectedStop.stops.length})
-                  </p>
-                  {selectedStop.stops.map((stop, index) => (
-                    <dl
-                      key={`${stop.taskId}-${index}`}
-                      className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 border p-2 text-xs"
-                      style={{ borderColor: "var(--tessera-border)" }}
-                    >
-                      <dt style={{ color: "var(--tessera-text-secondary)" }}>Task ID</dt>
-                      <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>
-                        {stop.taskId}
-                      </dd>
-                      <dt style={{ color: "var(--tessera-text-secondary)" }}>Seq #</dt>
-                      <dd>{stop.sequenceIndex + 1}</dd>
-                      <dt style={{ color: "var(--tessera-text-secondary)" }}>Location</dt>
-                      <dd className="font-code">{stop.locationId}</dd>
+                  {selectedMarker.kind === "stop" && selectedMarker.stops.length > 0 ? (
+                    <>
                       <dt style={{ color: "var(--tessera-text-secondary)" }}>Zone</dt>
-                      <dd>{stop.zoneId}</dd>
-                    </dl>
-                  ))}
-                </div>
+                      <dd>{selectedMarker.stops[0].zoneId}</dd>
+                    </>
+                  ) : null}
+                </dl>
+                {selectedMarker.kind === "stop" && selectedMarker.stops.length > 0 ? (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+                      Tasks ({selectedMarker.stops.length})
+                    </p>
+                    <div className="max-h-[300px] space-y-2 overflow-auto">
+                      {selectedMarker.stops.map((stop, index) => (
+                        <dl
+                          key={`${stop.taskId}-${index}`}
+                          className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 border p-2 text-xs"
+                          style={{ borderColor: "var(--tessera-border)" }}
+                        >
+                          <dt style={{ color: "var(--tessera-text-secondary)" }}>Task</dt>
+                          <dd className="font-code" style={{ color: "var(--tessera-text-primary)" }}>
+                            {stop.taskId}
+                          </dd>
+                          <dt style={{ color: "var(--tessera-text-secondary)" }}>Order</dt>
+                          <dd className="font-code">{stop.orderId}</dd>
+                          <dt style={{ color: "var(--tessera-text-secondary)" }}>SKU</dt>
+                          <dd className="font-code">{formatNullable(stop.skuId)}</dd>
+                          <dt style={{ color: "var(--tessera-text-secondary)" }}>Qty</dt>
+                          <dd>{formatNullable(stop.quantity)}</dd>
+                          <dt style={{ color: "var(--tessera-text-secondary)" }}>Weight</dt>
+                          <dd>{formatNullable(stop.skuWeight)}</dd>
+                        </dl>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </>
             ) : (
               <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-                Select a node or stop to inspect.
+                Select a node or marker to inspect.
               </p>
             )}
           </aside>

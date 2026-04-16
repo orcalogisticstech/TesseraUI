@@ -217,6 +217,13 @@ export type OptimizerUnselectedTask = {
   reasonCode: string;
 };
 
+export type TaskDetail = {
+  orderId: string;
+  skuId: string | null;
+  quantity: number | null;
+  skuWeight: number | null;
+};
+
 export type HeartbeatRequestContext = {
   requestId: string;
   responseId: string;
@@ -269,6 +276,7 @@ export type HeartbeatRunDetails = HeartbeatRunSummary & {
   solutionMetrics: OptimizerSolutionMetrics;
   batches: OptimizerBatch[];
   flattenedBatchRows: FlattenedBatchRow[];
+  taskDetails: Record<string, TaskDetail>;
   unselectedTasks: OptimizerUnselectedTask[];
   unselectedTaskCount: number;
   unselectedTaskPage: number;

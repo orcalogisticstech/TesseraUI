@@ -35,9 +35,12 @@ export type LayoutGraphData = {
 export type LayoutOverlayStop = {
   nodeId: string;
   taskId: string;
-  sequenceIndex: number;
   locationId: string;
   zoneId: string;
+  orderId: string;
+  skuId: string | null;
+  quantity: number | null;
+  skuWeight: number | null;
 };
 
 export type LayoutOverlayBatch = {

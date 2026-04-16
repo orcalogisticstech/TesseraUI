@@ -7,7 +7,8 @@ import type {
   OptimizerBatch,
   OptimizerSolutionMetrics,
   OptimizerUnselectedTask,
-  SystemMode
+  SystemMode,
+  TaskDetail
 } from "@/lib/app-types";
 import fs from "node:fs";
 import path from "node:path";
@@ -47,6 +48,9 @@ type RawRequest = {
     tasks: Array<{
       task_id: string;
       order_id: string;
+      sku_id: string | null;
+      quantity: number | null;
+      sku_weight: number | null;
     }>;
   };
 };
@@ -335,6 +339,12 @@ function normalizeRunDetails(request: RawRequest, response: RawResponse, tradeof
 
   const distinctOrderCount = new Set(request.pick_work_release.tasks.map((task) => task.order_id)).size;
   const taskToOrderId = new Map(request.pick_work_release.tasks.map((task) => [task.task_id, task.order_id]));
+  const taskDetails: Record<string, TaskDetail> = Object.fromEntries(
+    request.pick_work_release.tasks.map((task) => [
+      task.task_id,
+      { orderId: task.order_id, skuId: task.sku_id ?? null, quantity: task.quantity ?? null, skuWeight: task.sku_weight ?? null }
+    ])
+  );
   const batches = normalizeBatches(solution.batches);
 
   return {
@@ -375,6 +385,7 @@ function normalizeRunDetails(request: RawRequest, response: RawResponse, tradeof
     solutionMetrics: normalizeSolutionMetrics(solution.solution_metrics),
     batches,
     flattenedBatchRows: flattenBatchRows(batches, taskToOrderId),
+    taskDetails,
     unselectedTasks: normalizeUnselectedTasks(solution.unselected_tasks),
     unselectedTaskCount: solution.unselected_tasks.length,
     unselectedTaskPage: 0,

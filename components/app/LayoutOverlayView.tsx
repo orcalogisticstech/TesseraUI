@@ -2,8 +2,6 @@
 
 import { LayoutCanvas } from "@/components/app/layout/LayoutCanvas";
 import {
-  DEFAULT_NODE_COLOR,
-  NODE_TYPE_COLORS,
   type LayoutGraphData,
   type LayoutOverlayBatch,
   type LayoutOverlayStop
@@ -174,7 +172,17 @@ function resolveBatchOverlay({
         continue;
       }
       mappedStops.push(mappedNodeId);
-      stops.push({ nodeId: mappedNodeId, taskId: stop.taskId, sequenceIndex: stop.sequenceIndex, locationId: stop.locationId, zoneId: stop.zoneId });
+      const detail = runDetails.taskDetails[stop.taskId];
+      stops.push({
+        nodeId: mappedNodeId,
+        taskId: stop.taskId,
+        locationId: stop.locationId,
+        zoneId: stop.zoneId,
+        orderId: detail?.orderId ?? "Unknown",
+        skuId: detail?.skuId ?? null,
+        quantity: detail?.quantity ?? null,
+        skuWeight: detail?.skuWeight ?? null
+      });
     }
 
     const startNodeId = batch.route.startNodeId && nodeById.has(batch.route.startNodeId) ? batch.route.startNodeId : null;
@@ -193,6 +201,9 @@ function resolveBatchOverlay({
     for (let index = 1; index < orderedNodes.length; index += 1) {
       const sourceNodeId = orderedNodes[index - 1];
       const targetNodeId = orderedNodes[index];
+      if (sourceNodeId === targetNodeId) {
+        continue;
+      }
       const path = getPath(sourceNodeId, targetNodeId);
       if (!path || path.length < 2) {
         warningSet.add(`Batch ${batch.batchId}: no path found from ${sourceNodeId} to ${targetNodeId}.`);
@@ -289,16 +300,127 @@ export function LayoutOverlayView({ tabId, runTab, onSelectedBatchIdsChange }: L
   const runSummaryLabel = `${runTab.summary.runId} · ${formatTradeoffLabel(runTab.summary.tradeoffLabel)}`;
   const overlayEmptyMessage =
     selectedBatchIds.length === 0
-      ? "No batches selected. Use the batch picker above to choose one or more batches."
+      ? "No batches selected. Use the batch picker to choose one or more batches."
       : overlayBatches.length === 0
         ? "No overlay route segments available for the current selection."
         : null;
+
+  const batchControls =
+    !renderError && !isLoading && runDetails && layoutData ? (
+      <div className="mt-5 space-y-4">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          {/* Batch picker */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              className="btn-secondary flex items-center gap-2 px-3 py-2 text-xs uppercase tracking-[0.08em]"
+              onClick={() => setBatchDropdownOpen((current) => !current)}
+            >
+              <span>Batches: {selectedBatchIds.length} selected</span>
+              <span aria-hidden="true">{batchDropdownOpen ? "▲" : "▼"}</span>
+            </button>
+
+            {batchDropdownOpen ? (
+              <div
+                className="absolute left-0 top-full z-20 mt-2 w-[320px] border p-3"
+                style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}
+              >
+                <input
+                  type="search"
+                  value={batchSearch}
+                  onChange={(event) => setBatchSearch(event.target.value)}
+                  placeholder="Search batch ID"
+                  className="w-full border px-2 py-1 text-sm outline-none"
+                  style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)", color: "var(--tessera-text-primary)" }}
+                />
+                <div className="mt-2 flex items-center gap-2">
+                  <button type="button" className="btn-secondary px-2 py-1 text-[11px] uppercase tracking-[0.08em]" onClick={selectAllBatches}>
+                    Select all
+                  </button>
+                  <button type="button" className="btn-secondary px-2 py-1 text-[11px] uppercase tracking-[0.08em]" onClick={clearBatches}>
+                    Clear
+                  </button>
+                </div>
+                <div className="mt-3 max-h-[240px] overflow-auto border p-2" style={{ borderColor: "var(--tessera-border)" }}>
+                  {filteredBatchIds.length === 0 ? (
+                    <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
+                      No batches match.
+                    </p>
+                  ) : (
+                    filteredBatchIds.map((batchId) => (
+                      <label key={batchId} className="mb-1 flex cursor-pointer items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={selectedBatchIds.includes(batchId)}
+                          onChange={() => toggleBatch(batchId)}
+                          className="h-4 w-4"
+                        />
+                        <span className="inline-block h-2.5 w-2.5" style={{ background: colorByBatchId.get(batchId) ?? "#1f77b4" }} />
+                        <span className="font-code">{batchId}</span>
+                      </label>
+                    ))
+                  )}
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          {/* Marker legend */}
+          <div className="flex items-center gap-4 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+            <div className="flex items-center gap-1.5">
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <polygon points="6,1 1,11 11,11" fill="var(--tessera-text-secondary)" />
+              </svg>
+              <span>Start</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 11 11" aria-hidden="true">
+                <rect x="0.5" y="0.5" width="10" height="10" fill="var(--tessera-text-secondary)" />
+              </svg>
+              <span>End</span>
+            </div>
+          </div>
+
+          {/* Batch colors */}
+          {sortedSelectedBatchIds.length > 0 ? (
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+              {sortedSelectedBatchIds.map((batchId) => (
+                <span key={batchId} className="flex items-center gap-1.5">
+                  <span className="inline-block h-2.5 w-2.5" style={{ background: colorByBatchId.get(batchId) ?? "#1f77b4" }} />
+                  <span className="font-code" style={{ color: "var(--tessera-text-secondary)" }}>
+                    {batchId}
+                  </span>
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        {warnings.length > 0 ? (
+          <div className="border p-3 text-sm" style={{ borderColor: "var(--tessera-border)" }}>
+            <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
+              Overlay Warnings ({warnings.length})
+            </p>
+            <ul className="mt-2 list-disc pl-5">
+              {warnings.slice(0, 8).map((warning) => (
+                <li key={warning}>{warning}</li>
+              ))}
+            </ul>
+            {warnings.length > 8 ? (
+              <p className="mt-2 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
+                Showing first 8 warnings.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+    ) : null;
 
   return (
     <div className="mx-auto w-full max-w-[1180px] space-y-4">
       <section className="app-card p-4 md:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="font-display text-2xl uppercase tracking-[-0.01em]">Layout Overlay</h1>
+          <h1 className="font-display text-2xl uppercase tracking-[-0.01em]">Solution · Layout View</h1>
           <p className="font-code text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
             {runSummaryLabel}
           </p>
@@ -339,116 +461,6 @@ export function LayoutOverlayView({ tabId, runTab, onSelectedBatchIdsChange }: L
         </div>
       </section>
 
-      {!renderError && !isLoading && runDetails && layoutData ? (
-        <section className="app-card p-4 md:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="relative min-w-[280px]" ref={dropdownRef}>
-              <button
-                type="button"
-                className="btn-secondary flex items-center gap-2 px-3 py-2 text-xs uppercase tracking-[0.08em]"
-                onClick={() => setBatchDropdownOpen((current) => !current)}
-              >
-                <span>Batches: {selectedBatchIds.length} selected</span>
-                <span aria-hidden="true">{batchDropdownOpen ? "▲" : "▼"}</span>
-              </button>
-
-              {batchDropdownOpen ? (
-                <div
-                  className="absolute left-0 top-full z-20 mt-2 w-[320px] border p-3"
-                  style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-surface)" }}
-                >
-                  <input
-                    type="search"
-                    value={batchSearch}
-                    onChange={(event) => setBatchSearch(event.target.value)}
-                    placeholder="Search batch ID"
-                    className="w-full border px-2 py-1 text-sm outline-none"
-                    style={{ borderColor: "var(--tessera-border)", background: "var(--tessera-bg-page)", color: "var(--tessera-text-primary)" }}
-                  />
-                  <div className="mt-2 flex items-center gap-2">
-                    <button type="button" className="btn-secondary px-2 py-1 text-[11px] uppercase tracking-[0.08em]" onClick={selectAllBatches}>
-                      Select all
-                    </button>
-                    <button type="button" className="btn-secondary px-2 py-1 text-[11px] uppercase tracking-[0.08em]" onClick={clearBatches}>
-                      Clear
-                    </button>
-                  </div>
-                  <div className="mt-3 max-h-[240px] overflow-auto border p-2" style={{ borderColor: "var(--tessera-border)" }}>
-                    {filteredBatchIds.length === 0 ? (
-                      <p className="text-sm" style={{ color: "var(--tessera-text-secondary)" }}>
-                        No batches match.
-                      </p>
-                    ) : (
-                      filteredBatchIds.map((batchId) => (
-                        <label key={batchId} className="mb-1 flex cursor-pointer items-center gap-2 text-sm">
-                          <input
-                            type="checkbox"
-                            checked={selectedBatchIds.includes(batchId)}
-                            onChange={() => toggleBatch(batchId)}
-                            className="h-4 w-4"
-                          />
-                          <span className="inline-block h-2.5 w-2.5" style={{ background: colorByBatchId.get(batchId) ?? "#1f77b4" }} />
-                          <span className="font-code">{batchId}</span>
-                        </label>
-                      ))
-                    )}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-
-            <div className="grid gap-2 text-xs md:grid-cols-2">
-              <div className="space-y-1">
-                <p className="uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                  Node Types
-                </p>
-                {Object.keys(layoutData.nodeTypeCounts)
-                  .sort((left, right) => left.localeCompare(right))
-                  .map((nodeType) => (
-                    <p key={nodeType} className="flex items-center gap-2">
-                      <span className="inline-block h-2.5 w-2.5" style={{ background: NODE_TYPE_COLORS[nodeType] ?? DEFAULT_NODE_COLOR }} />
-                      <span>{nodeType}</span>
-                    </p>
-                  ))}
-              </div>
-              <div className="space-y-1">
-                <p className="uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                  Batch Colors
-                </p>
-                {sortedSelectedBatchIds.length === 0 ? (
-                  <p style={{ color: "var(--tessera-text-secondary)" }}>No batches selected</p>
-                ) : (
-                  sortedSelectedBatchIds.map((batchId) => (
-                    <p key={batchId} className="flex items-center gap-2">
-                      <span className="inline-block h-2.5 w-2.5" style={{ background: colorByBatchId.get(batchId) ?? "#1f77b4" }} />
-                      <span className="font-code">{batchId}</span>
-                    </p>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-
-          {warnings.length > 0 ? (
-            <div className="mt-4 border p-3 text-sm" style={{ borderColor: "var(--tessera-border)" }}>
-              <p className="text-xs uppercase tracking-[0.08em]" style={{ color: "var(--tessera-text-secondary)" }}>
-                Overlay Warnings ({warnings.length})
-              </p>
-              <ul className="mt-2 list-disc pl-5">
-                {warnings.slice(0, 8).map((warning) => (
-                  <li key={warning}>{warning}</li>
-                ))}
-              </ul>
-              {warnings.length > 8 ? (
-                <p className="mt-2 text-xs" style={{ color: "var(--tessera-text-secondary)" }}>
-                  Showing first 8 warnings.
-                </p>
-              ) : null}
-            </div>
-          ) : null}
-        </section>
-      ) : null}
-
       {renderError ? (
         <section className="app-card p-4 md:p-6">
           <p className="text-sm" style={{ color: "var(--tessera-danger)" }}>
@@ -466,7 +478,13 @@ export function LayoutOverlayView({ tabId, runTab, onSelectedBatchIdsChange }: L
       ) : null}
 
       {!renderError && !isLoading && layoutData ? (
-        <LayoutCanvas title={layoutData.metadata.layout_version} data={layoutData} overlayBatches={overlayBatches} canvasNotice={overlayEmptyMessage} />
+        <LayoutCanvas
+          title={layoutData.metadata.layout_version}
+          data={layoutData}
+          overlayBatches={overlayBatches}
+          canvasNotice={overlayEmptyMessage}
+          batchControls={batchControls}
+        />
       ) : null}
     </div>
   );
