@@ -63,7 +63,7 @@ function normalizeLayoutKey(layoutKey: string) {
 
 export async function loadLayoutGraph(layoutKey: string): Promise<LayoutGraphData> {
   const safeLayoutKey = normalizeLayoutKey(layoutKey);
-  const artifactPath = path.join(/* turbopackIgnore: true */ process.cwd(), safeLayoutKey, "layout.render.json");
+  const artifactPath = path.join(/* turbopackIgnore: true */ process.cwd(), "public", "layouts", safeLayoutKey, "layout.render.json");
 
   try {
     const artifactText = await readFile(artifactPath, "utf-8");

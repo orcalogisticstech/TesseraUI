@@ -15,12 +15,11 @@ export function useLayoutGraphData(layoutKey = DEFAULT_LAYOUT_KEY) {
     const load = async () => {
       setError(null);
       try {
-        const query = new URLSearchParams({ layout: layoutKey });
-        const response = await fetch(`/api/layout?${query.toString()}`, { cache: "no-store" });
-        const payload = (await response.json()) as LayoutGraphData | { error?: string };
+        const response = await fetch(`/layouts/${encodeURIComponent(layoutKey)}/layout.render.json`, { cache: "no-store" });
         if (!response.ok) {
-          throw new Error("error" in payload ? payload.error ?? "Unable to load layout." : "Unable to load layout.");
+          throw new Error("Unable to load layout.");
         }
+        const payload = (await response.json()) as LayoutGraphData;
         if (!cancelled) {
           setData(payload as LayoutGraphData);
         }
