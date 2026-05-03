@@ -15,7 +15,7 @@ export function useLayoutGraphData(layoutKey = DEFAULT_LAYOUT_KEY) {
     const load = async () => {
       setError(null);
       try {
-        const response = await fetch(`/layouts/${encodeURIComponent(layoutKey)}/layout.render.json`, { cache: "no-store" });
+        const response = await fetch(`/api/layout?tenantId=demo&facilityId=ATL1&layout=${encodeURIComponent(layoutKey)}`, { cache: "no-store" });
         if (!response.ok) {
           throw new Error("Unable to load layout.");
         }

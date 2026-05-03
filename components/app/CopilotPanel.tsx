@@ -29,6 +29,8 @@ export function CopilotPanel() {
     theme
   } = useAppState();
   const [draft, setDraft] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const tessWordmarkSrc = theme === "light" ? tessWordmarkLight : tessWordmarkDark;
   const tessWordmarkClass = theme === "light" ? "object-contain object-center scale-[2.45]" : "object-contain object-center";
@@ -41,7 +43,7 @@ export function CopilotPanel() {
     "--tessera-copilot-shell-width": `${desktopShellWidth}px`
   } as CSSProperties;
 
-  const submitMessage = () => {
+  const submitMessage = async () => {
     if (!draft.trim()) {
       return;
     }
@@ -52,21 +54,39 @@ export function CopilotPanel() {
       text: draft.trim()
     };
 
-    const tessReply = {
-      id: `ts-${Date.now() + 1}`,
-      actor: "tess" as const,
-      text: "I mapped that request to the active optimization model. Edit Posture to adjust objective weights for the next cycle.",
-      grounding: {
-        cycleNumber: 4828,
-        constraintIds: ["OBJ-DEADLINE", "OBJ-CONGESTION"],
-        metrics: ["travel", "late-risk", "zone-utilization"]
-      },
-      action: { label: "Apply this posture change", actionId: "open-posture" as const }
-    };
-
-    setCopilotMessages([...copilotMessages, operatorMessage, tessReply]);
-    setCopilotDraftAttachments([]);
+    const attachments = copilotDraftAttachments;
+    setCopilotMessages([...copilotMessages, operatorMessage]);
     setDraft("");
+    setError(null);
+    setSending(true);
+
+    try {
+      const response = await fetch("/api/copilot", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          question: operatorMessage.text,
+          attachments
+        })
+      });
+      const body = (await response.json().catch(() => null)) as { answer?: string; error?: string } | null;
+      if (!response.ok) {
+        throw new Error(body?.error ?? `TessCopilot failed with status ${response.status}`);
+      }
+      setCopilotMessages((current) => [
+        ...current,
+        {
+          id: `ts-${Date.now() + 1}`,
+          actor: "tess" as const,
+          text: body?.answer ?? "TessCopilot did not return an answer."
+        }
+      ]);
+      setCopilotDraftAttachments([]);
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Unable to reach TessCopilot.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const onAction = (actionId: "open-posture") => {
@@ -215,17 +235,22 @@ export function CopilotPanel() {
                 onChange={(event) => setDraft(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
-                    submitMessage();
+                    void submitMessage();
                   }
                 }}
                 placeholder="Ask Tess about this cycle..."
                 className="w-full border bg-transparent px-3 py-2 text-sm"
                 style={{ borderColor: "var(--tessera-border)" }}
               />
-              <button type="button" className="btn-primary px-3 py-2" onClick={submitMessage}>
-                Send
+              <button type="button" className="btn-primary px-3 py-2" onClick={() => void submitMessage()} disabled={sending}>
+                {sending ? "Sending" : "Send"}
               </button>
             </div>
+            {error ? (
+              <p className="mt-2 text-xs" style={{ color: "var(--tessera-danger)" }}>
+                {error}
+              </p>
+            ) : null}
           </div>
         </div>
       </div>

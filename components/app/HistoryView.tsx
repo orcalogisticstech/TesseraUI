@@ -81,7 +81,8 @@ export function HistoryView() {
           id: attachmentId,
           type: "heartbeat-plan",
           title: `${entry.plan.run.runId} - ${entry.plan.label}`,
-          subtitle: "Adopted history plan"
+          subtitle: "Adopted history plan",
+          run: entry.plan.run
         }
       ];
     });

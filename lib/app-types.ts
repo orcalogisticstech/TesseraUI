@@ -350,6 +350,7 @@ export type CopilotDraftAttachment = {
   type: "heartbeat-plan";
   title: string;
   subtitle: string;
+  run?: HeartbeatRunSummary;
 };
 
 export type WorkspaceTabId = "decision-feed" | "history" | "layout" | "settings" | `run:${string}` | `layout-overlay:${string}`;
