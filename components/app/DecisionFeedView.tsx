@@ -49,12 +49,15 @@ export function DecisionFeedView() {
   const {
     mode,
     data,
+    backendJobConfig,
     setCopilotDraftAttachments,
     setCopilotOpen,
     openRunTab,
     activeHeartbeatPlans,
     clearActiveHeartbeatPlans,
     triggerNextHeartbeat,
+    heartbeatLoading,
+    heartbeatError,
     addAdoptedPlanToHistory,
     heartbeatRemaining,
     theme
@@ -113,7 +116,7 @@ export function DecisionFeedView() {
   const throughputColor = data.kpi.throughputPicksPerHour < 150 ? "var(--tessera-danger)" : data.kpi.throughputPicksPerHour < 170 ? "var(--tessera-warning)" : "var(--tessera-success)";
   const metricCardClass = "app-card flex h-full flex-col p-4";
   const metricLabelClass = "min-h-[2.75rem] text-xs uppercase tracking-[0.08em]";
-  const heartbeatTriggerDisabled = activeHeartbeatPlans !== null;
+  const heartbeatTriggerDisabled = activeHeartbeatPlans !== null || heartbeatLoading;
 
   const moveObjective = (objective: ObjectiveKey, nextTier: ObjectiveTier, nextIndex?: number) => {
     setObjectiveTiers((current) => {
@@ -161,7 +164,8 @@ export function DecisionFeedView() {
           id: plan.id,
           type: "heartbeat-plan",
           title: `${plan.run.runId} - ${plan.label}`,
-          subtitle: "Heartbeat plan"
+          subtitle: "Heartbeat plan",
+          run: plan.run
         }
       ];
     });
@@ -176,13 +180,72 @@ export function DecisionFeedView() {
     openRunTab(plan.run);
   };
 
-  const adoptHeartbeatPlan = (planId: string) => {
+  const adoptHeartbeatPlan = async (planId: string) => {
     const plan = activeHeartbeatPlans?.find((item) => item.id === planId);
     if (!plan) {
       return;
     }
-    addAdoptedPlanToHistory(plan);
+    await addAdoptedPlanToHistory(plan);
     clearActiveHeartbeatPlans();
+  };
+
+  const normalizeWeights = (weights: Record<"travel_time" | "tardiness" | "zone_balance", number>) => {
+    const total = weights.travel_time + weights.tardiness + weights.zone_balance || 1;
+    return {
+      travel_time: weights.travel_time / total,
+      tardiness: weights.tardiness / total,
+      zone_balance: weights.zone_balance / total
+    };
+  };
+
+  const buildJobConfig = () => {
+    const tierWeights: Record<ObjectiveTier, number> = { 1: 0.5, 2: 0.3, 3: 0.2 };
+    const nextWeights = { travel_time: 0, tardiness: 0, zone_balance: 0 };
+    const objectiveToBackend: Record<ObjectiveKey, keyof typeof nextWeights> = {
+      travel_time: "travel_time",
+      tardiness: "tardiness",
+      balance: "zone_balance"
+    };
+    ([1, 2, 3] as ObjectiveTier[]).forEach((tier) => {
+      const objectives = objectiveTiers[tier];
+      if (objectives.length === 0) {
+        return;
+      }
+      const share = tierWeights[tier] / objectives.length;
+      objectives.forEach((objective) => {
+        nextWeights[objectiveToBackend[objective]] += share;
+      });
+    });
+
+    const penaltyValues: Record<PenaltyLevel, number> = { Relaxed: 0.5, Normal: 1, Strict: 2 };
+    const carts = backendJobConfig.available_carts.length > 0 ? [...backendJobConfig.available_carts] : [{ cart_type_id: "CART_SMALL", count: availableCarts }];
+    carts[0] = { ...carts[0], count: availableCarts };
+
+    return {
+      ...backendJobConfig,
+      blocked_aisles: blockedAisles.map((item) => item.aisleId).filter(Boolean),
+      no_go_zones: blockedZones.map((item) => item.zoneId).filter(Boolean),
+      blocked_terminals: blockedTerminals.map((item) => item.nodeId).filter(Boolean),
+      weights: normalizeWeights(nextWeights),
+      penalties: {
+        zone_cross: penaltyValues[penaltyLevels.zone_cross],
+        split_order: penaltyValues[penaltyLevels.split_order],
+        grouping_violation: penaltyValues[penaltyLevels.grouping_violation]
+      },
+      available_carts: carts,
+      max_batches: maxBatches,
+      max_tasks_per_zone: maxTasksPerZone
+    };
+  };
+
+  const triggerHeartbeatWithCurrentInputs = () => {
+    void triggerNextHeartbeat({
+      jobConfig: buildJobConfig(),
+      floorState: {
+        blockedLocations: blockedLocations.map((item) => ({ locationId: item.locationId, reason: item.reason })),
+        blockedZones: blockedZones.map((item) => ({ zoneId: item.zoneId, reason: item.reason }))
+      }
+    });
   };
 
   const expandConfigureJobSections = () => {
@@ -241,14 +304,20 @@ export function DecisionFeedView() {
           <button
             type="button"
             className="btn-secondary mt-4 px-3 py-2 text-sm"
-            onClick={triggerNextHeartbeat}
+            onClick={triggerHeartbeatWithCurrentInputs}
             disabled={heartbeatTriggerDisabled}
             title={heartbeatTriggerDisabled ? "Resolve the current heartbeat proposal before triggering another cycle." : "Trigger the next heartbeat now"}
           >
-            Trigger
+            {heartbeatLoading ? "Running" : "Trigger"}
           </button>
         </article>
       </section>
+
+      {heartbeatError ? (
+        <section className="app-card p-4 text-sm" style={{ color: "var(--tessera-danger)" }}>
+          {heartbeatError}
+        </section>
+      ) : null}
 
       {activeHeartbeatPlans ? (
         <HeartbeatProposalCard

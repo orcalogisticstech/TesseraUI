@@ -248,6 +248,7 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
 
       try {
         const query = new URLSearchParams({
+          runId: run.runId,
           requestId: run.requestId,
           tradeoffLabel: run.tradeoffLabel,
           page: String(taskPage),
@@ -255,7 +256,8 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
         });
         const response = await fetch(`/api/heartbeat-run-details?${query.toString()}`);
         if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
+          const body = (await response.json().catch(() => null)) as { error?: string } | null;
+          throw new Error(body?.error ?? `Request failed with status ${response.status}`);
         }
         const details = (await response.json()) as HeartbeatRunDetails;
         if (!cancelled) {
@@ -293,7 +295,8 @@ export function RunDetailsView({ runTab }: RunDetailsViewProps) {
           id: attachmentId,
           type: "heartbeat-plan" as const,
           title: `${runTab.summary.runId} - ${formatTradeoffLabel(runTab.summary.tradeoffLabel)}`,
-          subtitle: "Solution run"
+          subtitle: "Solution run",
+          run: runTab.summary
         }
       ];
     });

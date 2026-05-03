@@ -25,85 +25,14 @@ const metricRows: Array<{
   { key: "throughputPicksPerHour", label: "Throughput", direction: "higher", format: (value) => `${formatFloatCompact(value)} picks/hr` }
 ];
 
-function dominates(left: HeartbeatPlan, right: HeartbeatPlan) {
-  let strictlyBetter = false;
-
-  for (const row of metricRows) {
-    const leftValue = left.metrics[row.key];
-    const rightValue = right.metrics[row.key];
-
-    if (row.direction === "higher") {
-      if (leftValue < rightValue) {
-        return false;
-      }
-      if (leftValue > rightValue) {
-        strictlyBetter = true;
-      }
-    } else {
-      if (leftValue > rightValue) {
-        return false;
-      }
-      if (leftValue < rightValue) {
-        strictlyBetter = true;
-      }
-    }
-  }
-
-  return strictlyBetter;
-}
-
-function getMetricSignature(plan: HeartbeatPlan) {
-  return JSON.stringify(metricRows.map((row) => plan.metrics[row.key]));
-}
-
-function getVisiblePlans(plans: HeartbeatPlan[]) {
-  return plans.filter((plan, index) => !plans.some((candidate, candidateIndex) => candidateIndex !== index && dominates(candidate, plan)));
-}
-
-function getTessChoicePlanId(plans: HeartbeatPlan[], visiblePlans: HeartbeatPlan[]) {
+function getTessChoicePlanId(plans: HeartbeatPlan[]) {
   const primaryPlan = plans.find((plan) => plan.run.tradeoffLabel === "primary");
 
   if (!primaryPlan) {
-    return visiblePlans.find((plan) => plan.isTessChoice)?.id ?? null;
+    return plans.find((plan) => plan.isTessChoice)?.id ?? null;
   }
 
-  if (visiblePlans.some((plan) => plan.id === primaryPlan.id)) {
-    return primaryPlan.id;
-  }
-
-  const dominatingVisiblePlans = visiblePlans.filter((plan) => dominates(plan, primaryPlan));
-  if (dominatingVisiblePlans.length === 1) {
-    return dominatingVisiblePlans[0].id;
-  }
-
-  return null;
-}
-
-function dedupeVisiblePlans(plans: HeartbeatPlan[], visiblePlans: HeartbeatPlan[], tessChoicePlanId: string | null) {
-  const primaryPlanId = plans.find((plan) => plan.run.tradeoffLabel === "primary")?.id ?? null;
-  const planOrder = new Map(plans.map((plan, index) => [plan.id, index]));
-  const groups = new Map<string, HeartbeatPlan[]>();
-
-  for (const plan of visiblePlans) {
-    const signature = getMetricSignature(plan);
-    groups.set(signature, [...(groups.get(signature) ?? []), plan]);
-  }
-
-  return Array.from(groups.values())
-    .map((group) => {
-      const tessChoicePlan = tessChoicePlanId ? group.find((plan) => plan.id === tessChoicePlanId) : null;
-      if (tessChoicePlan) {
-        return tessChoicePlan;
-      }
-
-      const primaryPlan = primaryPlanId ? group.find((plan) => plan.id === primaryPlanId) : null;
-      if (primaryPlan) {
-        return primaryPlan;
-      }
-
-      return [...group].sort((left, right) => (planOrder.get(left.id) ?? Number.MAX_SAFE_INTEGER) - (planOrder.get(right.id) ?? Number.MAX_SAFE_INTEGER))[0];
-    })
-    .sort((left, right) => (planOrder.get(left.id) ?? Number.MAX_SAFE_INTEGER) - (planOrder.get(right.id) ?? Number.MAX_SAFE_INTEGER));
+  return primaryPlan.id;
 }
 
 function getMetricColor(row: (typeof metricRows)[number], plans: HeartbeatPlan[], value: number) {
@@ -124,9 +53,8 @@ function getMetricColor(row: (typeof metricRows)[number], plans: HeartbeatPlan[]
 }
 
 export function HeartbeatProposalCard({ plans, mode, onAdopt, onViewDetails, onAskTess }: HeartbeatProposalCardProps) {
-  const frontierPlans = getVisiblePlans(plans);
-  const tessChoicePlanId = getTessChoicePlanId(plans, frontierPlans);
-  const visiblePlans = dedupeVisiblePlans(plans, frontierPlans, tessChoicePlanId);
+  const visiblePlans = plans;
+  const tessChoicePlanId = getTessChoicePlanId(plans);
 
   return (
     <section className="app-card space-y-4 p-4 md:p-6">

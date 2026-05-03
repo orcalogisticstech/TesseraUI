@@ -1,6 +1,5 @@
 "use client";
 
-import { getAppData } from "@/lib/mock-data";
 import type {
   AdoptedPlanHistoryEntry,
   AppTheme,
@@ -15,6 +14,7 @@ import type {
   SystemMode,
   WorkspaceTabId
 } from "@/lib/app-types";
+import type { BackendJobConfig } from "@/lib/tesserapick-normalizers";
 import type { MockSession } from "@/lib/mock-auth";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
@@ -23,6 +23,8 @@ import type { Dispatch, SetStateAction } from "react";
 type AppContextValue = {
   data: AppDataBundle;
   session: MockSession;
+  backendJobConfig: BackendJobConfig;
+  activeJobIds: string[];
   mode: SystemMode;
   setMode: (mode: SystemMode) => void;
   posture: PostureConfig;
@@ -69,13 +71,23 @@ type AppContextValue = {
   setLayoutOverlayTabSelectedBatchIds: (tabId: WorkspaceTabId, batchIds: string[]) => void;
   activeHeartbeatPlans: HeartbeatPlan[] | null;
   clearActiveHeartbeatPlans: () => void;
-  triggerNextHeartbeat: () => void;
+  triggerNextHeartbeat: (options?: TriggerHeartbeatOptions) => Promise<void>;
+  heartbeatLoading: boolean;
+  heartbeatError: string | null;
   adoptedPlansHistory: AdoptedPlanHistoryEntry[];
-  addAdoptedPlanToHistory: (plan: HeartbeatPlan) => void;
+  addAdoptedPlanToHistory: (plan: HeartbeatPlan) => Promise<void>;
   heartbeatRemaining: number;
   heartbeatCycleCount: number;
   theme: AppTheme;
   setTheme: (theme: AppTheme) => void;
+};
+
+export type TriggerHeartbeatOptions = {
+  jobConfig?: BackendJobConfig;
+  floorState?: {
+    blockedLocations: Array<{ locationId: string; reason: string }>;
+    blockedZones: Array<{ zoneId: string; reason: string }>;
+  };
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -94,13 +106,21 @@ function clampCopilotWidth(width: number) {
 export function AppProvider({
   children,
   session,
-  initialHeartbeatPlanSets
+  initialData,
+  initialHeartbeatPlanSets,
+  initialAdoptedPlansHistory,
+  initialJobConfig,
+  initialActiveJobIds
 }: {
   children: ReactNode;
   session: MockSession;
+  initialData: AppDataBundle;
   initialHeartbeatPlanSets: HeartbeatPlan[][];
+  initialAdoptedPlansHistory: AdoptedPlanHistoryEntry[];
+  initialJobConfig: BackendJobConfig;
+  initialActiveJobIds: string[];
 }) {
-  const data = useMemo(() => getAppData(session), [session]);
+  const data = initialData;
   const [mode, setMode] = useState<SystemMode>("Advisory");
   const [posture, setPosture] = useState<PostureConfig>(data.posture);
   const [cycles, setCycles] = useState<DecisionCycle[]>(data.cycles);
@@ -136,7 +156,9 @@ export function AppProvider({
     >
   >({});
   const [activeHeartbeatPlans, setActiveHeartbeatPlans] = useState<HeartbeatPlan[] | null>(null);
-  const [adoptedPlansHistory, setAdoptedPlansHistory] = useState<AdoptedPlanHistoryEntry[]>([]);
+  const [heartbeatLoading, setHeartbeatLoading] = useState(false);
+  const [heartbeatError, setHeartbeatError] = useState<string | null>(null);
+  const [adoptedPlansHistory, setAdoptedPlansHistory] = useState<AdoptedPlanHistoryEntry[]>(initialAdoptedPlansHistory);
   const [heartbeatRemaining, setHeartbeatRemaining] = useState(HEARTBEAT_INITIAL_SECONDS);
   const [heartbeatCycleCount, setHeartbeatCycleCount] = useState(0);
   const [theme, setTheme] = useState<AppTheme>("dark");
@@ -173,6 +195,7 @@ export function AppProvider({
 
       const promise = (async () => {
         const query = new URLSearchParams({
+          runId: run.runId,
           requestId: run.requestId,
           tradeoffLabel: run.tradeoffLabel,
           page: "0",
@@ -180,7 +203,8 @@ export function AppProvider({
         });
         const response = await fetch(`/api/heartbeat-run-details?${query.toString()}`);
         if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
+          const body = (await response.json().catch(() => null)) as { error?: string } | null;
+          throw new Error(body?.error ?? `Request failed with status ${response.status}`);
         }
         const details = (await response.json()) as HeartbeatRunDetails;
         runDetailsCacheRef.current[cacheKey] = details;
@@ -403,30 +427,122 @@ export function AppProvider({
   const clearActiveHeartbeatPlans = useCallback(() => {
     setActiveHeartbeatPlans(null);
   }, []);
-  const triggerNextHeartbeat = useCallback(() => {
-    if (activeHeartbeatPlansRef.current === null) {
-      const totalPlanSets = initialHeartbeatPlanSets.length;
-      if (totalPlanSets > 0) {
-        const normalizedIndex = nextHeartbeatPlanSetIndexRef.current % totalPlanSets;
-        setActiveHeartbeatPlans(initialHeartbeatPlanSets[normalizedIndex]);
-        nextHeartbeatPlanSetIndexRef.current = (normalizedIndex + 1) % totalPlanSets;
+  const triggerNextHeartbeat = useCallback(
+    async (options?: TriggerHeartbeatOptions) => {
+      if (activeHeartbeatPlansRef.current !== null || heartbeatLoading) {
+        return;
       }
-    }
 
-    setHeartbeatCycleCount((count) => count + 1);
-    setHeartbeatRemaining(HEARTBEAT_SECONDS);
-  }, [initialHeartbeatPlanSets]);
+      setHeartbeatLoading(true);
+      setHeartbeatError(null);
+      try {
+        if (options?.floorState) {
+          const floorResponse = await fetch("/api/floor-state", {
+            method: "PUT",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              tenant_id: "demo",
+              facility_id: "ATL1",
+              job_ids: initialActiveJobIds,
+              blocked_locations: options.floorState.blockedLocations.map((item) => ({
+                location_id: item.locationId,
+                reason: item.reason
+              })),
+              blocked_zones: options.floorState.blockedZones.map((item) => ({
+                zone_id: item.zoneId,
+                reason: item.reason
+              }))
+            })
+          });
+          if (!floorResponse.ok) {
+            throw new Error(`Floor-state update failed with status ${floorResponse.status}`);
+          }
+        }
 
-  const addAdoptedPlanToHistory = useCallback((plan: HeartbeatPlan) => {
-    setAdoptedPlansHistory((current) => [
-      {
-        id: `adopted-${Date.now()}`,
-        adoptedAt: new Date().toISOString(),
-        plan
-      },
-      ...current
-    ]);
-  }, []);
+        const heartbeatResponse = await fetch("/api/heartbeat-runs", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            tenant_id: "demo",
+            facility_id: "ATL1",
+            workflow: "heartbeat",
+            mode: mode === "Closed-Loop" ? "closed_loop" : "advisory",
+            job_config: options?.jobConfig ?? initialJobConfig,
+            release_selector: initialActiveJobIds.length > 0 ? { job_ids: initialActiveJobIds, task_ids: [], include_inactive: false } : undefined,
+            requested_by: {
+              actor_type: "ops_ui",
+              actor_id: session.userEmail
+            }
+          })
+        });
+        if (!heartbeatResponse.ok) {
+          const body = (await heartbeatResponse.json().catch(() => null)) as { error?: string } | null;
+          throw new Error(body?.error ?? `Heartbeat request failed with status ${heartbeatResponse.status}`);
+        }
+        const result = (await heartbeatResponse.json()) as { plans: HeartbeatPlan[] };
+        if (result.plans.length === 0) {
+          throw new Error("Heartbeat completed without optimizer plans.");
+        }
+        setActiveHeartbeatPlans(result.plans);
+        setHeartbeatCycleCount((count) => count + 1);
+        setHeartbeatRemaining(HEARTBEAT_SECONDS);
+      } catch (error) {
+        setHeartbeatError(error instanceof Error ? error.message : "Unable to trigger heartbeat.");
+      } finally {
+        setHeartbeatLoading(false);
+      }
+    },
+    [heartbeatLoading, initialActiveJobIds, initialJobConfig, mode, session.userEmail]
+  );
+
+  const addAdoptedPlanToHistory = useCallback(
+    async (plan: HeartbeatPlan) => {
+      const response = await fetch("/api/adoptions", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          tenant_id: "demo",
+          facility_id: "ATL1",
+          plan: {
+            id: plan.id,
+            label: plan.label,
+            is_tess_choice: plan.isTessChoice,
+            summary: plan.summary,
+            metrics: {
+              late_orders: plan.metrics.lateOrders,
+              selected_tasks: plan.metrics.selectedTasks,
+              max_zone_load: plan.metrics.maxZoneLoad,
+              zone_crossings: plan.metrics.zoneCrossings,
+              priority_alignment: plan.metrics.priorityAlignment,
+              throughput_picks_per_hour: plan.metrics.throughputPicksPerHour
+            },
+            run: {
+              run_id: plan.run.runId,
+              request_id: plan.run.requestId,
+              request_label: plan.run.requestLabel,
+              workflow: plan.run.workflow,
+              mode: plan.run.mode,
+              status: plan.run.status,
+              timestamp: plan.run.timestamp,
+              computation_time: plan.run.computationTime,
+              solution_id: plan.run.solutionId,
+              tradeoff_label: plan.run.tradeoffLabel
+            }
+          },
+          adopted_by: {
+            actor_type: "ops_ui",
+            actor_id: session.userEmail
+          }
+        })
+      });
+      if (!response.ok) {
+        throw new Error(`Adoption failed with status ${response.status}`);
+      }
+      const body = (await response.json()) as { entry: AdoptedPlanHistoryEntry };
+      setAdoptedPlansHistory((current) => [body.entry, ...current]);
+    },
+    [session.userEmail]
+  );
 
   useEffect(() => {
     activeHeartbeatPlansRef.current = activeHeartbeatPlans;
@@ -466,7 +582,7 @@ export function AppProvider({
     const timer = window.setInterval(() => {
       setHeartbeatRemaining((current) => {
         if (current === 0) {
-          triggerNextHeartbeat();
+          void triggerNextHeartbeat();
           return current;
         }
         return current - 1;
@@ -479,6 +595,8 @@ export function AppProvider({
     () => ({
       data,
       session,
+      backendJobConfig: initialJobConfig,
+      activeJobIds: initialActiveJobIds,
       mode,
       setMode,
       posture,
@@ -508,6 +626,8 @@ export function AppProvider({
       activeHeartbeatPlans,
       clearActiveHeartbeatPlans,
       triggerNextHeartbeat,
+      heartbeatLoading,
+      heartbeatError,
       adoptedPlansHistory,
       addAdoptedPlanToHistory,
       heartbeatRemaining,
@@ -518,6 +638,8 @@ export function AppProvider({
     [
       data,
       session,
+      initialJobConfig,
+      initialActiveJobIds,
       mode,
       posture,
       cycles,
@@ -540,6 +662,8 @@ export function AppProvider({
       activeHeartbeatPlans,
       clearActiveHeartbeatPlans,
       triggerNextHeartbeat,
+      heartbeatLoading,
+      heartbeatError,
       adoptedPlansHistory,
       addAdoptedPlanToHistory,
       heartbeatRemaining,
