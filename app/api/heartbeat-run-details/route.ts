@@ -1,3 +1,5 @@
+import { shouldUseMockData } from "@/lib/server/data-mode";
+import { getRecordedHeartbeatRunDetailsPage } from "@/lib/server/heartbeat-recordings";
 import { fetchRunDetailsRaw } from "@/lib/server/tesserapick-client";
 import { normalizeRunDetails } from "@/lib/tesserapick-normalizers";
 import { NextResponse } from "next/server";
@@ -15,6 +17,14 @@ export async function GET(request: Request) {
   }
 
   try {
+    if (shouldUseMockData()) {
+      const details = getRecordedHeartbeatRunDetailsPage(requestId ?? runId!, tradeoffLabel, page, pageSize);
+      if (!details) {
+        return NextResponse.json({ error: "Run details not found." }, { status: 404 });
+      }
+      return NextResponse.json(details);
+    }
+
     const raw = await fetchRunDetailsRaw({
       runId: runId ?? requestId!,
       tradeoffLabel,

@@ -2,8 +2,11 @@ import { AppProvider } from "@/components/app/AppProvider";
 import { AppShell } from "@/components/app/AppShell";
 import { BrandWordmark } from "@/components/BrandWordmark";
 import { getMockSession } from "@/lib/mock-auth-server";
+import { getAppData } from "@/lib/mock-data";
+import { shouldUseMockData } from "@/lib/server/data-mode";
+import { getRecordedHeartbeatPlanSets } from "@/lib/server/heartbeat-recordings";
 import { fetchBootstrapRaw } from "@/lib/server/tesserapick-client";
-import { normalizeBootstrap } from "@/lib/tesserapick-normalizers";
+import { normalizeBootstrap, type BackendJobConfig } from "@/lib/tesserapick-normalizers";
 import type { ReactNode } from "react";
 
 export default async function ProductLayout({ children }: { children: ReactNode }) {
@@ -49,12 +52,48 @@ export default async function ProductLayout({ children }: { children: ReactNode 
 }
 
 async function loadBootstrap(session: NonNullable<Awaited<ReturnType<typeof getMockSession>>>) {
+  if (shouldUseMockData()) {
+    return {
+      data: getAppData(session),
+      initialHeartbeatPlanSets: getRecordedHeartbeatPlanSets(),
+      adoptedPlansHistory: [],
+      jobConfig: mockJobConfig(),
+      activeJobIds: ["MHT-JOB-ATL1-1001"]
+    };
+  }
+
   try {
     const raw = await fetchBootstrapRaw("demo", "ATL1");
     return normalizeBootstrap(raw, session);
   } catch {
     return null;
   }
+}
+
+function mockJobConfig(): BackendJobConfig {
+  return {
+    blocked_aisles: [],
+    no_go_zones: [],
+    blocked_terminals: [],
+    weights: {
+      travel_time: 0.4,
+      tardiness: 0.5,
+      zone_balance: 0.1
+    },
+    penalties: {
+      zone_cross: 1,
+      split_order: 0,
+      grouping_violation: 1
+    },
+    required_group_splits: [],
+    preferred_group_splits: [],
+    available_carts: [
+      { cart_type_id: "CART_SMALL", count: 8 },
+      { cart_type_id: "CART_LARGE", count: 4 }
+    ],
+    max_batches: 12,
+    max_tasks_per_zone: 40
+  };
 }
 
 function BackendUnavailable() {

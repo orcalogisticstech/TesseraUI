@@ -1,3 +1,4 @@
+import { shouldUseMockData } from "@/lib/server/data-mode";
 import { fetchRunDetailsRaw, queryTessCopilotRaw } from "@/lib/server/tesserapick-client";
 import { normalizeRunDetails } from "@/lib/tesserapick-normalizers";
 import { NextResponse } from "next/server";
@@ -15,6 +16,14 @@ export async function POST(request: Request) {
     const question = body.question?.trim();
     if (!question) {
       return NextResponse.json({ error: "question is required." }, { status: 400 });
+    }
+
+    if (shouldUseMockData()) {
+      return NextResponse.json({
+        answer: "I mapped that request to the active optimization model. In mock mode, run-specific grounding uses recorded heartbeat data.",
+        success: true,
+        selectedSkills: []
+      });
     }
 
     const attachment = body.attachments?.find((item) => item.run?.runId && item.run?.tradeoffLabel);
