@@ -164,6 +164,8 @@ export function AppProvider({
   const [theme, setTheme] = useState<AppTheme>("dark");
   const nextHeartbeatPlanSetIndexRef = useRef(0);
   const activeHeartbeatPlansRef = useRef<HeartbeatPlan[] | null>(null);
+  const heartbeatInFlightRef = useRef(false);
+  const autoHeartbeatRequestedRef = useRef(false);
   const runDetailsCacheRef = useRef<Record<string, HeartbeatRunDetails>>({});
   const inflightRunDetailsRef = useRef<Record<string, Promise<HeartbeatRunDetails> | undefined>>({});
   const setCopilotWidth = useCallback((width: number) => {
@@ -429,10 +431,11 @@ export function AppProvider({
   }, []);
   const triggerNextHeartbeat = useCallback(
     async (options?: TriggerHeartbeatOptions) => {
-      if (activeHeartbeatPlansRef.current !== null || heartbeatLoading) {
+      if (activeHeartbeatPlansRef.current !== null || heartbeatInFlightRef.current) {
         return;
       }
 
+      heartbeatInFlightRef.current = true;
       setHeartbeatLoading(true);
       setHeartbeatError(null);
       try {
@@ -488,11 +491,13 @@ export function AppProvider({
         setHeartbeatRemaining(HEARTBEAT_SECONDS);
       } catch (error) {
         setHeartbeatError(error instanceof Error ? error.message : "Unable to trigger heartbeat.");
+        setHeartbeatRemaining(HEARTBEAT_SECONDS);
       } finally {
+        heartbeatInFlightRef.current = false;
         setHeartbeatLoading(false);
       }
     },
-    [heartbeatLoading, initialActiveJobIds, initialJobConfig, mode, session.userEmail]
+    [initialActiveJobIds, initialJobConfig, mode, session.userEmail]
   );
 
   const addAdoptedPlanToHistory = useCallback(
@@ -580,16 +585,24 @@ export function AppProvider({
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setHeartbeatRemaining((current) => {
-        if (current === 0) {
-          void triggerNextHeartbeat();
-          return current;
-        }
-        return current - 1;
-      });
+      setHeartbeatRemaining((current) => Math.max(0, current - 1));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [triggerNextHeartbeat]);
+  }, []);
+
+  useEffect(() => {
+    if (heartbeatRemaining > 0) {
+      autoHeartbeatRequestedRef.current = false;
+      return;
+    }
+
+    if (activeHeartbeatPlans !== null || autoHeartbeatRequestedRef.current) {
+      return;
+    }
+
+    autoHeartbeatRequestedRef.current = true;
+    void triggerNextHeartbeat();
+  }, [activeHeartbeatPlans, heartbeatRemaining, triggerNextHeartbeat]);
 
   const value = useMemo(
     () => ({
