@@ -437,6 +437,7 @@ export function AppProvider({
       }
 
       heartbeatInFlightRef.current = true;
+      setHeartbeatRemaining(HEARTBEAT_SECONDS);
       setHeartbeatLoading(true);
       setHeartbeatError(null);
       try {
@@ -489,10 +490,8 @@ export function AppProvider({
         }
         setActiveHeartbeatPlans(result.plans);
         setHeartbeatCycleCount((count) => count + 1);
-        setHeartbeatRemaining(HEARTBEAT_SECONDS);
       } catch (error) {
         setHeartbeatError(error instanceof Error ? error.message : "Unable to trigger heartbeat.");
-        setHeartbeatRemaining(HEARTBEAT_SECONDS);
       } finally {
         heartbeatInFlightRef.current = false;
         setHeartbeatLoading(false);
@@ -606,7 +605,10 @@ export function AppProvider({
     }
 
     autoHeartbeatRequestedRef.current = true;
-    void triggerNextHeartbeat();
+    const timer = window.setTimeout(() => {
+      void triggerNextHeartbeat();
+    }, 1000);
+    return () => window.clearTimeout(timer);
   }, [activeHeartbeatPlans, heartbeatRemaining, triggerNextHeartbeat]);
 
   const value = useMemo(
