@@ -10,6 +10,7 @@ import type {
   HeartbeatPlan,
   HeartbeatRunSummary,
   HeartbeatRunDetails,
+  KpiSnapshot,
   PostureConfig,
   SystemMode,
   WorkspaceTabId
@@ -120,7 +121,7 @@ export function AppProvider({
   initialJobConfig: BackendJobConfig;
   initialActiveJobIds: string[];
 }) {
-  const data = initialData;
+  const [data, setData] = useState<AppDataBundle>(initialData);
   const [mode, setMode] = useState<SystemMode>("Advisory");
   const [posture, setPosture] = useState<PostureConfig>(data.posture);
   const [cycles, setCycles] = useState<DecisionCycle[]>(data.cycles);
@@ -543,8 +544,12 @@ export function AppProvider({
       if (!response.ok) {
         throw new Error(`Adoption failed with status ${response.status}`);
       }
-      const body = (await response.json()) as { entry: AdoptedPlanHistoryEntry };
+      const body = (await response.json()) as { entry: AdoptedPlanHistoryEntry; kpi: KpiSnapshot };
       setAdoptedPlansHistory((current) => [body.entry, ...current]);
+      setData((current) => ({
+        ...current,
+        kpi: body.kpi
+      }));
     },
     [session.userEmail]
   );

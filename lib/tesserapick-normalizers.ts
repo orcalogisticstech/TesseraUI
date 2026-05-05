@@ -5,6 +5,7 @@ import type {
   HeartbeatPlan,
   HeartbeatRunDetails,
   HeartbeatRunSummary,
+  KpiSnapshot,
   PostureConfig,
   SystemMode,
   TenantSettings
@@ -130,6 +131,19 @@ export function normalizeHeartbeatPlan(rawValue: unknown): HeartbeatPlan {
   };
 }
 
+export function normalizeKpiSnapshot(rawValue: unknown): KpiSnapshot {
+  const raw = asRecord(rawValue);
+  return {
+    lateOrders: asNumber(raw.late_orders),
+    selectedTasks: asNumber(raw.selected_tasks),
+    candidateTasks: asNumber(raw.candidate_tasks),
+    maxZoneLoad: asNumber(raw.max_zone_load),
+    zoneCrossings: asNumber(raw.zone_crossings),
+    priorityAlignment: asNumber(raw.priority_alignment),
+    throughputPicksPerHour: asNumber(raw.throughput_picks_per_hour)
+  };
+}
+
 export function normalizeAdoptedEntry(rawValue: unknown): AdoptedPlanHistoryEntry {
   const raw = asRecord(rawValue);
   return {
@@ -200,20 +214,11 @@ function normalizeSettings(rawValue: unknown): TenantSettings {
 export function normalizeBootstrap(rawValue: unknown, session: MockSession): BackendBootstrapBundle {
   const raw = asRecord(rawValue);
   const jobConfig = normalizeJobConfig(raw.job_config);
-  const kpi = asRecord(raw.kpi);
   const data: AppDataBundle = {
     session,
     posture: normalizePosture(raw.posture, jobConfig),
     posturePresets: asArray(raw.posture_presets).map((item) => asString(item)).filter(Boolean),
-    kpi: {
-      lateOrders: asNumber(kpi.late_orders),
-      selectedTasks: asNumber(kpi.selected_tasks),
-      candidateTasks: asNumber(kpi.candidate_tasks),
-      maxZoneLoad: asNumber(kpi.max_zone_load),
-      zoneCrossings: asNumber(kpi.zone_crossings),
-      priorityAlignment: asNumber(kpi.priority_alignment),
-      throughputPicksPerHour: asNumber(kpi.throughput_picks_per_hour)
-    },
+    kpi: normalizeKpiSnapshot(raw.kpi),
     zones: asArray(raw.zones).map((item) => {
       const zone = asRecord(item);
       return {
