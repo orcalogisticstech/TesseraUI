@@ -45,6 +45,34 @@ function createRowId(prefix: string) {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function HeartbeatOptimizationLoader({ progress }: { progress: number }) {
+  const filledSegments = Math.max(0, Math.min(100, Math.round(progress)));
+
+  return (
+    <section className="app-card space-y-5 p-4 md:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display text-2xl uppercase tracking-[-0.01em]">Optimizing ...</h2>
+        <p className="font-code text-2xl" style={{ color: "var(--tessera-accent-signal)" }}>
+          {filledSegments}%
+        </p>
+      </div>
+
+      <div className="grid h-5 grid-cols-[repeat(100,minmax(0,1fr))] gap-1" aria-label={`Optimization progress ${filledSegments}%`}>
+        {Array.from({ length: 100 }, (_, index) => (
+          <div
+            key={index}
+            className="h-full border"
+            style={{
+              borderColor: index < filledSegments ? "var(--tessera-accent-signal)" : "var(--tessera-border)",
+              background: index < filledSegments ? "var(--tessera-accent-signal)" : "color-mix(in srgb, var(--tessera-text-secondary) 18%, transparent)"
+            }}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function DecisionFeedView() {
   const {
     mode,
@@ -64,6 +92,8 @@ export function DecisionFeedView() {
   } = useAppState();
   const isLightTheme = theme === "light";
   const [now, setNow] = useState<Date | null>(null);
+  const [showOptimizationLoader, setShowOptimizationLoader] = useState(false);
+  const [optimizationProgress, setOptimizationProgress] = useState(0);
   const [objectiveTiers, setObjectiveTiers] = useState<Record<ObjectiveTier, ObjectiveKey[]>>({
     1: ["tardiness", "travel_time"],
     2: ["balance"],
@@ -101,6 +131,58 @@ export function DecisionFeedView() {
     }, 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!heartbeatLoading) {
+      return;
+    }
+    setShowOptimizationLoader(true);
+    setOptimizationProgress(0);
+  }, [heartbeatLoading]);
+
+  useEffect(() => {
+    if (!showOptimizationLoader || !heartbeatLoading) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setOptimizationProgress((current) => Math.min(99, current + 1));
+    }, 500);
+    return () => window.clearInterval(timer);
+  }, [heartbeatLoading, showOptimizationLoader]);
+
+  useEffect(() => {
+    if (!showOptimizationLoader || heartbeatLoading || !activeHeartbeatPlans) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setOptimizationProgress((current) => Math.min(100, current + 8));
+    }, 25);
+    return () => window.clearInterval(timer);
+  }, [activeHeartbeatPlans, heartbeatLoading, showOptimizationLoader]);
+
+  useEffect(() => {
+    if (!showOptimizationLoader || heartbeatLoading || !activeHeartbeatPlans || optimizationProgress < 100) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setShowOptimizationLoader(false);
+    }, 180);
+    return () => window.clearTimeout(timer);
+  }, [activeHeartbeatPlans, heartbeatLoading, optimizationProgress, showOptimizationLoader]);
+
+  useEffect(() => {
+    if (!showOptimizationLoader || heartbeatLoading || activeHeartbeatPlans) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setShowOptimizationLoader(false);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [activeHeartbeatPlans, heartbeatLoading, showOptimizationLoader]);
 
   const todayLabel = now
     ? now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })
@@ -319,7 +401,9 @@ export function DecisionFeedView() {
         </section>
       ) : null}
 
-      {activeHeartbeatPlans ? (
+      {showOptimizationLoader ? <HeartbeatOptimizationLoader progress={optimizationProgress} /> : null}
+
+      {activeHeartbeatPlans && !showOptimizationLoader ? (
         <HeartbeatProposalCard
           plans={activeHeartbeatPlans}
           mode={mode}
